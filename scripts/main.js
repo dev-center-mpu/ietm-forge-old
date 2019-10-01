@@ -1,7 +1,7 @@
 var viewer;
 var options = {
     env: 'AutodeskProduction',
-    accessToken: 'eyJhbGciOiJIUzI1NiIsImtpZCI6Imp3dF9zeW1tZXRyaWNfa2V5In0.eyJjbGllbnRfaWQiOiI3Q01aRk1tTDIyQmFFaFpTcDBVZWwwNTJpTDVhdXNzZCIsImV4cCI6MTU2OTk0MTE1OSwic2NvcGUiOlsiZGF0YTpyZWFkIiwiZGF0YTp3cml0ZSIsImRhdGE6Y3JlYXRlIiwiYnVja2V0OmNyZWF0ZSIsImJ1Y2tldDp1cGRhdGUiLCJidWNrZXQ6cmVhZCJdLCJhdWQiOiJodHRwczovL2F1dG9kZXNrLmNvbS9hdWQvand0ZXhwNjAiLCJqdGkiOiI0UXFxVnNuYUpYellXTTY4d2VEYm1kTGhpSVh0V0k2MUFXQno3Y3lIUEpUbk1vSjJrdFo2RmRFRXQzZGNzcWVoIn0.TjTS28Ok5tpwckAPclbppefY6zbO6ZZFvf3NmKdRa5Y',
+    accessToken: 'eyJhbGciOiJIUzI1NiIsImtpZCI6Imp3dF9zeW1tZXRyaWNfa2V5In0.eyJjbGllbnRfaWQiOiI3Q01aRk1tTDIyQmFFaFpTcDBVZWwwNTJpTDVhdXNzZCIsImV4cCI6MTU2OTk0Mjg4Mywic2NvcGUiOlsiZGF0YTpyZWFkIiwiZGF0YTp3cml0ZSIsImRhdGE6Y3JlYXRlIiwiYnVja2V0OmNyZWF0ZSIsImJ1Y2tldDp1cGRhdGUiLCJidWNrZXQ6cmVhZCJdLCJhdWQiOiJodHRwczovL2F1dG9kZXNrLmNvbS9hdWQvand0ZXhwNjAiLCJqdGkiOiJNS2t2SHdRUGZWQTFZV1p3ZVZVYUtEMURIcDl1S0JVRlBUY3JBSTl4dmNPTmxSejJpWGFtMzNTTDcwRkJHMzRaIn0.MWtpmokiF-lLSz6xn20OV2OPo2JQGQj_6nIRmsjizvs',
     api: 'derivativeV2'    // for models uploaded to EMEA change this option to 'derivativeV2_EU'
 };
 var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE5LTEwLTAxLTEzLTQ2LTAzLWQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlL1JvYm90QXJtLmR3Zng';
@@ -26,7 +26,7 @@ function onDocumentLoadSuccess(doc) {
     var initGeom = geometries[0];
 
     // Create Viewer instance
-    var viewerDiv = document.getElementById('MyViewerDiv');
+    var viewerDiv = document.getElementById('viewer');
     var config = {
         extensions: initGeom.extensions() || []
     };
