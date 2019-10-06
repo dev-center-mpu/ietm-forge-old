@@ -123,10 +123,10 @@
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
+  </script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
+  </script>
 
   <!-- The Viewer JS -->
   <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/viewer3D.min.js"></script>
@@ -206,15 +206,23 @@
       data: tree,
       multiSelect: $('#chk-select-multi').is(':checked'),
       onNodeSelected: function (event, node) {
-        console.log(node.id+" was selected");
-        $('#selectable-output').prepend('<p>' + node.text + ' was selected</p>');
+        console.log(node.id + " was selected");
       },
       onNodeUnselected: function (event, node) {
-        console.log(node.id+" was unselected");
-        $('#selectable-output').prepend('<p>' + node.text + ' was unselected</p>');
+        console.log(node.id + " was unselected");
       }
 
     });
+
+
+    $("#tree").on('mouseover', '.list-group-item', function () {
+      console.log($(this).text());
+    });
+
+    $("#tree").on('mouseleave', '.list-group-item', function () {
+      console.log($(this).text());
+    });
+
 
     var search = function (e) {
       var pattern = $('#input-search').val();
@@ -262,7 +270,7 @@
     });
 
     // Select/unselect/toggle nodes
-    $('#input-select-node').on('keyup', function (e) {
+    $('#input-select-node').on('click', function (e) {
       selectableNodes = findSelectableNodes();
       $('.select-node').prop('disabled', !(selectableNodes.length >= 1));
     });
@@ -279,7 +287,7 @@
       }]);
     });
 
-    $('#btn-toggle-selected.select-node').on('click', function (e) {
+    $('#btn-toggle-selected.select-node').on('clickr', function (e) {
       $tree.treeview('toggleNodeSelected', [selectableNodes, {
         silent: $('#chk-select-silent').is(':checked')
       }]);
