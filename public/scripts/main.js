@@ -1,5 +1,6 @@
+
 var viewer;
-var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE5LTEwLTAxLTE0LTU2LTE5LWQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlL3JlZHVjZXIxMi5zdGVw';
+var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE5LTEwLTAxLTE2LTI5LTU0LWQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlL3JlZHVjZXIyLmYzZA';
 var options = {
     env: 'AutodeskProduction',
     accessToken: '',
@@ -13,10 +14,6 @@ $.get('/auth', (data) => {
     });
 })
 
-/**
-* Autodesk.Viewing.Document.load() success callback.
-* Proceeds with model initialization.
-*/
 function onDocumentLoadSuccess(doc) {
 
     // A document contains references to 3D and 2D geometries.
@@ -60,452 +57,275 @@ function onLoadModelSuccess(model) {
     console.log('onLoadModelSuccess()!');
     console.log('Validate model loaded: ' + (viewer.model === model));
     console.log(model);
-}
 
-/**
- * viewer.loadModel() failure callback.
- * Invoked when there's an error fetching the SVF file.
- */
-function onLoadModelError(viewerErrorCode) {
-    console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
-}
+    viewer.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, (e) => { // Функция, срабатывает после полной загрузки модели
+        viewer.setLightPreset(10); // Сделать фон серым
+        viewer.setBackgroundColor(255, 255, 255, 255, 255, 255);
+        viewer.setGroundShadow(0);
+        viewer.hide(4)
 
-
-
-/*
-var doc;
-var viewer;
-var lmvDoc;
-var viewables;
-var indexViewable;
-var viewerStatePersist;
-var HOST  = "https://lementtest2.lement.pro:443";
-var AUTH_URL = HOST + '/authentication/v1/authenticate';
-var CLIENT_ID = '7CMZFMmL22BaEhZSp0Uel052iL5aussd';
-var CLIENT_SECRET = 'RnRA7ThEt0DGPAsK';
-var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE4LTA0LTA2LTE5LTI3LTEyLWQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlL2xhX21hcm1pdGVfXzEuc2tw';
-var token;
-var modelTree;
-
-$.ajax({
-    url: AUTH_URL,
-    method: "POST",
-    crossOrigin: true,
-    data: `client_id=${CLIENT_ID}` +
-        `&client_secret=${CLIENT_SECRET}` +
-        `&grant_type=client_credentials` +
-         `&scope=viewables:read%20data:read`
-})
-
-.done(function(response) {
-    token = response;
-    var options = {
-        env: 'AutodeskProduction',
-        accessToken: token.access_token
-    };
-
-    Autodesk.Viewing.Initializer(options, function onInitialized(){
-        Autodesk.Viewing.Document.load(documentId, onDocumentLoadSuccess, onDocumentLoadFailure);
-    });
-
-    getInstanseTree();
-});
-
-function onDocumentLoadSuccess(doc) {
-    viewables = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type':'geometry'}, true);
-    if (viewables.length === 0) {
-        console.error('Document contains no viewables.');
-        return;
-    }
-
-    var viewerDiv = document.getElementById('viewer');
-    viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
-    var errorCode = viewer.start();
-
-    if (errorCode) {
-        console.error('viewer.start() error - errorCode:' + errorCode);
-        return;
-    }
-
-
-    indexViewable = 0;
-    lmvDoc = doc;
-
-    loadModel();
-    //addToolbar(viewer);
-
-    viewer.addEventListener(Autodesk.Viewing.SELECTION_CHANGED_EVENT, onItemSelected);
-}
-
-
-function onDocumentLoadFailure(viewerErrorCode) {
-    console.error('onDocumentLoadFailure() - errorCode:' + viewerErrorCode);
-}
-
-function onLoadModelSuccess(model) {
-    console.log('onLoadModelSuccess()!');
-    console.log('Validate model loaded: ' + (viewer.model === model));
-    console.log(model);
-
-    setDefaultCamera();
-}
-
-function onLoadModelError(viewerErrorCode) {
-    console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
-}
-
-function loadModel() {
-    var initialViewable = viewables[indexViewable];
-    var svfUrl = lmvDoc.getViewablePath(initialViewable);
-    var modelOptions = {
-        sharedPropertyDbPath: lmvDoc.getPropertyDbPath()
-    };
-    viewer.loadModel(svfUrl, modelOptions, onLoadModelSuccess, onLoadModelError);
-}
-
-//////////////////////////////////////////////////////////////////////
-//                          CUSTOM FUNCTIONS
-//////////////////////////////////////////////////////////////////////
-
-// function addToolbar(viewer) {
-//     var subToolbar = new Autodesk.Viewing.UI.ControlGroup('custom-toolbar');
-//     addGetSelectionBtn(subToolbar, viewer);
-//     addRandomSectorPaint(subToolbar, viewer);
-//     addSitOnPlace(subToolbar, viewer);
-//     viewer.getToolbar(false).addControl(subToolbar);
-// }
-
-function addGetSelectionBtn(subToolbar, viewer) {
-    var btn = new Autodesk.Viewing.UI.Button('custom-button');
-    btn.addClass('custom-button');
-    btn.setIcon("adsk-icon-box");
-    btn.setToolTip('Get selection id');
-    btn.onClick = function(e) {
-        alert(viewer.getSelection());
-    };
-
-    subToolbar.addControl(btn);
-}
-
-function paintElement(elementId, color) {
-    viewer.setThemingColor(elementId, color);
-}
-
-function getInstanseTree() {
-    $.ajax({
-        url: HOST + "/modelderivative/v2/designdata/" + documentId.substr(4) + "/metadata",
-        method: "GET",
-        crossOrigin: true,
-        headers: {
-            "Authorization": `${token.token_type} ${token.access_token}`
+        let animation = {
+            loop: true,
+            duration: 1000 * 60,
+            frames: [
+                {
+                    at: 0,
+                    data: [
+                        {
+                            nodeId: 35,
+                            transform: {
+                                rotation: new THREE.Euler(0, THREE.Math.degToRad(360 * 0), THREE.Math.degToRad(0)),
+                                position: undefined,
+                                scale: undefined
+                            }
+                        },
+                        {
+                            nodeId: 76,
+                            transform: {
+                                rotation: new THREE.Euler(0, THREE.Math.degToRad(0), 0),
+                                position: undefined,
+                                scale: undefined
+                            }
+                        },
+                        {
+                            nodeId: 164,
+                            transform: {
+                                rotation: undefined,
+                                position: new THREE.Vector3(0, 0, 0),
+                                scale: undefined
+                            }
+                        }
+                    ]
+                },
+                {
+                    at: 1000 * 60,
+                    data: [
+                        {
+                            nodeId: 35,
+                            transform: {
+                                rotation: new THREE.Euler(0, THREE.Math.degToRad(360 * 10), THREE.Math.degToRad(0)),
+                                position: undefined,
+                                scale: undefined
+                            }
+                        },
+                        {
+                            nodeId: 76,
+                            transform: {
+                                rotation: new THREE.Euler(0, THREE.Math.degToRad(-360 * 20), THREE.Math.degToRad(0)),
+                                position: undefined,
+                                scale: undefined
+                            }
+                        },
+                        {
+                            nodeId: 164,
+                            transform: {
+                                rotation: undefined,
+                                position: new THREE.Vector3(0, -100, 0),
+                                scale: undefined
+                            }
+                        }
+                    ]
+                }
+            ]
         }
-    })
-    .done(function(response) {
-        var viewableGuid = response.data.metadata[0].guid;
-        $.ajax({
-            url: HOST + "/modelderivative/v2/designdata/" + documentId.substr(4) + "/metadata/" + viewableGuid,
-            method: "GET",
-            crossOrigin: true,
-            headers: {
-                "Authorization": `${token.token_type} ${token.access_token}`
+
+        player.addEventListener('frame', function (e) {
+            let currentTime = e.detail.currentTime;
+            let prevFrame = animation.frames[0];
+            let nextFrame = animation.frames[animation.frames.length - 1];
+
+            for (let i = 0; i < animation.frames.length; i++) {
+                let frameTime = animation.frames[i].at;
+                if (frameTime <= currentTime && frameTime > prevFrame.at) prevFrame = animation.frames[i];
+                if (frameTime > currentTime && frameTime < nextFrame.at) nextFrame = animation.frames[i];
             }
-        })
-        .done(function(response) {
-            modelTree = response.data.objects[0].objects[0].objects;
-        });
-    });
-}
-//////////////////////////////////////////////////////////////////////
-//                          EXPERIMENTAL FUNCTIONS
-//////////////////////////////////////////////////////////////////////
 
-document.addEventListener('mousemove', onMouseUpdate, false);
+            let intersection = prevFrame.data.map(d => {
+                for (let i = 0; i < nextFrame.data.length; i++) {
+                    if (d.nodeId === nextFrame.data[i].nodeId) return {
+                        nodeId: d.nodeId,
+                        from: d.transform,
+                        to: nextFrame.data[i].transform
+                    }
+                }
+            })
 
-function onMouseUpdate(e) {
-    var x = e.pageX, y = e.pageY;
-    var res = viewer.impl.castRay(x, y, false);
-    if (res) onItemFocus(res);
-}
-
-$('document').ready(function () {
-    $('#footer > span').click(function() {
-        drawPaw();
-    });
-
-    $('[name="sector"]').change(function () { // Обработчик для выбора сектора
-        setDefaultCamera();
-        var sectorName = $( '[name="sector"] option:selected' ).text();
-
-        var sector = dataMap.sectors.filter((obj) => {
-            return obj.name == sectorName;
-        })
-
-        if (sector.length != 0) {
-            viewer.fitToView([sector[0].forgeId]);
-        }
-
-        drawPaw();
-    });
-
-    $('[name="row"]').change(function () { // Обработчик для выбора ряда
-        setDefaultCamera();
-
-        var sectorName = $( '[name="sector"] option:selected' ).text();
-        var rowName = $( '[name="row"] option:selected' ).text();
-
-
-        var sector = dataMap.sectors.filter((obj) => {
-            return obj.name == sectorName;
-        });
-
-        var row = sector[0].rows.filter((obj) => {
-            return obj.name == rowName;
-        });
-
-        var objects = [];
-
-        row[0].values.forEach((value) => {
-            objects = objects.concat(value.forgeId);
-        });
-
-        if (objects.length != 0) {
-            viewer.fitToView(objects);
-            //viewer.select(objects, Autodesk.Viewing.SelectionMode.OVERLAYED);
-        }
-    });
-
-    $('[name="value"]').change(function () { // Обработчик для выбора места
-        setDefaultCamera();
-
-        var sectorName = $( '[name="sector"] option:selected' ).text();
-        var rowName = $( '[name="row"] option:selected' ).text();
-        var valueName = $( '[name="value"] option:selected' ).text();
-
-        var sector = dataMap.sectors.filter((obj) => {
-            return obj.name == sectorName;
-        });
-
-        var row = sector[0].rows.filter((obj) => {
-            return obj.name == rowName;
-        });
-
-        var value = row[0].values.filter((obj) => {
-            return obj.name == valueName;
-        })
-
-        if (value.length != 0) {
-            viewer.fitToView(value[0].forgeId);
-        }
-    });
-
-    $('.WindowMoney').delegate('[name="remove-item"]', 'click', function() {
-        var old = $('[name="total-price"]').text();
-        var price = parseInt(old);
-        var id = parseInt($(this).parent().find('[name="preview"]').attr('forgeid'));
-        price -= getPlaceByForgeId(id).price;
-        $('[name="total-price"]').text(price);
-
-        $(this).parent().remove();
-         if($('.WindowMoney > ul li').length == 0) {
-             $('.WindowMoney').hide();
-         }
-    })
-
-    $('.WindowMoney').delegate('button.viewFromPlace', 'click', function(e) {
-        var forgeId = e.target.attributes.forgeid.nodeValue;
-        applyLivePreviewFromItem(forgeId);
-    });
-
-    $('[name="buy"]').click(function() {
-        alert('Билеты куплены!');
-    });
-});
-
-function drawPaw() {
-    dataMap.sectors[5].rows.forEach(function(element, index, array){
-        element.values.forEach(function(element, index, array){
-            if (element.isBusy)
-            {
-                viewer.setThemingColor(element.forgeId[1], RED);
-                viewer.setThemingColor(element.forgeId[2], RED);
-            } else if (element.price == 500)
-            {
-                viewer.setThemingColor(element.forgeId[1], ORANGE);
-                viewer.setThemingColor(element.forgeId[2], ORANGE);
-            } else if (element.price == 1000)
-            {
-                viewer.setThemingColor(element.forgeId[1], CYAN);
-                viewer.setThemingColor(element.forgeId[2], CYAN);
-            } else if (element.price == 1500)
-            {
-                viewer.setThemingColor(element.forgeId[1], BLUE);
-                viewer.setThemingColor(element.forgeId[2], BLUE);
-            }
-        });
-    });
-}
-
-function setDefaultCamera() {
-    var camera = viewer.getCamera();
-
-    var navTool = new Autodesk.Viewing.Navigation(camera);
-
-    var position = new THREE.Vector3(0, 0, 350);
-    var target = new THREE.Vector3(0, 0, 250);
-    var up = new THREE.Vector3(0, 0, 1);
-
-    navTool.setView(position, target);
-    navTool.setWorldUpVector(up, true);
-}
-
-function paintAllElementsRed (viewer) {
-    var instanceTree = viewer.model.getData().instanceTree;
-    if (instanceTree === undefined) {
-        console.log("ERROR: Unable to paint elements. Not all elements have been loaded yet");
-        return;
-    }
-
-    var rootId = instanceTree.getRootId();
-    if (!rootId) {
-        console.log("ERROR: There are no elements to paint in this model");
-        return;
-    }
-
-    var alldbIds = [];
-    var queue = [];
-    queue.push(rootId);
-    while (queue.length > 0) {
-        var node = queue.shift();
-        alldbIds.push(node);
-        instanceTree.enumNodeChildren(node, function(childrenIds) {
-            queue.push(childrenIds);
-        });
-    }
-
-    alldbIds.forEach(function(element, index, array){
-        viewer.setThemingColor(element, new THREE.Vector4(1, 0, 0, 1));
-    })
-}
-
-function addRandomSectorPaint(subToolbar, viewer) {
-    var btn = new Autodesk.Viewing.UI.Button('custom-button1');
-    btn.addClass('custom-button1');
-    btn.setIcon("adsk-icon-box");
-    btn.setToolTip('Paint third sector');
-    btn.onClick = function(e) {
-        var allSeatsInSector = modelTree[3].objects[0].objects[3].objects;
-        var allSeatsIds;
-        allSeatsInSector.forEach(function(element, index, array){
-            if (element.objectid % 3 == 0) {
-                element.objects.forEach(function(element, index, array){
-                    paintElement(element.objectid, GREEN);
-                })
-            } else {
-                element.objects.forEach(function(element, index, array){
-                    paintElement(element.objectid, RED);
-                })
-            }
-        })
-    };
-
-    subToolbar.addControl(btn);
-}
-
-function getPlaceByForgeId(forgeId) {
-    var row;
-    for (element of dataMap.sectors[5].rows)
-    {
-        row = element.name;
-        for (element of element.values)
-        {
-            if (element.forgeId.includes(forgeId)) {
-                return  {
-                    "sector": 6,
-                    "row": row,
-                    "place": element.name,
-                    "isBusy": element.isBusy,
-                    "price": element.price,
-                    "values": element.forgeId
+            if (intersection[0]) {
+                for (let i = 0; i < intersection.length; i++) {
+                    console.log(intersection[i])
+                    if (intersection[i].from.rotation && intersection[i].to.rotation) {
+                        let euler = new THREE.Euler();
+                        euler.set(
+                            lerp(intersection[i].from.rotation.x, intersection[i].to.rotation.x, e.detail.value),
+                            lerp(intersection[i].from.rotation.y, intersection[i].to.rotation.y, e.detail.value),
+                            lerp(intersection[i].from.rotation.z, intersection[i].to.rotation.z, e.detail.value),
+                        );
+                        setRotation(euler, intersection[i].nodeId);
+                    } else if (intersection[i].from.position && intersection[i].to.position) {
+                        let vector = new THREE.Vector3();
+                        vector.set(
+                            lerp(intersection[i].from.position.x, intersection[i].to.position.x, e.detail.value),
+                            lerp(intersection[i].from.position.y, intersection[i].to.position.y, e.detail.value),
+                            lerp(intersection[i].from.position.z, intersection[i].to.position.z, e.detail.value)
+                        );
+                        setPosition(vector, intersection[i].nodeId);
+                    }
                 }
             }
-        }
-    }
-    return null;
+
+        
+        })
+
+    })
 }
 
-//////////////////////////////////////////////////////////////////////
-//                    Sit on place functionality
-//////////////////////////////////////////////////////////////////////
-
-function applyLivePreviewFromItem(forgeId) {
-    var item = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(parseInt(forgeId));
-    if (item == -1) return;
-    var bBox = getModifiedWorldBoundingBox(
-        [item],
-        viewer.model.getFragmentList()
-    );
-    var camera = viewer.getCamera();
-    var navTool = new Autodesk.Viewing.Navigation(camera);
-
-    var position = bBox.max;
-    var target = new THREE.Vector3(0, 0, -30);
-    var up = new THREE.Vector3(0, 0, 1);
-
-    navTool.setView(position, target);
-    navTool.setWorldUpVector(up, true);
-}
-function onItemSelected (item) {
-    if ($('.WindowMoney > ul li').length == 4) return;
-
-    var place = getPlaceByForgeId(item.nodeArray[0]);
-
-    if (place != null) {
-        $('[name="sector"]').val(place.sector.toString());
-        $('[name="row"]').val(place.row.toString());
-        $('[name="value"]').val(place.place.toString());
-
-        $('.WindowMoney').show();
-
-        $('<li>').append(`<span>${place.sector}, Ряд ${place.row}, Место ${place.place}</span>`)
-            .append(`<button name="preview" style="margin-left: 4px" type="button" class="btn btn-default viewFromPlace" forgeid="${place.values[1]}">
-                        <i class="fas fa-eye fa-xs"></i>
-                    </button>`)
-            .append(`<button name="remove-item" style="margin-left: 4px" type="button" class="btn btn-danger">
-      <i class="fas fa-times fa-xs"></i>
-      </button>`).appendTo('.WindowMoney > ul');
-
-        var old = $('[name="total-price"]').text();
-
-        var price = parseInt(old);
-        price += place.price;
-      $('[name="total-price"]').text(price);
-    }
-
+function onLoadModelError(viewerErrorCode) {
+    console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
 }
 
-function onItemFocus(item) {
-    //$('[name="price"]').text(item.dbId);
-    var res = getPlaceByForgeId(item.dbId);
+////////////////////////////////////////////////////////////////
+////////////// TRANSFORM FUNCTIONS
+////////////////////////////////////////////////////////////////
 
-    if (!res) {
-        $('.Window:visible').hide();
+function setRotation(eulerAngle, nodeId) {
+    if (!viewer) {
+        console.error(`Viewer is not initialized`);
         return;
-    } else {
-        $('.Window').show();
-
-        $('.item-sector').text('Сектор: ' + res.sector);
-        $('.item-row').text('Ряд: ' + res.row);
-        $('.item-place').text('Место: ' + res.place);
-        $('.item-price').text('Цена: ' + res.price);
     }
+
+    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
+    if (fragId == -1) {
+        console.error(`nodeId ${nodeId} not found`);
+        return;
+    }
+    let fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, fragId);
+    fragProxy.getAnimTransform();
+
+    let worldMatrix = new THREE.Matrix4();
+    fragProxy.getWorldMatrix(worldMatrix);
+
+    let oldPosition = new THREE.Vector3();
+    oldPosition.copy(worldMatrix.getPosition().clone());
+
+    let quaternion = new THREE.Quaternion();
+    quaternion.setFromEuler(eulerAngle.clone());
+    fragProxy.quaternion.copy(quaternion.clone());
+
+    fragProxy.updateAnimTransform();
+    fragProxy.getAnimTransform();
+
+    let updatedWorldMatrix = new THREE.Matrix4();
+    fragProxy.getWorldMatrix(updatedWorldMatrix);
+
+    let newPosition = new THREE.Vector3();
+    newPosition.copy(updatedWorldMatrix.getPosition().clone());
+
+    let offset = new THREE.Vector3();
+    offset.x = oldPosition.x - newPosition.x;
+    offset.y = oldPosition.y - newPosition.y;
+    offset.z = oldPosition.z - newPosition.z;
+
+    fragProxy.position.x += offset.x;
+    fragProxy.position.y += offset.y;
+    fragProxy.position.z += offset.z;
+
+    fragProxy.updateAnimTransform();
+    viewer.impl.sceneUpdated(true);
 }
 
-function getModifiedWorldBoundingBox(fragIds, fragList) {
-    var fragbBox = new THREE.Box3();
-    var nodebBox = new THREE.Box3();
-    fragIds.forEach(function(fragId) {
-        fragList.getWorldBounds(fragId, fragbBox);
-        nodebBox.union(fragbBox);
-    });
-    return nodebBox;
-}*/
+function setPosition(positionVector, nodeId) {
+    if (!viewer) {
+        console.error(`Viewer is not initialized`);
+        return;
+    }
+
+    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
+    if (fragId == -1) {
+        console.error(`nodeId ${nodeId} not found`);
+        return;
+    }
+    let fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, fragId);
+    fragProxy.getAnimTransform();
+
+    fragProxy.position.x = positionVector.x;
+    fragProxy.position.y = positionVector.y;
+    fragProxy.position.z = positionVector.z;
+
+    fragProxy.updateAnimTransform();
+    viewer.impl.sceneUpdated(true);
+}
+
+///////////////////////////////////////////////////////
+/////////   PLAYER
+///////////////////////////////////////////////////////
+
+var isPlaying = false;
+
+var player = document.getElementById('player');
+var playButton = document.getElementById('playBtn');
+var pauseButton = document.getElementById('pauseBtn');
+var timeline = document.getElementById('customRange1');
+var time = document.getElementById('time');
+
+let loop = true;
+var currentTime = 0;
+var totalDuration = 1000 * 60; // 1 minute
+time.innerHTML = `${fancyTimeFormat(currentTime)} / ${fancyTimeFormat(totalDuration)}`;
+
+function fancyTimeFormat(ms) {
+    var mins = ~~(((ms / 1000) % 3600) / 60);
+    var secs = ~~(ms / 1000) % 60;
+    return `${mins}:${secs < 10 ? `0${secs}` : secs}`;
+}
+
+timeline.oninput = function (e) {
+    let precent = e.target.value / 100.0;
+    currentTime = totalDuration * precent;
+    time.innerHTML = `${fancyTimeFormat(currentTime)} / ${fancyTimeFormat(totalDuration)}`;
+    player.dispatchEvent(new CustomEvent('frame', {
+        detail: { value: currentTime / totalDuration, currentTime }
+    }));
+}
+
+var interval = {};
+
+playButton.onclick = function () {
+    let start = Date.now();
+    let oldTime = Date.now();
+
+    interval = setInterval(function () {
+        oldTime = start;
+        start = Date.now();
+        let dt = start - oldTime;
+        if (isPlaying) {
+            currentTime += dt;
+            player.dispatchEvent(new CustomEvent('frame', {
+                detail: { value: currentTime / totalDuration, currentTime, dt }
+            }));
+            if (currentTime >= totalDuration) {
+                if (loop) {
+                    currentTime = 0;
+                } else {
+                    pauseButton.onclick();
+                    clearInterval(interval)
+                }
+            }
+            timeline.value = (currentTime / totalDuration) * 100.0;
+            time.innerHTML = `${fancyTimeFormat(currentTime)} / ${fancyTimeFormat(totalDuration)}`;
+        }
+    }, 4)
+
+    isPlaying = true;
+    playButton.style.display = 'none';
+    pauseButton.style.display = 'block';
+}
+
+pauseButton.onclick = function () {
+    isPlaying = false;
+    playButton.style.display = 'block';
+    pauseButton.style.display = 'none';
+}
+
+function lerp(start, end, amt) {
+    return (1 - amt) * start + amt * end
+}

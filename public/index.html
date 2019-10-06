@@ -101,7 +101,16 @@
     <div id="tree"></div>
   </div>
   </div>
-  <div id="viewer"></div>
+  <div id="viewer">
+    <div id="player">
+      <div id="playerControls">
+        <span id="playBtn" class="text-primary">▶</span>
+        <span id="pauseBtn" class="text-primary" style="display: none">❙❙</span>
+        <input type="range" value="0" step="0.01" class="custom-range" id="customRange1">
+        <span id="time"> 0:00 / 0:00</span>
+      </div>
+    </div>
+  </div>
   <div id="right">
     <h2>Заголовок</h2>
     <p>Редуктор это круто</p>
@@ -114,45 +123,75 @@
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-  </script>
+    </script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-  </script>
+    </script>
 
   <!-- The Viewer JS -->
   <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/viewer3D.min.js"></script>
 
+  <script src="scripts/ietm.js"></script>
   <script src="scripts/main.js"></script>
   <script src="scripts/bootstrap-treeview.min.js"></script>
   <script>
     var tree = [{
-        text: "Item1",
+        text: "Техническое описание",
+        id: "item1"
+      },
+      {
+        text: "Каталог деталей",
+        id: "item2",
         nodes: [{
-            text: "Item1_1",
-            nodes: [{
-                text: "Item1_1_1"
-              },
-              {
-                text: "Item1_1_2"
-              }
-            ]
+            text: "Корпус",
+            id: "item2_1"
           },
           {
-            text: "Item1_2"
+            text: "Зубчатая передача",
+            id: "item2_2"
+          },
+          {
+            text: "Двигатель",
+            id: "item2_3"
+          },
+          {
+            text: "Тихоходный",
+            id: "item2_4"
+          },
+          {
+            text: "Подшипники",
+            id: "item2_5"
           }
         ]
       },
       {
-        text: "Item2"
+        text: "Принцип работы",
+        id: "item3",
+        nodes: [{
+          text: "Корпус",
+          id: "item3_1"
+        }]
       },
       {
-        text: "Item3"
+        text: "Руководство по разработке",
+        id: "item4",
+        nodes: [{
+            text: "Разборка корпуса",
+            id: "item4_1"
+          },
+          {
+            text: "Замена шестерней",
+            id: "item4_2"
+          }
+        ]
       },
       {
-        text: "Item4"
-      },
-      {
-        text: "Item5"
+        text: "Руководство по эксплуатации",
+        id: "item5",
+        nodes: [{
+          text: "Смазывание компонентов",
+          id: "item5_1"
+        }]
       }
     ];
 
@@ -166,11 +205,11 @@
       data: tree,
       multiSelect: $('#chk-select-multi').is(':checked'),
       onNodeSelected: function (event, node) {
-        console.log(node.text+" was selected");
+        console.log(node.id+" was selected");
         $('#selectable-output').prepend('<p>' + node.text + ' was selected</p>');
       },
       onNodeUnselected: function (event, node) {
-        console.log(node.text+" was unselected");
+        console.log(node.id+" was unselected");
         $('#selectable-output').prepend('<p>' + node.text + ' was unselected</p>');
       }
 
