@@ -70,6 +70,8 @@ function onLoadModelError(viewerErrorCode) {
     console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
 }
 
+
+
 /*
 var doc;
 var viewer;
