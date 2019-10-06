@@ -2,6 +2,7 @@ var ietm = {
     'item1': {
         init: function () {
             NOP_VIEWER.isolate(0);
+            NOP_VIEWER.fitToView(0);
             NOP_VIEWER.hide(4);
             console.log('item1 loaded')
         },
@@ -16,6 +17,7 @@ var ietm = {
         init: function () {
             NOP_VIEWER.setGhosting(true);
             NOP_VIEWER.isolate([4, 6]);
+            NOP_VIEWER.fitToView([4, 6]);
         },
         content: `
         <h2>Корпус</h2>
@@ -26,6 +28,7 @@ var ietm = {
         init: function () {
             NOP_VIEWER.setGhosting(true);
             NOP_VIEWER.isolate([35, 76]);
+            NOP_VIEWER.fitToView([35, 76]);
         },
         content: `
         <h2>Зубчатая передача</h2>
@@ -36,6 +39,7 @@ var ietm = {
         init: function () {
             NOP_VIEWER.setGhosting(true);
             NOP_VIEWER.isolate([72, 76]);
+            NOP_VIEWER.fitToView([72, 76]);
         },
         content: `
         <h2>Двигатель</h2>
@@ -45,7 +49,9 @@ var ietm = {
     'item2_4': {
         init: function () {
             NOP_VIEWER.setGhosting(true);
-            NOP_VIEWER.isolate([35, 66]);
+            NOP_VIEWER.isolate([66]);
+            NOP_VIEWER.fitToView([66]);
+
         },
         content: `
         <h2>Тихоходный вал</h2>
@@ -55,7 +61,8 @@ var ietm = {
     'item2_5': {
         init: function () {
             NOP_VIEWER.setGhosting(true);
-            NOP_VIEWER.isolate([9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66]);
+            NOP_VIEWER.isolate([9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64]);
+            NOP_VIEWER.fitToView([9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64 ]);
         },
         content: `
         <h2>Подшипники</h2>
