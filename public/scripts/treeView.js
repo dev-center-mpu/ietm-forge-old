@@ -10,6 +10,10 @@ for (i = 0; i < toggler.length; i++) {
 
 for (const item of document.querySelectorAll(".treeItem")) {
     item.onclick = () => {
-        alert(item.id);
+        if (ietm[item.id]) {
+            ietm[item.id].init();
+            document.querySelector('#right').innerHTML = ietm[item.id].content;
+        } else console.error('Paragraph not found. Check ietm.js')
+        //alert(item.id);
     }
 }
