@@ -1,24 +1,26 @@
 <head>
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="utf-8" />
   <title>ИЭТР</title>
 
   <!-- The Viewer CSS -->
   <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/style.min.css"
-    type="text/css">
+    type="text/css" />
 
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-    integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/bootstrap-treeview.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css" />
+
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  <link rel="stylesheet" href="css/main.css">
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="css/main.css" />
 
   <!-- Developer CSS -->
   <style>
@@ -26,7 +28,7 @@
       width: 100%;
       height: 100%;
       margin: 0;
-      background-color: #F0F8FF;
+      background-color: #f0f8ff;
     }
 
     * {
@@ -65,48 +67,69 @@
       grid-row-end: 1;
     }
 
-    .btn-success {
-      height: 32px;
-      border-radius: 0 4px 4px 0;
-      color: white;
-      font-weight: 700;
+    ul {
+      font-size: 20px;
+    }
+
+    li {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .li-hover:hover {
+      background:#f5f5f5;
+    }
+    
+    .li-hover {
+      border: 1px solid black;
+      margin-top: 5px;
+      border-radius: 5px;
+      text-align: center;
     }
   </style>
 </head>
 
 <body>
-  <div id="left" class="list-group">
-    <h2 class="text-center">Дерево</h2>
-    <!-- <form> -->
-    <!-- <div class="input-group mb-3">
-              <label for="input-search" class="sr-only">Search Tree:</label>
-              <div class="pull-left">
-                  <input type="input" class="form-control" id="input-search" placeholder="Type to search..." value="">
-              </div>
-              <div class="pull-left">
-                <button type="button" class="btn btn-success" id="btn-search">Поиск</button>
-            </div>
-              <button type="button" class="btn btn-default" id="btn-clear-search">Очистить</button>
-          </div>
-       -->
-
-    <div class="input-group mb-3" style="margin-left: 10px">
-      <input type="input" class="form-control" id="input-search" placeholder="Поиск..." value="" />
-      <span class="input-group-addon input-group-addon-btn bg-white"
-        style="padding: 0; margin: 0; border-radius: 0px 5px 5px 0px">
-        <button class="btn btn-success" type="button" id="btn-clear-search">Поиск</button>
-      </span>
-    </div>
-    <!-- </form> -->
-    <div id="tree"></div>
+  <div class = "left" style = "z-index: 99999999">
+  <div data-role="panel" data-title-caption="Дерево" data-title-icon="<span class='mif-apps'></span>" data-width="360"
+    data-collapsible="true" data-draggable="true">
+    <ul data-role="treeview">
+      <li data-caption="Тех. обслуживание"></li>
+      <li data-caption="Каталог деталей" data-collapsed="true"> 
+        <ul class="interaction-ul">
+          <li data-caption="Корпус" class="li-hover" id="item_2_1"></li>
+          <li data-caption="Шестерня" class="li-hover" id="item_2_2"></li>
+          <li data-caption="Колесо" class="li-hover" id="item_2_3"></li>
+          <li data-caption="Двигатель" class="li-hover" id="item_2_4"></li>
+          <li data-caption="Выходной вал" class="li-hover" id="item_2_5"></li>
+          <li data-caption="Подшипник" class="li-hover" id="item_2_6"></li>
+        </ul>
+      </li>
+      <li data-caption="Принцип работы" data-collapsed="true">
+        <ul class="interaction-ul">
+          <li data-caption="Корпус" class="li-hover" id="item_3_1"></li>
+        </ul>
+      </li>
+      <li data-caption="Руководство по разработке" data-collapsed="true">
+        <ul class="interaction-ul">
+          <li data-caption="Разборка корпуса" class="li-hover" id="item_4_1"></li>
+          <li data-caption="Замена шестерней" class="li-hover" id="item_4_2"></li>
+        </ul>
+      </li>
+      <li data-caption="Руководство по эксплуатации" data-collapsed="true">
+        <ul class="interaction-ul">
+          <li data-caption="Смазывание компонентов" class="li-hover" id="item_5_1"></li>
+        </ul>
+      </li>
+    </ul>
   </div>
-  </div>
+</div>
   <div id="viewer">
     <div id="player">
       <div id="playerControls">
         <span id="playBtn" class="text-primary">▶</span>
         <span id="pauseBtn" class="text-primary" style="display: none">❙❙</span>
-        <input type="range" value="0" step="0.01" class="custom-range" id="customRange1">
+        <input type="range" value="0" step="0.01" class="custom-range" id="customRange1" />
         <span id="time"> 0:00 / 0:00</span>
       </div>
     </div>
@@ -114,7 +137,6 @@
   <div id="right">
     <h2>Заголовок</h2>
     <p>Редуктор это круто</p>
-
   </div>
 
   <!-- The Viewer will be instantiated here -->
@@ -127,169 +149,57 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
+  <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 
   <!-- The Viewer JS -->
-  <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/viewer3D.min.js"></script>
+  <!-- <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/viewer3D.min.js"></script> -->
 
   <script src="scripts/ietm.js"></script>
   <script src="scripts/main.js"></script>
-  <script src="scripts/bootstrap-treeview.min.js"></script>
   <script>
-    var tree = [{
-        text: "Техническое описание",
-        id: "item1"
-      },
-      {
-        text: "Каталог деталей",
-        id: "item2",
-        nodes: [{
-            text: "Корпус",
-            id: "item2_1"
-          },
-          {
-            text: "Зубчатая передача",
-            id: "item2_2"
-          },
-          {
-            text: "Двигатель",
-            id: "item2_3"
-          },
-          {
-            text: "Тихоходный",
-            id: "item2_4"
-          },
-          {
-            text: "Подшипники",
-            id: "item2_5"
-          }
-        ]
-      },
-      {
-        text: "Принцип работы",
-        id: "item3",
-        nodes: [{
-          text: "Корпус",
-          id: "item3_1"
-        }]
-      },
-      {
-        text: "Руководство по разработке",
-        id: "item4",
-        nodes: [{
-            text: "Разборка корпуса",
-            id: "item4_1"
-          },
-          {
-            text: "Замена шестерней",
-            id: "item4_2"
-          }
-        ]
-      },
-      {
-        text: "Руководство по эксплуатации",
-        id: "item5",
-        nodes: [{
-          text: "Смазывание компонентов",
-          id: "item5_1"
-        }]
-      }
-    ];
-
-
-    //Текст с деталей брать тут
-
-    var $tree = $('#tree').treeview({
-      levels: 1,
-      expandIcon: 'glyphicon glyphicon-chevron-right',
-      collapseIcon: 'glyphicon glyphicon-chevron-down',
-      nodeIcon: 'glyphicon glyphicon-file',
-      data: tree,
-      multiSelect: $('#chk-select-multi').is(':checked'),
-      onNodeSelected: function (event, node) {
-        console.log(node.id + " was selected");
-      },
-      onNodeUnselected: function (event, node) {
-        console.log(node.id + " was unselected");
-      }
-
-    });
-
-
-    $("#tree").on('mouseover', '.list-group-item', function () {
-      console.log($(this).text());
-    });
-
-    $("#tree").on('mouseleave', '.list-group-item', function () {
-      console.log($(this).text());
-    });
-
-
-    var search = function (e) {
-      var pattern = $('#input-search').val();
-      var options = {
-        ignoreCase: true
-      };
-      var results = $tree.treeview('search', [pattern, options]);
-
-      var output = '<p>' + results.length + ' matches found</p>';
-      $.each(results, function (index, result) {
-        output += '<p>- ' + result.text + '</p>';
-      });
-      $('#search-output').html(output);
+    elements = document.querySelectorAll(".node-toggle");
+    elements2 = document.querySelectorAll(".interaction-ul");
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].id = "item" + (i + 1);
+      elements[i].onclick = onNodeClick;
     }
 
-    $('#btn-search').on('click', search);
-    $('#input-search').on('keyup', search);
+    // Opening / closing function for ul elements
+    function onNodeClick() {
+      if (elements2[this.id[4] - 1].style.display == "none") {
+        console.log(this.id + " is open");
+      } else {
+        console.log(this.id + " is closed");
+      }
+    }
 
-    $('#btn-clear-search').on('click', function (e) {
-      $tree.treeview('clearSearch');
-      $('#input-search').val('');
-      $('#search-output').html('');
-    });
+    $('.li-hover').hover(
+      function () {
+        console.log(this.id + " is hover!");
+      },
+      function () {
+        console.log(this.id + " was unhovered!");
+      });
 
+    let lastItem;
+    for (const item of document.querySelectorAll(".li-hover")) {
+      item.onclick = onTreeItemCLick;
+    }
 
-
-
-    //////
-
-
-
-
-    var findSelectableNodes = function () {
-      return $tree.treeview('search', [$('#input-select-node').val(), {
-        ignoreCase: false,
-        exactMatch: false
-      }]);
-    };
-    var selectableNodes = findSelectableNodes();
-
-    $('#chk-select-multi:checkbox').on('change', function () {
-      console.log('multi-select change');
-      $tree = initSelectableTree();
-      selectableNodes = findSelectableNodes();
-    });
-
-    // Select/unselect/toggle nodes
-    $('#input-select-node').on('click', function (e) {
-      selectableNodes = findSelectableNodes();
-      $('.select-node').prop('disabled', !(selectableNodes.length >= 1));
-    });
-
-    $('#btn-select-node.select-node').on('click', function (e) {
-      $tree.treeview('selectNode', [selectableNodes, {
-        silent: $('#chk-select-silent').is(':checked')
-      }]);
-    });
-
-    $('#btn-unselect-node.select-node').on('click', function (e) {
-      $tree.treeview('unselectNode', [selectableNodes, {
-        silent: $('#chk-select-silent').is(':checked')
-      }]);
-    });
-
-    $('#btn-toggle-selected.select-node').on('clickr', function (e) {
-      $tree.treeview('toggleNodeSelected', [selectableNodes, {
-        silent: $('#chk-select-silent').is(':checked')
-      }]);
-    });
+    // Item taken notification: selected and unselected items
+    function onTreeItemCLick() {
+      console.log("--------------");
+      console.log(this.childNodes[0].parentElement.id + " is selected");
+      if (lastItem) {
+        lastItem.style.backgroundColor = "white";
+        lastItem.style.color = "black";
+        lastItem.childNodes[0].style.color = 'black';
+        console.log(lastItem.childNodes[0].parentElement.id + " was unselected")
+      }
+      this.style.backgroundColor = "#428bca";
+      this.style.color = "white";
+      this.childNodes[0].style.color = 'white';
+      lastItem = this;
+    }
   </script>
+</body>
