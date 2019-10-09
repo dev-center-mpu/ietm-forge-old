@@ -1,17 +1,26 @@
 <head>
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no" />
-  <meta charset="utf-8">
-
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="utf-8" />
   <title>ИЭТР</title>
 
   <!-- The Viewer CSS -->
   <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/style.min.css"
-    type="text/css">
+    type="text/css" />
 
+  <!-- Bootstrap -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css" />
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="css/main.css" />
 
   <!-- Developer CSS -->
   <style>
@@ -19,7 +28,7 @@
       width: 100%;
       height: 100%;
       margin: 0;
-      background-color: #F0F8FF;
+      background-color: #f0f8ff;
     }
 
     * {
@@ -57,6 +66,57 @@
       grid-row-start: 1;
       grid-row-end: 1;
     }
+
+    .annotation {
+      position: absolute;
+      z-index: 1;
+      margin-left: 15px;
+      margin-top: 15px;
+      padding: 16px;
+      width: 200px;
+      color: #fff;
+      border-radius: .5em;
+      font-size: 12px;
+      line-height: 1.2;
+      transition: opacity .5s;
+      background-color: rgba(0, 0, 0, 0.8);
+      opacity: 1;
+    }
+
+    .annotation-number {
+      z-index: 1;
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      font-size: 16px;
+      line-height: 30px;
+      color: #fff;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    #number {
+      position: absolute;
+      z-index: -1;
+    }
+
+    .annotation p {
+      word-break: break-all;
+    }
+
+    .hidden {
+      opacity: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .annotation-button {
+      background: red;
+    }
+  </style>
+
   </style>
 </head>
 
@@ -82,41 +142,38 @@
           </li>
         </ul>
       </li>
-      <li>
-        <ul class="treeUL">
-          <li><span class="caret">Принцип работы</span>
-            <ul class="nested">
-              <li id="item3_1" class="treeItem">Корпус</li>
-            </ul>
+      <li data-caption="Принцип работы" data-collapsed="true">
+        <ul class="interaction-ul">
+          <li data-caption="Корпус" class="li-hover" id="item_3_1"></li>
         </ul>
       </li>
-      <li>
-        <ul class="treeUL">
-          <li><span class="caret">Руководство по разборке</span>
-            <ul class="nested">
-              <li id="item4_1" class="treeItem">Разборка корпуса</li>
-              <li id="item4_2" class="treeItem">Замена шестерней</li>
-            </ul>
-          </li>
+      <li data-caption="Руководство по разработке" data-collapsed="true">
+        <ul class="interaction-ul">
+          <li data-caption="Разборка корпуса" class="li-hover" id="item_4_1"></li>
+          <li data-caption="Замена шестерней" class="li-hover" id="item_4_2"></li>
         </ul>
       </li>
-      <li>
-        <ul class="treeUL">
-          <li><span class="caret">Руководство по эксплуатации</span>
-            <ul class="nested">
-              <li id="item5_1" class="treeItem">Смазываение компонентов</li>
-            </ul>
-          </li>
+      <li data-caption="Руководство по эксплуатации" data-collapsed="true">
+        <ul class="interaction-ul">
+          <li data-caption="Смазывание компонентов" class="li-hover" id="item_5_1"></li>
         </ul>
       </li>
     </ul>
   </div>
+</div>
+  <div id="viewer">
+    <div id="player">
+      <div id="playerControls">
+        <span id="playBtn" class="text-primary">▶</span>
+        <span id="pauseBtn" class="text-primary" style="display: none">❙❙</span>
+        <input type="range" value="0" step="0.01" class="custom-range" id="customRange1" />
+        <span id="time"> 0:00 / 0:00</span>
+      </div>
+    </div>
   </div>
-  <div id="viewer"></div>
   <div id="right">
     <h2>Заголовок</h2>
     <p>Редуктор это круто</p>
-
   </div>
 
   <!-- The Viewer will be instantiated here -->
@@ -129,9 +186,57 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
+  <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 
   <!-- The Viewer JS -->
   <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/viewer3D.min.js"></script>
-
+  <script src="scripts/annotationPanel.js"></script>
+  <script src="scripts/extensions/AnnotationToolbarExt.js"></script>
   <script src="scripts/main.js"></script>
-  <script src="scripts/treeView.js"></script>
+  <script>
+    elements = document.querySelectorAll(".node-toggle");
+    elements2 = document.querySelectorAll(".interaction-ul");
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].id = "item" + (i + 1);
+      elements[i].onclick = onNodeClick;
+    }
+
+    // Opening / closing function for ul elements
+    function onNodeClick() {
+      if (elements2[this.id[4] - 1].style.display == "none") {
+        console.log(this.id + " is open");
+      } else {
+        console.log(this.id + " is closed");
+      }
+    }
+
+    $('.li-hover').hover(
+      function () {
+        console.log(this.id + " is hover!");
+      },
+      function () {
+        console.log(this.id + " was unhovered!");
+      });
+
+    let lastItem;
+    for (const item of document.querySelectorAll(".li-hover")) {
+      item.onclick = onTreeItemCLick;
+    }
+
+    // Item taken notification: selected and unselected items
+    function onTreeItemCLick() {
+      console.log("--------------");
+      console.log(this.childNodes[0].parentElement.id + " is selected");
+      if (lastItem) {
+        lastItem.style.backgroundColor = "white";
+        lastItem.style.color = "black";
+        lastItem.childNodes[0].style.color = 'black';
+        console.log(lastItem.childNodes[0].parentElement.id + " was unselected")
+      }
+      this.style.backgroundColor = "#428bca";
+      this.style.color = "white";
+      this.childNodes[0].style.color = 'white';
+      lastItem = this;
+    }
+  </script>
+</body>

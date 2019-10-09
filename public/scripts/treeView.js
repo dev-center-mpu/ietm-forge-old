@@ -20,4 +20,5 @@ function onTreeItemCLick() {
     }
     this.style.backgroundColor = "grey";
     lastItem = this;
+    
 }
