@@ -80,6 +80,55 @@
       grid-row-end: 1;
     }
 
+    .annotation {
+      position: absolute;
+      z-index: 1;
+      margin-left: 15px;
+      margin-top: 15px;
+      padding: 16px;
+      width: 200px;
+      color: #fff;
+      border-radius: .5em;
+      font-size: 12px;
+      line-height: 1.2;
+      transition: opacity .5s;
+      background-color: rgba(0, 0, 0, 0.8);
+      opacity: 1;
+    }
+
+    .annotation-number {
+      z-index: 1;
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      font-size: 16px;
+      line-height: 30px;
+      color: #fff;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    #number {
+      position: absolute;
+      z-index: -1;
+    }
+
+    .annotation p {
+      word-break: break-all;
+    }
+
+    .hidden {
+      opacity: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .annotation-button {
+      background: red;
+    }
+
     ul {
       font-size: 20px;
     }
@@ -103,6 +152,8 @@
     .labels:hover {
       opacity: 0.7;
     }
+  </style>
+
   </style>
 </head>
 
@@ -212,9 +263,9 @@
   <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 
   <!-- The Viewer JS -->
-  <!-- <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/viewer3D.min.js"></script> -->
-
-  <script src="scripts/ietm.js"></script>
+  <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/viewer3D.min.js"></script>
+  <!-- <script src="scripts/annotationPanel.js"></script> -->
+  <!-- <script src="scripts/extensions/AnnotationToolbarExt.js"></script> -->
   <script src="scripts/main.js"></script>
   <script>
     elements = document.querySelectorAll(".node-toggle");
