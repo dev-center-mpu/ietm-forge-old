@@ -1,7 +1,5 @@
-
 var viewer;
 var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE5LTEwLTAxLTE0LTU2LTE5LWQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlL3JlZHVjZXIxMi5zdGVw';
-var lastCameraPos;
 var isStarted = false;
 var annotationMode = false;
 var annotation;
@@ -35,7 +33,7 @@ function onDocumentLoadSuccess(doc) {
     // Create Viewer instance
     var viewerDiv = document.getElementById('viewer');
     var config = {
-        extensions: ["AnnotationToolbarExtension"]
+        extensions: []
     };
     viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv, config);
 
@@ -95,9 +93,8 @@ function onMouseUpdate(e) {
     }
 }
 
-
 function update() {
-    for (const i in this.annotations) {
+    for (let i = 0; i < this.annotations.length; i++) {
         let p2 = new THREE.Vector3(this.annotations[i].x, this.annotations[i].y, this.annotations[i].z);
         if (!viewer.impl.camera.position.equals(p2)) {
             // p2.project(viewer.impl.camera);
@@ -111,7 +108,8 @@ function update() {
             document.querySelector('#annotation-index-' + i).style.top = p2.y - 15 + "px";
         }
     }
-    this.changeVisibilityOfAnnotations();
+    if (this.annotations.length > 0)
+        this.changeVisibilityOfAnnotations();
 
 }
 
@@ -187,7 +185,10 @@ function annotationOpacity(id) {
 }
 
 function annotationsInit() {
-    for (const i in this.annotations) this.displayAnnotation(i);
+    for (const i = 0; i < this.annotations.length; i++) {
+        this.displayAnnotation(i);
+    }
+
 }
 
 function displayAnnotation(index) {
@@ -238,7 +239,7 @@ function getClosestAnnotation() {
 }
 
 function changeVisibilityOfAnnotations() {
-    for (const i in this.annotations) {
+    for (let i = 0; i < this.annotations.length; i++) {
         document.querySelector('#annotation-' + i).style.zIndex = this.getClosestAnnotation() == i ? 2 : 1;
         document.querySelector('#annotation-index-' + i).style.zIndex = this.getClosestAnnotation() == i ? 2 : 1;
     }
