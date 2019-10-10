@@ -40,6 +40,8 @@ ul,
 .active {
     display: block;
 }
+<<<<<<< HEAD
+=======
 
 .list-group{
     margin-top: 10px;
@@ -102,3 +104,4 @@ ul,
 #time {
     width: 90px;
 }
+>>>>>>> master
