@@ -954,32 +954,44 @@ function lerp(start, end, amt) {
     return (1 - amt) * start + amt * end
 }
 
-function checkQuestion1() {
-    if (document.querySelector("#opt1_1").checked) {
-        document.querySelector("#q1").style.display = "none";
-        document.querySelector("#questionInfo").style.color = "black";
-        document.querySelector("#q2").style.display = "block"
-        document.querySelector("#questionInfo").style.display = "block"
+
+//QUIZ////////////////////////////////
+var master = $('#quiz').data('master');
+var info = document.querySelector("#questionInfo");
+var winId = -1;
+function checkQuestionRadio(questionId, winId) {
+    let info = document.querySelector("#questionInfo");
+    if (document.querySelector("#opt" + questionId + "_" + winId).checked) {
+        info.style.display = "none";
+        if (questionId == 2) {
+            checkQuestionViewer(4);
+        }
+        master.next();
     } else {
-        document.querySelector("#questionInfo").style.color = "red";
+        info.style.display = "block";
+        info.style.color = "red";
+        info.innerText = "Ответ неверный";
     }
 }
-function checkQuestion2() {
-    rads = document.getElementsByName("q2_rad")
-    checked = false;
-    for (rad of rads) {
-        console.log(rad.value + " " + rad.checked)
 
-        if (rad.checked && rad.value == "opt2_1") {
-            checked = true;
-        }
-    }
-    if (checked) {
-        document.querySelector("#q1").style.display = "none";
-        document.querySelector("#questionInfo").style.color = "black";
-        document.querySelector("#q2").style.display = "block"
+function checkQuestionViewer(id) {
+    winId = id;
+    document.querySelector("#viewer").addEventListener("click", questionViewerClick);
+}
+
+
+function questionViewerClick() {
+    console.log(winId + "  " + viewer.getSelection());
+    if (winId == viewer.getSelection()) {
+        winId = -1;
+        info.style.display = "block";
+        info.style.color = "green";
+        info.innerText = "Поздравляем, вы успешно прошли тест!!!!";
+        document.querySelector("#viewer").removeEventListener("click", questionViewerClick);
     } else {
-        document.querySelector("#questionInfo").innerText = "Ответ неверный"
-        document.querySelector("#questionInfo").style.color = "red";
+        info.style.display = "block";
+        info.style.color = "red";
+        info.innerText = "Вы выбрали не ту деталь";
+
     }
 }

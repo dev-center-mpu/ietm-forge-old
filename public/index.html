@@ -78,7 +78,6 @@
       border-radius: .5em;
       font-size: 12px;
       line-height: 1.2;
-      transition: opacity .5s;
       background-color: rgba(0, 0, 0, 0.8);
       opacity: 1;
     }
@@ -135,6 +134,10 @@
       border-radius: 5px;
       text-align: center;
       margin-right: 20px;
+    }
+
+    .master .controls {
+      display: none;
     }
   </style>
 
@@ -196,51 +199,49 @@
           <p style="color:green"><b>Поздравляем с успешным прохождением теста!</b></p>
         </div>
     </section>
-    <div data-role="master" data-effect="slide">
+    <div data-role="master" data-effect="slide" id="quiz">
+      <i>
+        <p id="questionInfo" style="display:none">Ответ верный</p>
+      </i>
       <div class="page">
-        <i>
-          <p id="questionInfo" style="display:none">Вы верно ответили на этот вопрос</p>
-        </i>
         <div id="q1">
           <p>Вопрос 1</p>
-          <form id="form">
-            <div class=" form-check">
-              <input class="form-check-input" type="checkbox" id="opt1_1">
-              <label class="form-check-label" for="defaultCheck1">
-                Вариант 1
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="opt1_2">
-              <label class="form-check-label" for="defaultCheck1">
-                Вариант 2
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="opt1_3">
-              <label class="form-check-label" for="defaultCheck1">
-                Вариант 3
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="opt1_4">
-              <label class="form-check-label" for="defaultCheck1">
-                Вариант 4
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="opt1_5">
-              <label class="form-check-label" for="defaultCheck1">
-                Вариант 5
-              </label>
-            </div>
-          </form>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_1">
+            <label class="form-check-label" for="q1_rad">
+              Вариант 1
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_2">
+            <label class="form-check-label" for="q1_rad">
+              Вариант 2
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_3">
+            <label class="form-check-label" for="q1_rad">
+              Вариант 3
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_4">
+            <label class="form-check-label" for="q1_rad">
+              Вариант 4
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_5">
+            <label class=" form-check-label" for="q1_rad">
+              Вариант 5
+            </label>
+          </div>
           <br>
-          <button class="btn btn-primary btn-sm" onclick="checkQuestion1()" id="btnQ1">Подтвердить</button>
+          <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(1,1)" id="btnQ1">Подтвердить</button>
         </div>
       </div>
       <div class="page">
-        <div id="q2" style="display:none">
+        <div id="q2">
           <p>Вопрос 2</p>
           <img src="https://46.img.avito.st/208x156/5178365446.jpg">
           <div class="form-check">
@@ -274,10 +275,14 @@
             </label>
           </div>
           <br>
-          <button class="btn btn-primary btn-sm" onclick="checkQuestion2()" id="btnQ1">Подтвердить</button>
+          <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(2,2)" id="btnQ1">Подтвердить</button>
         </div>
       </div>
-      <div class="page">Page 3</div>
+      <div class="page">
+        <div id="q1">
+          <p>В окне вьювера выберите верхнюю часть корпуса</p>
+        </div>
+      </div>
     </div>
   </div>
 
