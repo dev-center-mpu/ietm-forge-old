@@ -184,13 +184,14 @@ function addAnnotation(x, y, z, annotationName, annotationText, flag) {
     displayAnnotation(id);
 
     let annotationNumber = document.querySelector("#annotation-index-" + id);
-    if (flag)
-        annotationNumber.dispatchEvent(new Event("click"));
-
+    annotationNumber.dispatchEvent(new Event("click"));
+    if (!flag)
+        setAnnotationOpacity(id + 1, 0);
     return id;
 }
 
-function annotationOpacity(id, opacity) {
+function setAnnotationOpacity(id, opacity) {
+    id--;
     if (opacity == 0) {
         document.querySelector("#annotation-index-" + id).style.opacity = "0";
     } else {
