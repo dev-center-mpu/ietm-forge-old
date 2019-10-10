@@ -1,17 +1,39 @@
 <head>
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no" />
-  <meta charset="utf-8">
-
+  <meta
+    name="viewport"
+    content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no"
+  />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="utf-8" />
   <title>ИЭТР</title>
 
   <!-- The Viewer CSS -->
-  <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/style.min.css"
-    type="text/css">
+  <link
+    rel="stylesheet"
+    href="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/style.min.css"
+    type="text/css"
+  />
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- Bootstrap -->
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous"
+  />
 
-  <link rel="stylesheet" href="css/main.css">
+  <link
+    rel="stylesheet"
+    href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css"
+  />
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="css/main.css" />
 
   <!-- Developer CSS -->
   <style>
@@ -19,7 +41,7 @@
       width: 100%;
       height: 100%;
       margin: 0;
-      background-color: #F0F8FF;
+      background-color: #f0f8ff;
     }
 
     * {
@@ -57,68 +79,161 @@
       grid-row-start: 1;
       grid-row-end: 1;
     }
+
+    .annotation {
+      position: absolute;
+      z-index: 1;
+      margin-left: 15px;
+      margin-top: 15px;
+      padding: 16px;
+      width: 200px;
+      color: #fff;
+      border-radius: .5em;
+      font-size: 12px;
+      line-height: 1.2;
+      transition: opacity .5s;
+      background-color: rgba(0, 0, 0, 0.8);
+      opacity: 1;
+    }
+
+    .annotation-number {
+      z-index: 1;
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      font-size: 16px;
+      line-height: 30px;
+      color: #fff;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    #number {
+      position: absolute;
+      z-index: -1;
+    }
+
+    .annotation p {
+      word-break: break-all;
+    }
+
+    .hidden {
+      opacity: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .annotation-button {
+      background: red;
+    }
+
+    ul {
+      font-size: 20px;
+    }
+
+    li {
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .li-hover:hover {
+      background: #f5f5f5;
+    }
+
+    .li-hover {
+      border: 1px solid black;
+      margin-top: 5px;
+      border-radius: 5px;
+      text-align: center;
+      margin-right: 20px;
+    }
+    .labels:hover {
+      opacity: 0.7;
+    }
+  </style>
+
   </style>
 </head>
 
 <body>
-  <div id="left" class="list-group">
-
-    <ul>
-      <li class="list-group-item list-group-item-action">
-        <ul class="treeUL">
-          <li><span class="caret treeItem" id="item1">Техническое описание</span>
-        </ul>
-      </li>
-      <li class="list-group-item list-group-item-action">
-        <ul class="treeUL">
-          <li><span class="caret">Каталог деталей</span>
-            <ul class="nested list-group list-group-flush">
-              <li id="item2_0" class="list-group-item list-group-item-action treeItem">Каталог</li>
-              <li id="item2_1" class="list-group-item list-group-item-action treeItem">Корпус</li>
-              <li id="item2_2" class="list-group-item list-group-item-action treeItem">Зубчатая передача</li>
-              <li id="item2_3" class="list-group-item list-group-item-action treeItem">Двигатель</li>
-              <li id="item2_4" class="list-group-item list-group-item-action treeItem">Тихоходный</li>
-              <li id="item2_5" class="list-group-item list-group-item-action treeItem">Подшипники</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li class="list-group-item list-group-item-action">
-        <ul class="treeUL">
-          <li><span class="caret">Принцип работы</span>
-            <ul class="nested list-group list-group-flush">
-              <li id="item3_1" class="list-group-item list-group-item-action treeItem">Работа редуктора</li>
-            </ul>
-        </ul>
-      </li>
-      <li class="list-group-item list-group-item-action">
-        <ul class="treeUL">
-          <li><span class="caret">Руководство по разборке</span>
-            <ul class="nested list-group list-group-flush">
-              <li id="item4_1" class="list-group-item list-group-item-action treeItem">Разборка корпуса</li>
-              <li id="item4_2" class="list-group-item list-group-item-action treeItem">Замена шестерней</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li class="list-group-item list-group-item-action">
-        <ul class="treeUL">
-          <li><span class="caret">Руководство по эксплуатации</span>
-            <ul class="nested list-group list-group-flush">
-              <li id="item5_1" class="list-group-item list-group-item-action treeItem">Смазываение компонентов</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </div>
+  <div class="left">
+    <div
+      data-role="panel"
+      data-title-caption="Дерево"
+      data-title-icon="<span class='mif-apps'></span>"
+      
+      data-collapsible="true"
+      data-draggable="false"
+    >
+      <ul data-role="treeview" id="treeId">
+        <li data-caption="Тех. обслуживание" class="labels"></li>
+        <li data-collapsed="true">
+          <span class="labels" onclick="onNodeToggle('item2')"
+            >Каталог деталей</span
+          >
+          <ul class="interaction-ul">
+            <li data-caption="Корпус" class="li-hover" id="item_2_1"></li>
+            <li data-caption="Шестерня" class="li-hover" id="item_2_2"></li>
+            <li data-caption="Колесо" class="li-hover" id="item_2_3"></li>
+            <li data-caption="Двигатель" class="li-hover" id="item_2_4"></li>
+            <li data-caption="Выходной вал" class="li-hover" id="item_2_5"></li>
+            <li data-caption="Подшипник" class="li-hover" id="item_2_6"></li>
+          </ul>
+        </li>
+        <li data-collapsed="true">
+          <span class="labels" onclick="onNodeToggle('item3')"
+            >Принцип работы</span
+          >
+          <ul class="interaction-ul">
+            <li data-caption="Корпус" class="li-hover" id="item_3_1"></li>
+          </ul>
+        </li>
+        <li data-collapsed="true">
+          <span class="labels" onclick="onNodeToggle('item4')"
+            >Руководство по разработке</span
+          >
+          <ul class="interaction-ul">
+            <li
+              data-caption="Разборка корпуса"
+              class="li-hover"
+              id="item_4_1"
+            ></li>
+            <li
+              data-caption="Замена шестерней"
+              class="li-hover"
+              id="item_4_2"
+            ></li>
+          </ul>
+        </li>
+        <li data-collapsed="true">
+          <span class="labels" onclick="onNodeToggle('item5')"
+            >Руководство по эксплуатации</span
+          >
+          <ul class="interaction-ul">
+            <li
+              data-caption="Смазывание компонентов"
+              class="li-hover"
+              id="item_5_1"
+            ></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </div>
   <div id="viewer">
     <div id="player">
       <div id="playerControls">
         <span id="playBtn" class="text-primary">▶</span>
         <span id="pauseBtn" class="text-primary" style="display: none">❙❙</span>
-        <input type="range" value="0" step="0.01" class="custom-range" id="customRange1">
+        <input
+          type="range"
+          value="0"
+          step="0.01"
+          class="custom-range"
+          id="customRange1"
+        />
         <span id="time"> 0:00 / 0:00</span>
       </div>
     </div>
@@ -126,23 +241,121 @@
   <div id="right">
     <h2>Заголовок</h2>
     <p>Редуктор это круто</p>
-
   </div>
 
   <!-- The Viewer will be instantiated here -->
 
-  <script src="http://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
+  <script
+    src="http://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"
+  ></script>
+  <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 
   <!-- The Viewer JS -->
   <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/viewer3D.min.js"></script>
-
-  <script src="scripts/ietm.js"></script>
+  <!-- <script src="scripts/annotationPanel.js"></script> -->
+  <!-- <script src="scripts/extensions/AnnotationToolbarExt.js"></script> -->
   <script src="scripts/main.js"></script>
-  <script src="scripts/treeView.js"></script>
+  <script>
+    elements = document.querySelectorAll(".node-toggle");
+    elements2 = document.querySelectorAll(".interaction-ul");
+    elements3 = document.querySelectorAll(".tree-node");
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Уведомление при открытии/закрытии основной владки
+    function nodeNotification(name, display) {
+      if (display == "none") {
+        console.log(name + " is open");
+      } else {
+        console.log(name + " is closed");
+      }
+    }
+    // Ховеры на элементы вкладок
+    $(".li-hover").hover(
+      function() {
+        console.log(this.id + " is hover!");
+      },
+      function() {
+        console.log(this.id + " was unhovered!");
+      }
+    );
+
+    // Запомнинание и оповещение о выделенном элементе и прошлом 
+    function onTreeItemCLick() {
+      console.log("--------------");
+      console.log(this.childNodes[0].parentElement.id + " is selected");
+      if (lastItem) {
+        lastItem.style.backgroundColor = "white";
+        lastItem.style.color = "black";
+        lastItem.childNodes[0].style.color = "black";
+        console.log(
+          lastItem.childNodes[0].parentElement.id + " was unselected"
+        );
+      }
+      this.style.backgroundColor = "#428bca";
+      this.style.color = "white";
+      this.childNodes[0].style.color = "white";
+      lastItem = this;
+    }
+     /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function onNodeToggle(name, bool) {
+      if (bool) {
+        nodeNotification(name, elements2[name[4] - 2].style.display);
+      } else {
+        nodeNotification(name, elements2[name[4] - 2].style.display);
+        switch (name) {
+          case "item2":
+            $("#treeId")
+              .data("treeview")
+              .toggleNode(elements3[0]);
+            break;
+          case "item3":
+            $("#treeId")
+              .data("treeview")
+              .toggleNode(elements3[1]);
+            break;
+          case "item4":
+            $("#treeId")
+              .data("treeview")
+              .toggleNode(elements3[2]);
+            break;
+          case "item5":
+            $("#treeId")
+              .data("treeview")
+              .toggleNode(elements3[3]);
+            break;
+          default:
+            break;
+        }
+      }
+    }
+
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].id = "item" + (i + 2);
+      elements[i].onclick = onNodeClick;
+    }
+    function onNodeClick() {
+      onNodeToggle(this.id, true);
+    }
+
+    let lastItem;
+    for (const item of document.querySelectorAll(".li-hover")) {
+      item.onclick = onTreeItemCLick;
+    }
+  </script>
+</body>
