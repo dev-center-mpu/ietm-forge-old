@@ -1,3 +1,4 @@
+
 var toggler = document.getElementsByClassName("caret");
 var i;
 
@@ -11,9 +12,27 @@ for (i = 0; i < toggler.length; i++) {
 for (const item of document.querySelectorAll(".treeItem")) {
     item.onclick = () => {
         if (ietm[item.id]) {
-            ietm[item.id].init();
-            document.querySelector('#right').innerHTML = ietm[item.id].content;
+            let page = ietm[item.id];
+            if (item.id.match(/item2_?/) === null) {
+                revertChangesAfterAnimaton();
+            }
+            page.init();
+            if (page.content) {
+                document.querySelector('#right').innerHTML = page.content;
+            }
+            document.querySelectorAll('.highlightLink').forEach(elem => {
+                let nodeId = elem.getAttribute('nodeId');
+                elem.onmouseenter = function() {
+                    NOP_VIEWER.select(parseInt(nodeId));
+                }
+                elem.onmouseleave = function() {
+                    NOP_VIEWER.select(0);
+                }
+            })
+            if (page.animation) {
+                loadAnimation(page.animation);
+                if (page.animation.autoPlay) playButton.onclick()
+            }
         } else console.error('Paragraph not found. Check ietm.js')
-        //alert(item.id);
     }
 }
