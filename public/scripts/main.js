@@ -14,8 +14,6 @@ var options = {
     api: 'derivativeV2', // for models uploaded to EMEA change this option to 'derivativeV2_EU'
 }
 
-var annotations = [];
-
 $.get('/auth', (data) => {
     options.accessToken = JSON.parse(data).access_token;
     Autodesk.Viewing.Initializer(options, function onInitialized() {
@@ -72,191 +70,6 @@ function onLoadModelSuccess(model) {
     console.log('Validate model loaded: ' + (viewer.model === model));
     console.log(model);
 }
-
-//Annotations
-
-document.querySelector("#viewer").addEventListener('click', onMouseClick, false);
-
-function onMouseClick(e) {
-    var x = e.clientX,
-        y = e.clientY;
-    console.log(x)
-    var res = viewer.impl.castRay(x - document.querySelector("#left").clientWidth, y, true);
-
-    if (res) {
-        if (annotationMode) {
-            pos = viewer.impl.clientToWorld(e.clientX - document.querySelector("#left").clientWidth, e.clientY);
-            console.log(pos.point)
-            onItemClick(pos.point);
-        }
-    }
-}
-
-document.addEventListener('mousemove', onMouseUpdate, false);
-
-function onMouseUpdate(e) {
-    if (isStarted) {
-        update();
-    }
-}
-
-function update() {
-    for (let i = 0; i < this.annotations.length; i++) {
-        let p2 = new THREE.Vector3(this.annotations[i].x, this.annotations[i].y, this.annotations[i].z);
-        if (!viewer.impl.camera.position.equals(p2)) {
-            // p2.project(viewer.impl.camera);
-            clientPos = viewer.impl.worldToClient(p2, viewer.impl.camera);
-            p2.x = clientPos.x;
-
-            p2.y = clientPos.y;
-            document.querySelector('#annotation-' + i).style.left = p2.x + "px";
-            document.querySelector('#annotation-' + i).style.top = p2.y + "px";
-            document.querySelector('#annotation-index-' + i).style.left = p2.x - 15 + "px";
-            document.querySelector('#annotation-index-' + i).style.top = p2.y - 15 + "px";
-        }
-    }
-    if (this.annotations.length > 0)
-        this.changeVisibilityOfAnnotations();
-
-}
-
-function onItemClick(item) {
-
-    let annotationNameEl = document.querySelector("#annotation-name-editText");
-    let annotationTextEl = document.querySelector("#annotation-text-editText");
-    let annotationName = "name";
-    let annotationText = "text";
-
-    console.log(annotationNameEl)
-    console.log(annotationNameEl.value)
-
-    if (annotationNameEl) {
-        annotationName = annotationNameEl.value ? annotationNameEl.value : "name";
-    }
-    if (annotationTextEl) {
-        annotationText = annotationTextEl.value ? annotationTextEl.value : "text";
-    }
-
-    this.annotations.push(
-        {
-            x: item.x,
-            y: item.y,
-            z: item.z,
-            name: annotationName,
-            text: annotationText
-        }
-    )
-    displayAnnotation(this.annotations.length - 1);
-    let i = this.annotations.length - 1;
-    let p2 = new THREE.Vector3(this.annotations[i].x, this.annotations[i].y, this.annotations[i].z);
-    if (!viewer.impl.camera.position.equals(p2)) {
-        p2.project(viewer.impl.camera);
-        clientPos = viewer.impl.worldToClient(item, viewer.impl.camera);
-        p2.x = clientPos.x;
-        console.log(p2.x)
-        p2.y = clientPos.y;
-        document.querySelector('#annotation-' + i).style.left = p2.x + "px";
-        document.querySelector('#annotation-' + i).style.top = p2.y + "px";
-        document.querySelector('#annotation-index-' + i).style.left = p2.x - 15 + "px";
-        document.querySelector('#annotation-index-' + i).style.top = p2.y - 15 + "px";
-    }
-}
-
-
-function addAnnotation(x, y, z, annotationName, annotationText, flag) {
-
-    this.annotations.push(
-        {
-            x: x,
-            y: y,
-            z: z,
-            name: annotationName,
-            text: annotationText
-        }
-    )
-    id = this.annotations.length - 1;
-    displayAnnotation(id);
-
-    let annotationNumber = document.querySelector("#annotation-index-" + id);
-    if (flag)
-        annotationNumber.dispatchEvent(new Event("click"));
-
-    return id;
-}
-
-function annotationOpacity(id, opacity) {
-    if (opacity == 0) {
-        document.querySelector("#annotation-index-" + id).style.opacity = "0";
-    } else {
-        document.querySelector("#annotation-index-" + id).style.opacity = "1";
-    }
-    let style = document.querySelector('#annotation-' + id).style;
-    style.opacity = opacity;
-}
-
-function annotationsInit() {
-    for (const i = 0; i < this.annotations.length; i++) {
-        this.displayAnnotation(i);
-    }
-
-}
-
-function displayAnnotation(index) {
-    const annotation = document.createElement('div');
-    annotation.id = 'annotation-' + index;
-    annotation.classList.add('annotation', 'hidden');
-    document.querySelector('#viewer').appendChild(annotation);
-    const annotationName = document.createElement('h4');
-    annotationName.innerText = this.annotations[index].name;
-    annotationName.id = 'annotation-name-' + index;
-    annotation.appendChild(annotationName);
-    const annotationText = document.createElement('p');
-    annotationText.id = 'annotation-text-' + index;
-    annotationText.innerText = this.annotations[index].text;
-    annotation.appendChild(annotationText);
-    const annotationNumber = document.createElement('div');
-    annotationNumber.id = 'annotation-index-' + index;
-    annotationNumber.innerText = + index + 1;
-    annotationNumber.classList.add('annotation-number');
-    annotationNumber.addEventListener('click', () => this.hideAnnotation(index));
-    document.querySelector('#viewer').appendChild(annotationNumber);
-}
-
-function hideAnnotation(index) {
-    const annotation = document.querySelector('#annotation-' + index);
-    const hidden = annotation.classList.contains('hidden');
-    document.querySelector('#annotation-name-' + index).innerHTML = hidden ? this.annotations[index].name : '';
-    document.querySelector('#annotation-text-' + index).innerHTML = hidden ? this.annotations[index].text : '';
-    if (hidden) {
-        annotation.classList.remove('hidden');
-    } else
-        annotation.classList.add('hidden');
-}
-
-function getClosestAnnotation() {
-    let indexOfClosest;
-    let distToClosest = Math.pow(2, 32);
-    for (const i in this.annotations) {
-        const camPos = this.viewer.impl.camera.position;
-        const pPos = this.annotations[i];
-        const dist = Math.sqrt(Math.pow((camPos.x - pPos.x), 2) + Math.pow((camPos.y - pPos.y), 2) + Math.pow((camPos.z - pPos.z), 2));
-        if (distToClosest > dist) {
-            distToClosest = dist;
-            indexOfClosest = +i;
-        }
-    }
-    return indexOfClosest;
-}
-
-function changeVisibilityOfAnnotations() {
-    for (let i = 0; i < this.annotations.length; i++) {
-        document.querySelector('#annotation-' + i).style.zIndex = this.getClosestAnnotation() == i ? 2 : 1;
-        document.querySelector('#annotation-index-' + i).style.zIndex = this.getClosestAnnotation() == i ? 2 : 1;
-    }
-}
-
-//////////////
-
 /**
  * viewer.loadModel() failure callback.
  * Invoked when there's an error fetching the SVF file.
@@ -281,6 +94,8 @@ function arraysEqual(a, b) {
     return true;
 }
 
+
+//Annotations
 document.querySelector("#viewer").addEventListener("click", onMouseClick);
 
 function onMouseClick(e) {
@@ -292,14 +107,6 @@ function onMouseClick(e) {
         pos = viewer.impl.clientToWorld(e.clientX - document.querySelector("#left").clientWidth, e.clientY);
         console.log(pos.point)
         onItemClick(pos.point);
-    }
-}
-
-document.addEventListener('mousemove', onMouseUpdate, false);
-
-function onMouseUpdate(e) {
-    if (isStarted) {
-        update();
     }
 }
 
@@ -424,7 +231,7 @@ function changeVisibilityOfAnnotations() {
         document.querySelector('#annotation-index-' + id).style.zIndex = this.getClosestAnnotation() == id ? 2 : 1;
     }
 }
-
+/////////////////////////
 
 function onLoadModelSuccess(model) {
     console.log('onLoadModelSuccess()!');
@@ -1069,3 +876,4 @@ function questionViewerClick() {
 
     }
 }
+/////////////////////////////////////
