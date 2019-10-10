@@ -189,6 +189,96 @@
   <div id="right">
     <h2>Заголовок</h2>
     <p>Редуктор это круто</p>
+    <section id="1">
+      <h2>Тест</h2>
+      <div id="questions">
+        <div id="final" style="display:none">
+          <p style="color:green"><b>Поздравляем с успешным прохождением теста!</b></p>
+        </div>
+    </section>
+    <div data-role="master" data-effect="slide">
+      <div class="page">
+        <i>
+          <p id="questionInfo" style="display:none">Вы верно ответили на этот вопрос</p>
+        </i>
+        <div id="q1">
+          <p>Вопрос 1</p>
+          <form id="form">
+            <div class=" form-check">
+              <input class="form-check-input" type="checkbox" id="opt1_1">
+              <label class="form-check-label" for="defaultCheck1">
+                Вариант 1
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="opt1_2">
+              <label class="form-check-label" for="defaultCheck1">
+                Вариант 2
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="opt1_3">
+              <label class="form-check-label" for="defaultCheck1">
+                Вариант 3
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="opt1_4">
+              <label class="form-check-label" for="defaultCheck1">
+                Вариант 4
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="opt1_5">
+              <label class="form-check-label" for="defaultCheck1">
+                Вариант 5
+              </label>
+            </div>
+          </form>
+          <br>
+          <button class="btn btn-primary btn-sm" onclick="checkQuestion1()" id="btnQ1">Подтвердить</button>
+        </div>
+      </div>
+      <div class="page">
+        <div id="q2" style="display:none">
+          <p>Вопрос 2</p>
+          <img src="https://46.img.avito.st/208x156/5178365446.jpg">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_1" value="opt2_1">
+            <label class="form-check-label" for="q2_rad">
+              Вариант 1
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_2" value="opt2_2">
+            <label class="form-check-label" for="q2_rad">
+              Вариант 2
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_3" value="opt2_3">
+            <label class="form-check-label" for="q2_rad">
+              Вариант 3
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_4" value="opt2_4">
+            <label class="form-check-label" for="q2_rad">
+              Вариант 4
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_5" value="opt2_5">
+            <label class="form-check-label" for="q2_rad">
+              Вариант 5
+            </label>
+          </div>
+          <br>
+          <button class="btn btn-primary btn-sm" onclick="checkQuestion2()" id="btnQ1">Подтвердить</button>
+        </div>
+      </div>
+      <div class="page">Page 3</div>
+    </div>
   </div>
 
   <!-- The Viewer will be instantiated here -->

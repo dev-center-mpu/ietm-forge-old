@@ -156,10 +156,7 @@ function onItemClick(item) {
 }
 
 
-function addAnnotation(x, y, z) {
-
-    let annotationName = "name";
-    let annotationText = "text";
+function addAnnotation(x, y, z, annotationName, annotationText, flag) {
 
     this.annotations.push(
         {
@@ -174,14 +171,20 @@ function addAnnotation(x, y, z) {
     displayAnnotation(id);
 
     let annotationNumber = document.querySelector("#annotation-index-" + id);
-    annotationNumber.dispatchEvent(new Event("click"));
+    if (flag)
+        annotationNumber.dispatchEvent(new Event("click"));
 
     return id;
 }
 
-function annotationOpacity(id) {
+function annotationOpacity(id, opacity) {
+    if (opacity == 0) {
+        document.querySelector("#annotation-index-" + id).style.opacity = "0";
+    } else {
+        document.querySelector("#annotation-index-" + id).style.opacity = "1";
+    }
     let style = document.querySelector('#annotation-' + id).style;
-    style.opacity = style.opacity == "1" ? "0.5" : "1";
+    style.opacity = opacity;
 }
 
 function annotationsInit() {
@@ -949,4 +952,34 @@ pauseButton.onclick = function () {
 
 function lerp(start, end, amt) {
     return (1 - amt) * start + amt * end
+}
+
+function checkQuestion1() {
+    if (document.querySelector("#opt1_1").checked) {
+        document.querySelector("#q1").style.display = "none";
+        document.querySelector("#questionInfo").style.color = "black";
+        document.querySelector("#q2").style.display = "block"
+        document.querySelector("#questionInfo").style.display = "block"
+    } else {
+        document.querySelector("#questionInfo").style.color = "red";
+    }
+}
+function checkQuestion2() {
+    rads = document.getElementsByName("q2_rad")
+    checked = false;
+    for (rad of rads) {
+        console.log(rad.value + " " + rad.checked)
+
+        if (rad.checked && rad.value == "opt2_1") {
+            checked = true;
+        }
+    }
+    if (checked) {
+        document.querySelector("#q1").style.display = "none";
+        document.querySelector("#questionInfo").style.color = "black";
+        document.querySelector("#q2").style.display = "block"
+    } else {
+        document.querySelector("#questionInfo").innerText = "Ответ неверный"
+        document.querySelector("#questionInfo").style.color = "red";
+    }
 }
