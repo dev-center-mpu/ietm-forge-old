@@ -238,6 +238,8 @@ function onLoadModelSuccess(model) {
                 lerpKeys.push(getLerpKey(i, currentTime));
             }
 
+            console.log(lerpKeys)
+
             for (let key of lerpKeys) {
                 switch (key.for) {
                     case 'node':
@@ -245,7 +247,7 @@ function onLoadModelSuccess(model) {
                         if (key.params.rotation) for (let node of key.nodeId) setRotation(key.params.rotation, node);
                         break;
                     case 'annotation':
-                        if (key.params.opacity) setAnnotationOpacity(key.annotationId, key.params.opacity);
+                        if (key.params.opacity !== undefined) setAnnotationOpacity(key.annotationId, key.params.opacity);
                         break;
                     case 'camera':
                         let navTool = new Autodesk.Viewing.Navigation(viewer.getCamera());
@@ -746,7 +748,7 @@ function getLerpKey(propIndex, time) {
                 posVec.set(
                     lerp(prevKey.params.position.x, nextKey.params.position.x, relation),
                     lerp(prevKey.params.position.y, nextKey.params.position.y, relation),
-                    lerp(iprevKey.params.position.z, nextKey.params.position.z, relation),
+                    lerp(prevKey.params.position.z, nextKey.params.position.z, relation),
                 );
                 let tarVec = new THREE.Vector3();
                 tarVec.set(
@@ -754,6 +756,9 @@ function getLerpKey(propIndex, time) {
                     lerp(prevKey.params.target.y, nextKey.params.target.y, relation),
                     lerp(prevKey.params.target.z, nextKey.params.target.z, relation),
                 );
+                lerpKey.params.up = upVec;
+                lerpKey.params.position = posVec;
+                lerpKey.params.target = tarVec;
             }
             break;
     }
@@ -770,6 +775,7 @@ function loadAnimation(clip) {
     delete activeClip.currentTime;
 
     //revertChangesAfterAnimaton();
+    clipProps = [];
     activeClip = clip;
 
     timeline.value = 0;
