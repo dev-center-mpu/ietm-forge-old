@@ -83,18 +83,17 @@ function arraysEqual(a, b) {
     return true;
 }
 
+document.querySelector("#viewer").addEventListener("click", onMouseClick);
+
 function onMouseClick(e) {
     var x = e.clientX,
         y = e.clientY;
-    console.log(x)
     var res = viewer.impl.castRay(x - document.querySelector("#left").clientWidth, y, true);
 
     if (res) {
-        if (annotationMode) {
-            pos = viewer.impl.clientToWorld(e.clientX - document.querySelector("#left").clientWidth, e.clientY);
-            console.log(pos.point)
-            onItemClick(pos.point);
-        }
+        pos = viewer.impl.clientToWorld(e.clientX - document.querySelector("#left").clientWidth, e.clientY);
+        console.log(pos.point)
+        onItemClick(pos.point);
     }
 }
 
@@ -127,45 +126,6 @@ function update() {
 }
 
 function onItemClick(item) {
-
-    let annotationNameEl = document.querySelector("#annotation-name-editText");
-    let annotationTextEl = document.querySelector("#annotation-text-editText");
-    let annotationName = "name";
-    let annotationText = "text";
-
-    console.log(annotationNameEl)
-    console.log(annotationNameEl.value)
-
-    if (annotationNameEl) {
-        annotationName = annotationNameEl.value ? annotationNameEl.value : "name";
-    }
-    if (annotationTextEl) {
-        annotationText = annotationTextEl.value ? annotationTextEl.value : "text";
-    }
-
-    this.annotations.push(
-        {
-            x: item.x,
-            y: item.y,
-            z: item.z,
-            name: annotationName,
-            text: annotationText
-        }
-    )
-    displayAnnotation(this.annotations.length - 1);
-    let i = this.annotations.length - 1;
-    let p2 = new THREE.Vector3(this.annotations[i].x, this.annotations[i].y, this.annotations[i].z);
-    if (!viewer.impl.camera.position.equals(p2)) {
-        p2.project(viewer.impl.camera);
-        clientPos = viewer.impl.worldToClient(item, viewer.impl.camera);
-        p2.x = clientPos.x;
-        console.log(p2.x)
-        p2.y = clientPos.y;
-        document.querySelector('#annotation-' + i).style.left = p2.x + "px";
-        document.querySelector('#annotation-' + i).style.top = p2.y + "px";
-        document.querySelector('#annotation-index-' + i).style.left = p2.x - 15 + "px";
-        document.querySelector('#annotation-index-' + i).style.top = p2.y - 15 + "px";
-    }
 }
 
 
@@ -213,13 +173,10 @@ function displayAnnotation(index) {
     annotation.id = 'annotation-' + index;
     annotation.classList.add('annotation', 'hidden');
     document.querySelector('#viewer').appendChild(annotation);
-    const annotationName = document.createElement('h4');
-    annotationName.innerText = this.annotations[index].name;
-    annotationName.id = 'annotation-name-' + index;
-    annotation.appendChild(annotationName);
     const annotationText = document.createElement('p');
     annotationText.id = 'annotation-text-' + index;
     annotationText.innerText = this.annotations[index].text;
+    annotationText.style.fontSize = "15px";
     annotation.appendChild(annotationText);
     const annotationNumber = document.createElement('div');
     annotationNumber.id = 'annotation-index-' + index;
@@ -232,7 +189,6 @@ function displayAnnotation(index) {
 function hideAnnotation(index) {
     const annotation = document.querySelector('#annotation-' + index);
     const hidden = annotation.classList.contains('hidden');
-    document.querySelector('#annotation-name-' + index).innerHTML = hidden ? this.annotations[index].name : '';
     document.querySelector('#annotation-text-' + index).innerHTML = hidden ? this.annotations[index].text : '';
     if (hidden) {
         annotation.classList.remove('hidden');
