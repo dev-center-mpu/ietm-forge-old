@@ -443,6 +443,10 @@ var ietm = {
             NOP_VIEWER.hide(4);
             NOP_VIEWER.fitToView(0);
         },
+        annotations: [
+            { point: new THREE.Vector3(100, 0, 0), text: 'Text1', hide: true },
+            { point: new THREE.Vector3(-100, 0, 100), text: 'Text2', hide: false },
+        ],
         animation: {
             loop: true,
             autoPlay: true,
@@ -450,74 +454,97 @@ var ietm = {
             frames: [
                 {
                     at: 0,
-                    data: [
+                    properties: [
                         {
-                            nodeId: 35,
-                            transform: {
+                            for: 'node', nodeId: [35],
+                            params: {
                                 rotation: new THREE.Euler(0, THREE.Math.degToRad(360 * 0), THREE.Math.degToRad(0)),
-                                position: undefined,
-                                scale: undefined
                             }
                         },
                         {
-                            nodeId: 76,
-                            transform: {
+                            for: 'node', nodeId: [76],
+                            params: {
                                 rotation: new THREE.Euler(0, THREE.Math.degToRad(0), 0),
-                                position: undefined,
-                                scale: undefined
                             }
                         },
                         {
-                            nodeId: 66,
-                            transform: {
+                            for: 'node', nodeId: [66],
+                            params: {
                                 rotation: new THREE.Euler(0, THREE.Math.degToRad(0), 0),
-                                position: undefined,
-                                scale: undefined
                             }
                         },
                         {
-                            nodeId: 164,
-                            transform: {
-                                rotation: undefined,
+                            for: 'node', nodeId: [164],
+                            params: {
                                 position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
+                            }
+                        },
+                        {
+                            for: 'annotation', annotationId: 1,
+                            params: {
+                                opacity: 1
+                            }
+                        },
+                    ]
+                },
+                {
+                    at: 1000 * 5,
+                    properties: [
+                        {
+                            for: 'annotation', annotationId: 1,
+                            params: {
+                                opacity: 0
+                            }
+                        }
+                    ]
+                },
+                {
+                    at: 1000 * 10,
+                    properties: [
+                        {
+                            for: 'annotation', annotationId: 2,
+                            params: {
+                                opacity: 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    at: 1000 * 15,
+                    properties: [
+                        {
+                            for: 'annotation', annotationId: 2,
+                            params: {
+                                opacity: 0
                             }
                         }
                     ]
                 },
                 {
                     at: 1000 * 60,
-                    data: [
+                    properties: [
                         {
-                            nodeId: 35,
-                            transform: {
+                            for: 'node', nodeId: [35],
+                            params: {
                                 rotation: new THREE.Euler(0, THREE.Math.degToRad(360 * 5), THREE.Math.degToRad(0)),
-                                position: undefined,
-                                scale: undefined
                             }
                         },
                         {
-                            nodeId: 76,
-                            transform: {
+                            for: 'node', nodeId: [76],
+                            params: {
                                 rotation: new THREE.Euler(0, THREE.Math.degToRad(-360 * 20), THREE.Math.degToRad(0)),
-                                position: undefined,
-                                scale: undefined
                             }
                         },
                         {
-                            nodeId: 66,
-                            transform: {
+                            for: 'node', nodeId: [66],
+                            params: {
                                 rotation: new THREE.Euler(0, THREE.Math.degToRad(360 * 5), 0),
-                                position: undefined,
-                                scale: undefined
                             }
                         },
                         {
-                            nodeId: 164,
-                            transform: {
-                                rotation: undefined,
+                            for: 'node', nodeId: [164],
+                            params: {
                                 position: new THREE.Vector3(0, -100, 0),
-                                scale: undefined
                             }
                         }
                     ]
