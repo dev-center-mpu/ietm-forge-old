@@ -33,6 +33,11 @@ for (const item of document.querySelectorAll(".treeItem")) {
                 loadAnimation(page.animation);
                 if (page.animation.autoPlay) playButton.onclick()
             }
+            if (page.annotations) {
+                for (let a of page.annotations) {
+                    addAnnotation(a.point.x, a.point.y, a.point.z, '', a.text, a.id, a.hide);
+                }
+            }
         } else console.error('Paragraph not found. Check ietm.js')
     }
 }
