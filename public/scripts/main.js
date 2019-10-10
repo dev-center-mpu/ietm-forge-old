@@ -126,20 +126,35 @@ function update() {
 }
 
 function onItemClick(item) {
+
 }
 
+function setAnotationPosition(id) {
+    let p2 = new THREE.Vector3(this.annotations[id].x, this.annotations[id].y, this.annotations[id].z);
+    if (!viewer.impl.camera.position.equals(p2)) {
+        // p2.project(viewer.impl.camera);
+        clientPos = viewer.impl.worldToClient(p2, viewer.impl.camera);
+        p2.x = clientPos.x;
 
-function addAnnotation(x, y, z, annotationName, annotationText, id, flag) {
+        p2.y = clientPos.y;
+        document.querySelector('#annotation-' + id).style.left = p2.x + "px";
+        document.querySelector('#annotation-' + id).style.top = p2.y + "px";
+        document.querySelector('#annotation-index-' + id).style.left = p2.x - 15 + "px";
+        document.querySelector('#annotation-index-' + id).style.top = p2.y - 15 + "px";
+    }
+}
+
+function addAnnotation(x, y, z, annotationText, id, flag) {
 
     this.annotations[id] = {
         x: x,
         y: y,
         z: z,
-        name: annotationName,
         text: annotationText
     }
 
     displayAnnotation(id);
+    setAnotationPosition(id);
 
     let annotationNumber = document.querySelector("#annotation-index-" + id);
     annotationNumber.dispatchEvent(new Event("click"));
@@ -149,13 +164,10 @@ function addAnnotation(x, y, z, annotationName, annotationText, id, flag) {
 }
 
 function setAnnotationOpacity(id, opacity) {
-    if (opacity == 0) {
-        document.querySelector("#annotation-index-" + id).style.opacity = "0";
-    } else {
-        document.querySelector("#annotation-index-" + id).style.opacity = "1";
-    }
-    let style = document.querySelector('#annotation-' + id).style;
-    style.opacity = opacity;
+    let idStyle = document.querySelector("#annotation-index-" + id).style;
+    let anStyle = document.querySelector('#annotation-' + id).style;
+    idStyle.opacity = opacity;
+    anStyle.opacity = opacity;
 }
 
 function annotationsInit() {
