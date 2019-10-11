@@ -1,10 +1,14 @@
 var master;
 var info = document.querySelector("#questionInfo");
 var winId = -1;
-var right = 0;
-var wrong = 0;
+var right;
+var wrong;
 
 function checkQuestionRadio(questionId, winId) {
+    if (questionId == 1) {
+        right = 0;
+        wrong = 0;
+    }
     master = $('#test').data('master');
     let info = document.querySelector("#questionInfo");
     if (document.querySelector("#opt" + questionId + "_" + winId).checked) {
@@ -58,9 +62,5 @@ function questionViewerClick() {
 }
 
 function restartTest() {
-    right = 0;
-    wrong = 0;
-    document.querySelector("#rightAns").innerText = right;
-    document.querySelector("#wrongAns").innerText = wrong;
     master.toPage(0);
 }
