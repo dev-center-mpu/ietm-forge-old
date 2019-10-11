@@ -1,4 +1,3 @@
-
 var viewer;
 var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE5LTEwLTA3LTA3LTU3LTIyLWQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlL3JlZHVjZXI1LmYzZA'
 var documentId2 = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE5LTEwLTAxLTE2LTI5LTU0LWQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlL3JlZHVjZXIyLmYzZA';
@@ -12,8 +11,8 @@ var annotations = {};
 var options = {
     env: 'AutodeskProduction',
     accessToken: '',
-    api: 'derivativeV2'    // for models uploaded to EMEA change this option to 'derivativeV2_EU'
-};
+    api: 'derivativeV2', // for models uploaded to EMEA change this option to 'derivativeV2_EU'
+}
 
 $.get('/auth', (data) => {
     options.accessToken = JSON.parse(data).access_token;
@@ -37,7 +36,7 @@ function onDocumentLoadSuccess(doc) {
     // Create Viewer instance
     var viewerDiv = document.getElementById('viewer');
     var config = {
-        extensions: initGeom.extensions() || []
+        extensions: []
     };
     viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv, config);
 
@@ -66,6 +65,18 @@ function onDocumentLoadFailure(viewerErrorCode) {
  * Invoked after the model's SVF has been initially loaded.
  * It may trigger before any geometry has been downloaded and displayed on-screen.
  */
+function onLoadModelSuccess(model) {
+    console.log('onLoadModelSuccess()!');
+    console.log('Validate model loaded: ' + (viewer.model === model));
+    console.log(model);
+}
+/**
+ * viewer.loadModel() failure callback.
+ * Invoked when there's an error fetching the SVF file.
+ */
+function onLoadModelError(viewerErrorCode) {
+    console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
+}
 
 function arraysEqual(a, b) {
     if (a === b) return true;
@@ -83,6 +94,8 @@ function arraysEqual(a, b) {
     return true;
 }
 
+
+//Annotations
 document.querySelector("#viewer").addEventListener("click", onMouseClick);
 
 function onMouseClick(e) {
@@ -94,14 +107,6 @@ function onMouseClick(e) {
         pos = viewer.impl.clientToWorld(e.clientX - document.querySelector("#left").clientWidth, e.clientY);
         console.log(pos.point)
         onItemClick(pos.point);
-    }
-}
-
-document.addEventListener('mousemove', onMouseUpdate, false);
-
-function onMouseUpdate(e) {
-    if (isStarted) {
-        update();
     }
 }
 
@@ -226,7 +231,7 @@ function changeVisibilityOfAnnotations() {
         document.querySelector('#annotation-index-' + id).style.zIndex = this.getClosestAnnotation() == id ? 2 : 1;
     }
 }
-
+/////////////////////////
 
 function onLoadModelSuccess(model) {
     console.log('onLoadModelSuccess()!');
@@ -652,3 +657,46 @@ function revertChangesAfterAnimaton() {
 function lerp(start, end, amt) {
     return (1 - amt) * start + amt * end
 }
+
+
+//QUIZ////////////////////////////////
+var master = $('#quiz').data('master');
+var info = document.querySelector("#questionInfo");
+var winId = -1;
+function checkQuestionRadio(questionId, winId) {
+    let info = document.querySelector("#questionInfo");
+    if (document.querySelector("#opt" + questionId + "_" + winId).checked) {
+        info.style.display = "none";
+        if (questionId == 2) {
+            checkQuestionViewer(4);
+        }
+        master.next();
+    } else {
+        info.style.display = "block";
+        info.style.color = "red";
+        info.innerText = "Ответ неверный";
+    }
+}
+
+function checkQuestionViewer(id) {
+    winId = id;
+    document.querySelector("#viewer").addEventListener("click", questionViewerClick);
+}
+
+
+function questionViewerClick() {
+    console.log(winId + "  " + viewer.getSelection());
+    if (winId == viewer.getSelection()) {
+        winId = -1;
+        info.style.display = "block";
+        info.style.color = "green";
+        info.innerText = "Поздравляем, вы успешно прошли тест!!!!";
+        document.querySelector("#viewer").removeEventListener("click", questionViewerClick);
+    } else {
+        info.style.display = "block";
+        info.style.color = "red";
+        info.innerText = "Вы выбрали не ту деталь";
+
+    }
+}
+/////////////////////////////////////
