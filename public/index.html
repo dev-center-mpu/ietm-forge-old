@@ -88,10 +88,10 @@
       padding: 16px;
       width: 200px;
       color: #fff;
-      border-radius: .5em;
+      border-radius: 0.5em;
       font-size: 12px;
       line-height: 1.2;
-      transition: opacity .5s;
+      transition: opacity 0.5s;
       background-color: rgba(0, 0, 0, 0.8);
       opacity: 1;
     }
@@ -134,26 +134,21 @@
     }
 
     li {
-      font-size: 20px;
-      font-weight: 500;
-    }
-
-    .li-hover:hover {
-      background: #f5f5f5;
+      font-size: 15px;
     }
 
     .li-hover {
-      border: 1px solid black;
       margin-top: 5px;
-      border-radius: 5px;
-      text-align: center;
       margin-right: 20px;
     }
+
+    .li-hover:hover {
+      opacity: 0.7;
+    }
+
     .labels:hover {
       opacity: 0.7;
     }
-  </style>
-
   </style>
 </head>
 
@@ -163,84 +158,36 @@
       data-role="panel"
       data-title-caption="Дерево"
       data-title-icon="<span class='mif-apps'></span>"
-      
       data-collapsible="true"
       data-draggable="false"
     >
-      <ul data-role="treeview" id="treeId">
-        <li data-caption="Тех. обслуживание" class="labels"></li>
-        <li data-collapsed="true">
-          <span class="labels" onclick="onNodeToggle('item2')"
-            >Каталог деталей</span
-          >
-          <ul class="interaction-ul">
-            <li data-caption="Корпус" class="li-hover" id="item_2_1"></li>
-            <li data-caption="Шестерня" class="li-hover" id="item_2_2"></li>
-            <li data-caption="Колесо" class="li-hover" id="item_2_3"></li>
-            <li data-caption="Двигатель" class="li-hover" id="item_2_4"></li>
-            <li data-caption="Выходной вал" class="li-hover" id="item_2_5"></li>
-            <li data-caption="Подшипник" class="li-hover" id="item_2_6"></li>
-          </ul>
-        </li>
-        <li data-collapsed="true">
-          <span class="labels" onclick="onNodeToggle('item3')"
-            >Принцип работы</span
-          >
-          <ul class="interaction-ul">
-            <li data-caption="Корпус" class="li-hover" id="item_3_1"></li>
-          </ul>
-        </li>
-        <li data-collapsed="true">
-          <span class="labels" onclick="onNodeToggle('item4')"
-            >Руководство по разработке</span
-          >
-          <ul class="interaction-ul">
-            <li
-              data-caption="Разборка корпуса"
-              class="li-hover"
-              id="item_4_1"
-            ></li>
-            <li
-              data-caption="Замена шестерней"
-              class="li-hover"
-              id="item_4_2"
-            ></li>
-          </ul>
-        </li>
-        <li data-collapsed="true">
-          <span class="labels" onclick="onNodeToggle('item5')"
-            >Руководство по эксплуатации</span
-          >
-          <ul class="interaction-ul">
-            <li
-              data-caption="Смазывание компонентов"
-              class="li-hover"
-              id="item_5_1"
-            ></li>
-          </ul>
-        </li>
-      </ul>
+      <ul data-role="treeview" id="treeId"></ul>
     </div>
   </div>
-  <div id="viewer">
-    <div id="player">
-      <div id="playerControls">
-        <span id="playBtn" class="text-primary">▶</span>
-        <span id="pauseBtn" class="text-primary" style="display: none">❙❙</span>
-        <input
-          type="range"
-          value="0"
-          step="0.01"
-          class="custom-range"
-          id="customRange1"
-        />
-        <span id="time"> 0:00 / 0:00</span>
-      </div>
-    </div>
-  </div>
+  <!-- <div id="viewer">
+        <div id="player">
+            <div id="playerControls">
+                <span id="playBtn" class="text-primary">▶</span>
+                <span id="pauseBtn" class="text-primary" style="display: none">❙❙</span>
+                <input type="range" value="0" step="0.01" class="custom-range" id="customRange1" />
+                <span id="time"> 0:00 / 0:00</span>
+            </div>
+        </div>
+    </div> -->
   <div id="right">
     <h2>Заголовок</h2>
-    <p>Редуктор это круто</p>
+    <div
+      data-role="master"
+      data-control-prev="<span class='mif-arrow-left'></span>"
+      data-control-next="<span class='mif-arrow-right'></span>"
+      data-cls-master="ra-master drop-shadow"
+      data-control-title="$1 of $2"
+      data-cls-control-title="fg-green h1"
+    >
+      <div class="page">Page 1</div>
+      <div class="page">Page 2</div>
+      <div class="page">Page 3</div>
+    </div>
   </div>
 
   <!-- The Viewer will be instantiated here -->
@@ -268,18 +215,98 @@
   <!-- <script src="scripts/extensions/AnnotationToolbarExt.js"></script> -->
   <script src="scripts/main.js"></script>
   <script>
-    elements = document.querySelectorAll(".node-toggle");
     elements2 = document.querySelectorAll(".interaction-ul");
     elements3 = document.querySelectorAll(".tree-node");
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Уведомление при открытии/закрытии основной владки
-    function nodeNotification(name, display) {
-      if (display == "none") {
-        console.log(name + " is open");
-      } else {
-        console.log(name + " is closed");
+
+    var defaultData = [
+      {
+        text: "Каталог деталей",
+        id: "item1",
+
+        nodes: [
+          {
+            text: "Корпус",
+            id: "item1_1"
+          },
+          {
+            text: "Колесо",
+            id: "item1_2",
+            nodes: [
+              {
+                text: "Колесоdd",
+                id: "item1_2_1"
+              },
+              {
+                text: "Колесdddо",
+                id: "item1_2_1_2"
+              }
+            ]
+          },
+          {
+            text: "Шестерня",
+            id: "item1_3"
+          },
+          {
+            text: "Двигатель",
+            id: "item1_4"
+          },
+          {
+            text: "Выходной вал",
+            id: "item1_5"
+          },
+          {
+            text: "Подшипник",
+            id: "item1_6"
+          }
+        ]
+      },
+      {
+        text: "Принцип работы",
+        id: "item2",
+        nodes: [
+          {
+            text: "Корпус",
+            id: "item2_1"
+          }
+        ]
+      },
+      {
+        text: "Руководство по разработке",
+        id: "item3",
+        nodes: [
+          {
+            text: "Разборка корпуса",
+            id: "item3_1"
+          },
+          {
+            text: "Замена шестерней",
+            id: "item3_2"
+          }
+        ]
+      },
+      {
+        text: "Руководство по эксплуатации",
+        id: "item4",
+        nodes: [
+          {
+            text: "Смазывание компонентов",
+            id: "item4_1"
+          }
+        ]
+      }
+    ];
+    //Для закрытия всех li при загрузке
+    function allNodesClose() {
+      let arr = document.querySelectorAll("li");
+
+      for (let j = 0; j < arr.length; j++) {
+        $("#treeId")
+          .data("treeview")
+          .toggleNode(arr[j]);
+      }
+      let elements = document.querySelectorAll(".node-toggle");
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].onclick = branchOpen;
       }
     }
     // Ховеры на элементы вкладок
@@ -292,68 +319,77 @@
       }
     );
 
-    // Запомнинание и оповещение о выделенном элементе и прошлом 
+    let lastItem;
+    // Запомнинание и оповещение о выделенном элементе и прошлом
     function onTreeItemCLick() {
       console.log("--------------");
-      console.log(this.childNodes[0].parentElement.id + " is selected");
+      console.log(this.id + " is selected");
+
       if (lastItem) {
-        lastItem.style.backgroundColor = "white";
         lastItem.style.color = "black";
-        lastItem.childNodes[0].style.color = "black";
-        console.log(
-          lastItem.childNodes[0].parentElement.id + " was unselected"
-        );
+        lastItem.style.fontWeight = "normal";
+        console.log(lastItem.id + " was unselected");
       }
-      this.style.backgroundColor = "#428bca";
-      this.style.color = "white";
-      this.childNodes[0].style.color = "white";
+
+      this.style.color = "blue";
+      this.style.fontWeight = "bold";
       lastItem = this;
     }
-     /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Уведомление при открытии/закрытии основной владки
+    function branchOpen() {
+      console.log("-------------");
+      console.log(this.offsetParent.id);
+    }
 
-    function onNodeToggle(name, bool) {
-      if (bool) {
-        nodeNotification(name, elements2[name[4] - 2].style.display);
-      } else {
-        nodeNotification(name, elements2[name[4] - 2].style.display);
-        switch (name) {
-          case "item2":
-            $("#treeId")
-              .data("treeview")
-              .toggleNode(elements3[0]);
-            break;
-          case "item3":
-            $("#treeId")
-              .data("treeview")
-              .toggleNode(elements3[1]);
-            break;
-          case "item4":
-            $("#treeId")
-              .data("treeview")
-              .toggleNode(elements3[2]);
-            break;
-          case "item5":
-            $("#treeId")
-              .data("treeview")
-              .toggleNode(elements3[3]);
-            break;
-          default:
-            break;
+    treeFormer();
+
+    function treeFormer() {
+      for (let i = 0; i < defaultData.length; i++) {
+        let el = $("#treeId")
+          .data("treeview")
+          .addTo(null, {
+            caption: defaultData[i].text,
+            icon: "https://image.flaticon.com/icons/svg/2181/2181596.svg"
+          });
+        el[0].id = defaultData[i].id;
+        el[0].childNodes[1].classList.add("li-hover");
+        el[0].childNodes[1].ondblclick = branchOpen;
+        el[0].childNodes[1].id = defaultData[i].id;
+        branchFormer(defaultData[i], el);
+      }
+      allNodesClose();
+    }
+
+    function branchFormer(obj, parent) {
+      if (obj.nodes != undefined) {
+        for (let i = 0; i < obj.nodes.length; i++) {
+          let icon;
+          if (obj.nodes[i].nodes != undefined) {
+            icon = "https://image.flaticon.com/icons/svg/2181/2181596.svg";
+          } else {
+            icon = "https://image.flaticon.com/icons/svg/1063/1063388.svg";
+          }
+
+          let child = $("#treeId")
+            .data("treeview")
+            .addTo(parent, {
+              caption: obj.nodes[i].text,
+              icon: icon
+            });
+
+          child[0].id = obj.nodes[i].id;
+          child[0].lastChild.classList.add("li-hover");
+          child[0].lastChild.id = obj.nodes[i].id;
+          branchFormer(obj.nodes[i], child);
         }
       }
+      return;
     }
 
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].id = "item" + (i + 2);
-      elements[i].onclick = onNodeClick;
-    }
-    function onNodeClick() {
-      onNodeToggle(this.id, true);
+    function NodeToggle(name, bool) {
+      nodeNotification(name, elements2[name[4] - 2].style.display);
     }
 
-    let lastItem;
     for (const item of document.querySelectorAll(".li-hover")) {
       item.onclick = onTreeItemCLick;
     }
