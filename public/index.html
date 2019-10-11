@@ -113,6 +113,17 @@
     .annotation-button {
       background: red;
     }
+
+    .master .controls {
+      display: none;
+    }
+
+    .question {
+      font-size: 18px;
+      margin-bottom: 18px;
+    }
+
+    .questionNum {}
   </style>
 
   </style>
@@ -185,93 +196,82 @@
     <p>Редуктор это круто</p>
     <section id="1">
       <h2>Тест</h2>
-      <div id="questions">
-        <div id="final" style="display:none">
-          <p style="color:green"><b>Поздравляем с успешным прохождением теста!</b></p>
-        </div>
+      <div id="quizDiv">
     </section>
     <div data-role="master" data-effect="slide" id="quiz">
       <i>
         <p id="questionInfo" style="display:none">Ответ верный</p>
       </i>
       <div class="page">
-        <div id="q1">
-          <p>Вопрос 1</p>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_1">
-            <label class="form-check-label" for="q1_rad">
-              Вариант 1
-            </label>
+        <div id="q1" class="card">
+          <p class="card-header questionNum"><b>Вопрос №1</b></p>
+          <div class="card-content p-2">
+            <p class="question">Как называется зубчатое колесо передачи с меньшим числом зубьев?</p>
+            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_1" data-role="radio" data-style="2"
+              data-caption="Шестерня"> <br>
+            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_2" data-role="radio" data-style="2"
+              data-caption="Колесо"> <br>
+            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_3" data-role="radio" data-style="2"
+              data-caption="Подшипник"> <br>
+            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_4" data-role="radio" data-style="2"
+              data-caption="Вал"> <br>
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_2">
-            <label class="form-check-label" for="q1_rad">
-              Вариант 2
-            </label>
+          <div class="card-footer">
+            <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(1,1)" id="btnQ1">Подтвердить</button>
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_3">
-            <label class="form-check-label" for="q1_rad">
-              Вариант 3
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_4">
-            <label class="form-check-label" for="q1_rad">
-              Вариант 4
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_5">
-            <label class=" form-check-label" for="q1_rad">
-              Вариант 5
-            </label>
-          </div>
-          <br>
-          <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(1,1)" id="btnQ1">Подтвердить</button>
         </div>
       </div>
       <div class="page">
-        <div id="q2">
-          <p>Вопрос 2</p>
-          <img src="https://46.img.avito.st/208x156/5178365446.jpg">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_1" value="opt2_1">
-            <label class="form-check-label" for="q2_rad">
-              Вариант 1
-            </label>
+        <div id="q2" class="card">
+          <p class="card-header"><b>Вопрос №2</b></p>
+          <img src="https://www.alliedcaster.com/wp-content/uploads/2018/05/Ball_Bearing.png"
+            style="float:right; margin-right:20%" height="250px" />
+          <div class="card-content p-2">
+            <p class="question">
+              Какой подшипник показан на картинке?
+            </p>
+            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_1" data-role="radio" data-style="2"
+              data-caption="Вариант 1"> <br>
+            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_2" data-role="radio" data-style="2"
+              data-caption="Вариант 2"> <br>
+            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_3" data-role="radio" data-style="2"
+              data-caption="Вариант 3"> <br>
+            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_4" data-role="radio" data-style="2"
+              data-caption="Вариант 4"> <br>
+            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_5" data-role="radio" data-style="2"
+              data-caption="Вариант 5">
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_2" value="opt2_2">
-            <label class="form-check-label" for="q2_rad">
-              Вариант 2
-            </label>
+          <div class="card-footer">
+            <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(2,2)" id="btnQ1">Подтвердить</button>
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_3" value="opt2_3">
-            <label class="form-check-label" for="q2_rad">
-              Вариант 3
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_4" value="opt2_4">
-            <label class="form-check-label" for="q2_rad">
-              Вариант 4
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_5" value="opt2_5">
-            <label class="form-check-label" for="q2_rad">
-              Вариант 5
-            </label>
-          </div>
-          <br>
-          <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(2,2)" id="btnQ1">Подтвердить</button>
         </div>
       </div>
       <div class="page">
-        <div id="q1">
-          <p>В окне вьювера выберите верхнюю часть корпуса</p>
+        <div id="q3" class="card">
+          <p class="card-header"><b>Вопрос №3</b></p>
+          <div class="card-content p-2">
+            <p class="question">В окне вьювера выберите верхнюю часть корпуса</p>
+          </div>
+        </div>
+      </div>
+      <div class="page">
+        <div class="social-box" id="final">
+          <div class="header bg-cyan fg-white">
+            <div class="title" id="quizResult"></div>
+          </div>
+          <ul class="skills">
+            <li>
+              <div class="text-bold" id="rightAns"></div>
+              <div>Правильные ответы</div>
+            </li>
+            <li>
+              <button class="btn btn-outline-primary" onclick="restartQuiz()" id="btnQ1">Пройти тест снова</button>
+            </li>
+            <li>
+              <div class="text-bold" id="wrongAns"></div>
+              <div>Неправильные ответы</div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

@@ -840,40 +840,54 @@ function lerp(start, end, amt) {
 var master = $('#quiz').data('master');
 var info = document.querySelector("#questionInfo");
 var winId = -1;
+var right = 0;
+var wrong = 0;
 function checkQuestionRadio(questionId, winId) {
     let info = document.querySelector("#questionInfo");
     if (document.querySelector("#opt" + questionId + "_" + winId).checked) {
         info.style.display = "none";
-        if (questionId == 2) {
-            checkQuestionViewer(4);
-        }
-        master.next();
+        right++;
     } else {
-        info.style.display = "block";
-        info.style.color = "red";
-        info.innerText = "Ответ неверный";
+        wrong++;
     }
+    if (questionId == 2) {
+        checkQuestionViewer(4);
+    }
+    master.next();
 }
 
 function checkQuestionViewer(id) {
     winId = id;
     document.querySelector("#viewer").addEventListener("click", questionViewerClick);
+    console.log("add")
 }
 
 
 function questionViewerClick() {
-    console.log(winId + "  " + viewer.getSelection());
     if (winId == viewer.getSelection()) {
+        right++;
         winId = -1;
-        info.style.display = "block";
-        info.style.color = "green";
-        info.innerText = "Поздравляем, вы успешно прошли тест!!!!";
-        document.querySelector("#viewer").removeEventListener("click", questionViewerClick);
     } else {
-        info.style.display = "block";
-        info.style.color = "red";
-        info.innerText = "Вы выбрали не ту деталь";
-
+        wrong++;
     }
+    document.querySelector("#viewer").removeEventListener("click", questionViewerClick);
+    master.next();
+    document.querySelector("#rightAns").innerText = right;
+    document.querySelector("#wrongAns").innerText = wrong;
+    if (wrong == 0) {
+        document.querySelector("#quizResult").innerText = "Поздравляем, вы успешно прошли тест!";
+    } else if (right == 0) {
+        document.querySelector("#quizResult").innerText = "Вы ответили неправильно на все вопросы, вам следует пройти тест еще раз!"
+    } else {
+        document.querySelector("#quizResult").innerText = "Вы допустили несколько ошибок в тесте, рекомендуем поройти его еще раз!"
+    }
+}
+
+function restartQuiz() {
+    right = 0;
+    wrong = 0;
+    document.querySelector("#rightAns").innerText = right;
+    document.querySelector("#wrongAns").innerText = wrong;
+    master.toPage(0);
 }
 /////////////////////////////////////
