@@ -1,9 +1,11 @@
-var master = $('#test').data('master');
+var master;
 var info = document.querySelector("#questionInfo");
 var winId = -1;
 var right = 0;
 var wrong = 0;
+
 function checkQuestionRadio(questionId, winId) {
+    master = $('#test').data('master');
     let info = document.querySelector("#questionInfo");
     if (document.querySelector("#opt" + questionId + "_" + winId).checked) {
         info.style.display = "none";
@@ -30,6 +32,7 @@ function checkQuestionViewer(id) {
 
 
 function questionViewerClick() {
+
     if (viewer.getSelection().length > 0) {
         if (winId == viewer.getSelection()) {
             right++;

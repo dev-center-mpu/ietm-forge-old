@@ -203,7 +203,7 @@ var ietm = {
                             for: 'camera',
                             params: {
                                 target: new THREE.Vector3(-30, 60, -30),
-                                position: new THREE.Vector3(666 * 0.95, 666 * 0.95, 666 *  0.95),
+                                position: new THREE.Vector3(666 * 0.95, 666 * 0.95, 666 * 0.95),
                                 up: new THREE.Vector3(-0.365, -0.415, 0.833)
                             }
                         },
@@ -224,7 +224,7 @@ var ietm = {
                             }
                         },
                         {
-                            for: 'node',nodeId: [120, 126, 130, 134, 138, 142, 146, 150], // шайбы болтов верхней крышки вала
+                            for: 'node', nodeId: [120, 126, 130, 134, 138, 142, 146, 150], // шайбы болтов верхней крышки вала
                             params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 390, 0),
@@ -384,7 +384,9 @@ var ietm = {
         },
         content: `
         <h2>Корпус</h2>
-        <p>Описание детали</p>
+        <p>Корпус предназначен для размещения в нем деталей узла, для обеспечения смазки передач и подшипников,
+        а также для предохранения деталей от загрязнения и для восприятия усилий, возникающих при работе.</p>
+        <p> Он должен быть достаточно прочным и жестким, так как при деформациях корпуса возможен перекос валов,который приводит к неравномерности распределения нагрузки.</p>
         `
     },
     'item2_2': {
@@ -396,7 +398,7 @@ var ietm = {
         content: `
         <h2 style="margin-bottom: 16px">Зубчатая передача</h2>
         <p>В основе одноступенчатого редуктора лежит зубчатая передача, состоящая из пары зубчатых колес.</p>
-        <p>Меньшее из них называют <a href="#" class="highlightLink" nodeId="76">шестерней</a>, а большее —  <a href="#" class="highlightLink" nodeId="35">шестерней</a>.</p>
+        <p>Меньшее из них называют <a href="#" class="highlightLink" nodeId="76">шестерней</a>, а большее —  <a href="#" class="highlightLink" nodeId="35">колесом</a>.</p>
         <p>Принцип работы передачи основан на зацеплении зубчатых колес, когда зубья одного из них входят во впадины другого.</p>
         <p>Зубчатые передачи служат для передачи вращательного движения с одного вала на другой, и изменения частоты вращения.</p>
         <p>В двухступенчатых редукторах применяются уже три шестеренки с промежуточным валом.</p>
@@ -410,7 +412,13 @@ var ietm = {
         },
         content: `
         <h2>Двигатель</h2>
-        <p>Описание детали</p>
+        <p>Электрический двигатель -  машина, с помощью которой электрическая энергия преобразуется 
+        в механическую, для приведения в движение различных механизмов. 
+        Электродвигатель является основным элементом электропривода.</p>
+        <p>По виду создаваемого механического движения электродвигатели бывают вращающиеся, 
+        линейные и др. Под электродвигателем чаще всего 
+        подразумевается вращающийся электродвигатель, так как он получил наибольшее применение.</p>
+        
         `
     },
     'item2_4': {
@@ -433,7 +441,16 @@ var ietm = {
         },
         content: `
         <h2>Подшипники</h2>
-        <p>Описание детали</p>
+        <p>Подшипники - это технические устройства, являющиеся частью опор вращающихся осей и валов.
+        Они воспринимают радиальные и осевые нагрузки, приложенные к валу или оси, и передают их на раму, 
+        корпус или иные части конструкции. При этом они должны также удерживать вал в пространстве, обеспечивать вращение,
+        качание или линейное перемещение с минимальными энергопотерями. От качества подшипников в значительной мере зависит коэффициент полезного действия,
+        работоспособность и долговечность машины.</p>
+        <p>По виду трения различают:</p>
+        <ol>
+        <li>Подшипники скольжения, в которых опорная поверхность оси или вала скользит по рабочей поверхности подшипника.</li>
+        <li>Подшипники качения, в которых используется трение качения благодаря установке шариков или роликов между подвижным и неподвижным кольцами подшипника.</li>
+        </ol>
         `
     },
     'item3_1': {
@@ -582,6 +599,142 @@ var ietm = {
         content: `
         <h2>Как работает редуктор?</h2>
         <p>Описание детали</p>
+        `
+    },
+    'item6': {
+        init: function () {
+            NOP_VIEWER.isolate(0);
+            NOP_VIEWER.fitToView(0);
+            console.log('item6 loaded')
+        },
+        content: `
+        <h2>Тест</h2>
+      <div data-role="master" data-effect="slide" id="test">
+        <i>
+          <p id="questionInfo" style="display:none">Ответ верный</p>
+        </i>
+        <div class="page">
+          <div id="q1" class="card">
+            <p class="card-header questionNum"><b>Вопрос №1</b></p>
+            <div class="card-content p-2">
+              <p class="question">Как называется зубчатое колесо с меньшим числом зубьев?</p>
+              <input class="form-check-input" type="radio" name="q1_rad" id="opt1_1" data-role="radio" data-style="2"
+                data-caption="Подшипник"> <br>
+              <input class="form-check-input" type="radio" name="q1_rad" id="opt1_2" data-role="radio" data-style="2"
+                data-caption="Колесо"> <br>
+              <input class="form-check-input" type="radio" name="q1_rad" id="opt1_3" data-role="radio" data-style="2"
+                data-caption="Шестерня"> <br>
+              <input class="form-check-input" type="radio" name="q1_rad" id="opt1_4" data-role="radio" data-style="2"
+                data-caption="Вал"> <br>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(1,3)">Подтвердить</button>
+            </div>
+          </div>
+        </div>
+        <div class="page">
+          <div id="q2" class="card">
+            <p class="card-header"><b>Вопрос №2</b></p>
+            <div class="card-content p-2">
+              <img style="float:right; height:200px; margin-bottom:10px; margin-right:50px"
+                src="https://www.alliedcaster.com/wp-content/uploads/2018/05/Ball_Bearing.png" />
+              <p class="question">
+                Подшипник какого типа показан на картинке?
+              </p>
+              <input class="form-check-input" type="radio" name="q2_rad" id="opt2_1" data-role="radio" data-style="2"
+                data-caption="Качения"><br>
+              <input class="form-check-input" type="radio" name="q2_rad" id="opt2_2" data-role="radio" data-style="2"
+                data-caption="Скольжения"><br>
+            </div>
+            <div class="card-footer" style="clear:both">
+              <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(2,1)">Подтвердить</button>
+            </div>
+          </div>
+        </div>
+        <div class="page">
+          <div id="q3" class="card">
+            <p class="card-header"><b>Вопрос №3</b></p>
+            <div class="card-content p-2">
+              <p class="question">В окне вьювера выберите верхнюю часть корпуса</p>
+            </div>
+          </div>
+        </div>
+        <div class="page">
+          <div id="q4" class="card">
+            <p class="card-header questionNum"><b>Вопрос №4</b></p>
+            <div class="card-content p-2">
+              <p class="question">Какой из перечисленных элементов не входит в конструкцию редуктора, представленного в
+                окне вьювера</p>
+              <input class="form-check-input" type="radio" name="q4_rad" id="opt4_1" data-role="radio" data-style="2"
+                data-caption="Электродвигатель"> <br>
+              <input class="form-check-input" type="radio" name="q4_rad" id="opt4_2" data-role="radio" data-style="2"
+                data-caption="Подшипник"> <br>
+              <input class="form-check-input" type="radio" name="q4_rad" id="opt4_3" data-role="radio" data-style="2"
+                data-caption="Зубчатое колесо"> <br>
+              <input class="form-check-input" type="radio" name="q4_rad" id="opt4_4" data-role="radio" data-style="2"
+                data-caption="Промежуточный вал"> <br>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(4,4)">Подтвердить</button>
+            </div>
+          </div>
+        </div>
+        <div class="page">
+          <div id="q5" class="card">
+            <p class="card-header"><b>Вопрос №5</b></p>
+            <img src="http://gendocs.ru/gendocs/docs/36/35112/conv_1/file1_html_17f394a2.gif"
+              style="float:right; height:200px; margin-bottom:10px; margin-right:50px" />
+            <div class="card-content p-2">
+              <p class="question">
+                Если <i>z<sub>1</sub></i> - число зубьев ведущего звена, а <i>z<sub>2</sub></i> - ведомого, то что
+                обозначает <i>u</i> в данной формуле
+              </p>
+              <input class="form-check-input" type="radio" name="q5_rad" id="opt5_1" data-role="radio" data-style="2"
+                data-caption="Модуль"> <br>
+              <input class="form-check-input" type="radio" name="q5_rad" id="opt5_2" data-role="radio" data-style="2"
+                data-caption="Передаточное отношение"> <br>
+              <input class="form-check-input" type="radio" name="q5_rad" id="opt5_3" data-role="radio" data-style="2"
+                data-caption="Вращающий момент на ведущем валу"> <br>
+              <input class="form-check-input" type="radio" name="q5_rad" id="opt5_4" data-role="radio" data-style="2"
+                data-caption="Мощность на ведущем валу"> <br>
+              <input class="form-check-input" type="radio" name="q5_rad" id="opt5_5" data-role="radio" data-style="2"
+                data-caption="Коэффициент динамической нагрузки">
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(5,2)">Подтвердить</button>
+            </div>
+          </div>
+        </div>
+        <div class="page">
+          <div id="q5" class="card">
+            <p class="card-header"><b>Вопрос №5</b></p>
+            <div class="card-content p-2">
+              <p class="question">В окне вьювера выберите нижнюю часть корпуса</p>
+            </div>
+          </div>
+        </div>
+        <div class="page">
+          <div class="social-box" id="final">
+            <div class="header bg-cyan fg-white">
+              <div class="title" id="testResult"></div>
+            </div>
+            <ul class="skills">
+              <li>
+                <div class="text-bold" id="rightAns"></div>
+                <div>Правильные ответы</div>
+              </li>
+              <li>
+                <button class="btn btn-outline-primary" onclick="restartTest()" id="btnQ1">Пройти тест снова</button>
+              </li>
+              <li>
+                <div class="text-bold" id="wrongAns"></div>
+                <div>Неправильные ответы</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
         `
     },
 }

@@ -179,6 +179,12 @@
           </li>
         </ul>
       </li>
+      <li class="list-group-item list-group-item-action">
+        <ul class="treeUL">
+          <li><span class="caret treeItem" id="item6">Пройти тест</span>
+          </li>
+        </ul>
+      </li>
     </ul>
   </div>
   <div id="viewer">
@@ -194,203 +200,202 @@
   <div id="right">
     <h2>Заголовок</h2>
     <p>Редуктор это круто</p>
-    <section id="1">
+
+    <!-- <div id="testDiv">
       <h2>Тест</h2>
-      <div id="testDiv">
-    </section>
-    <div data-role="master" data-effect="slide" id="test">
-      <i>
-        <p id="questionInfo" style="display:none">Ответ верный</p>
-      </i>
-      <div class="page">
-        <div id="q1" class="card">
-          <p class="card-header questionNum"><b>Вопрос №1</b></p>
-          <div class="card-content p-2">
-            <p class="question">Как называется зубчатое колесо с меньшим числом зубьев?</p>
-            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_1" data-role="radio" data-style="2"
-              data-caption="Подшипник"> <br>
-            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_2" data-role="radio" data-style="2"
-              data-caption="Колесо"> <br>
-            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_3" data-role="radio" data-style="2"
-              data-caption="Шестерня"> <br>
-            <input class="form-check-input" type="radio" name="q1_rad" id="opt1_4" data-role="radio" data-style="2"
-              data-caption="Вал"> <br>
+      <div data-role="master" data-effect="slide" id="test">
+        <i>
+          <p id="questionInfo" style="display:none">Ответ верный</p>
+        </i>
+        <div class="page">
+          <div id="q1" class="card">
+            <p class="card-header questionNum"><b>Вопрос №1</b></p>
+            <div class="card-content p-2">
+              <p class="question">Как называется зубчатое колесо с меньшим числом зубьев?</p>
+              <input class="form-check-input" type="radio" name="q1_rad" id="opt1_1" data-role="radio" data-style="2"
+                data-caption="Подшипник"> <br>
+              <input class="form-check-input" type="radio" name="q1_rad" id="opt1_2" data-role="radio" data-style="2"
+                data-caption="Колесо"> <br>
+              <input class="form-check-input" type="radio" name="q1_rad" id="opt1_3" data-role="radio" data-style="2"
+                data-caption="Шестерня"> <br>
+              <input class="form-check-input" type="radio" name="q1_rad" id="opt1_4" data-role="radio" data-style="2"
+                data-caption="Вал"> <br>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(1,3)">Подтвердить</button>
+            </div>
           </div>
-          <div class="card-footer">
-            <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(1,3)">Подтвердить</button>
+        </div>
+        <div class="page">
+          <div id="q2" class="card">
+            <p class="card-header"><b>Вопрос №2</b></p>
+            <div class="card-content p-2">
+              <img style="float:right; height:200px; margin-bottom:10px; margin-right:50px"
+                src="https://www.alliedcaster.com/wp-content/uploads/2018/05/Ball_Bearing.png" />
+              <p class="question">
+                Подшипник какого типа показан на картинке?
+              </p>
+              <input class="form-check-input" type="radio" name="q2_rad" id="opt2_1" data-role="radio" data-style="2"
+                data-caption="Качения"><br>
+              <input class="form-check-input" type="radio" name="q2_rad" id="opt2_2" data-role="radio" data-style="2"
+                data-caption="Скольжения"><br>
+            </div>
+            <div class="card-footer" style="clear:both">
+              <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(2,1)">Подтвердить</button>
+            </div>
+          </div>
+        </div>
+        <div class="page">
+          <div id="q3" class="card">
+            <p class="card-header"><b>Вопрос №3</b></p>
+            <div class="card-content p-2">
+              <p class="question">В окне вьювера выберите верхнюю часть корпуса</p>
+            </div>
+          </div>
+        </div>
+        <div class="page">
+          <div id="q4" class="card">
+            <p class="card-header questionNum"><b>Вопрос №4</b></p>
+            <div class="card-content p-2">
+              <p class="question">Какой из перечисленных элементов не входит в конструкцию редуктора, представленного в
+                окне вьювера</p>
+              <input class="form-check-input" type="radio" name="q4_rad" id="opt4_1" data-role="radio" data-style="2"
+                data-caption="Электродвигатель"> <br>
+              <input class="form-check-input" type="radio" name="q4_rad" id="opt4_2" data-role="radio" data-style="2"
+                data-caption="Подшипник"> <br>
+              <input class="form-check-input" type="radio" name="q4_rad" id="opt4_3" data-role="radio" data-style="2"
+                data-caption="Зубчатое колесо"> <br>
+              <input class="form-check-input" type="radio" name="q4_rad" id="opt4_4" data-role="radio" data-style="2"
+                data-caption="Промежуточный вал"> <br>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(4,4)">Подтвердить</button>
+            </div>
+          </div>
+        </div>
+        <div class="page">
+          <div id="q5" class="card">
+            <p class="card-header"><b>Вопрос №5</b></p>
+            <img src="http://gendocs.ru/gendocs/docs/36/35112/conv_1/file1_html_17f394a2.gif"
+              style="float:right; height:200px; margin-bottom:10px; margin-right:50px" />
+            <div class="card-content p-2">
+              <p class="question">
+                Если <i>z<sub>1</sub></i> - число зубьев ведущего звена, а <i>z<sub>2</sub></i> - ведомого, то что
+                обозначает <i>u</i> в данной формуле
+              </p>
+              <input class="form-check-input" type="radio" name="q5_rad" id="opt5_1" data-role="radio" data-style="2"
+                data-caption="Модуль"> <br>
+              <input class="form-check-input" type="radio" name="q5_rad" id="opt5_2" data-role="radio" data-style="2"
+                data-caption="Передаточное отношение"> <br>
+              <input class="form-check-input" type="radio" name="q5_rad" id="opt5_3" data-role="radio" data-style="2"
+                data-caption="Вращающий момент на ведущем валу"> <br>
+              <input class="form-check-input" type="radio" name="q5_rad" id="opt5_4" data-role="radio" data-style="2"
+                data-caption="Мощность на ведущем валу"> <br>
+              <input class="form-check-input" type="radio" name="q5_rad" id="opt5_5" data-role="radio" data-style="2"
+                data-caption="Коэффициент динамической нагрузки">
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(5,2)">Подтвердить</button>
+            </div>
+          </div>
+        </div>
+        <div class="page">
+          <div id="q5" class="card">
+            <p class="card-header"><b>Вопрос №5</b></p>
+            <div class="card-content p-2">
+              <p class="question">В окне вьювера выберите нижнюю часть корпуса</p>
+            </div>
+          </div>
+        </div>
+        <div class="page">
+          <div class="social-box" id="final">
+            <div class="header bg-cyan fg-white">
+              <div class="title" id="testResult"></div>
+            </div>
+            <ul class="skills">
+              <li>
+                <div class="text-bold" id="rightAns"></div>
+                <div>Правильные ответы</div>
+              </li>
+              <li>
+                <button class="btn btn-outline-primary" onclick="restartTest()" id="btnQ1">Пройти тест снова</button>
+              </li>
+              <li>
+                <div class="text-bold" id="wrongAns"></div>
+                <div>Неправильные ответы</div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
-      <div class="page">
-        <div id="q2" class="card">
-          <p class="card-header"><b>Вопрос №2</b></p>
-          <div class="card-content p-2">
-            <img style="float:right; height:200px; margin-bottom:10px; margin-right:50px"
-              src="https://www.alliedcaster.com/wp-content/uploads/2018/05/Ball_Bearing.png" />
-            <p class="question">
-              Подшипник какого типа показан на картинке?
-            </p>
-            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_1" data-role="radio" data-style="2"
-              data-caption="Качения"><br>
-            <input class="form-check-input" type="radio" name="q2_rad" id="opt2_2" data-role="radio" data-style="2"
-              data-caption="Скольжения"><br>
-          </div>
-          <div class="card-footer" style="clear:both">
-            <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(2,1)">Подтвердить</button>
-          </div>
-        </div>
-      </div>
-      <div class="page">
-        <div id="q3" class="card">
-          <p class="card-header"><b>Вопрос №3</b></p>
-          <div class="card-content p-2">
-            <p class="question">В окне вьювера выберите верхнюю часть корпуса</p>
-          </div>
-        </div>
-      </div>
-      <div class="page">
-        <div id="q4" class="card">
-          <p class="card-header questionNum"><b>Вопрос №4</b></p>
-          <div class="card-content p-2">
-            <p class="question">Какой из перечисленных элементов не входит в конструкцию редуктора, представленного в
-              окне вьювера</p>
-            <input class="form-check-input" type="radio" name="q4_rad" id="opt4_1" data-role="radio" data-style="2"
-              data-caption="Электродвигатель"> <br>
-            <input class="form-check-input" type="radio" name="q4_rad" id="opt4_2" data-role="radio" data-style="2"
-              data-caption="Подшипник"> <br>
-            <input class="form-check-input" type="radio" name="q4_rad" id="opt4_3" data-role="radio" data-style="2"
-              data-caption="Зубчатое колесо"> <br>
-            <input class="form-check-input" type="radio" name="q4_rad" id="opt4_4" data-role="radio" data-style="2"
-              data-caption="Промежуточный вал"> <br>
-          </div>
-          <div class="card-footer">
-            <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(4,4)">Подтвердить</button>
-          </div>
-        </div>
-      </div>
-      <div class="page">
-        <div id="q5" class="card">
-          <p class="card-header"><b>Вопрос №5</b></p>
-          <img src="http://gendocs.ru/gendocs/docs/36/35112/conv_1/file1_html_17f394a2.gif"
-            style="float:right; height:200px; margin-bottom:10px; margin-right:50px" />
-          <div class="card-content p-2">
-            <p class="question">
-              Если <i>z<sub>1</sub></i> - число зубьев ведущего звена, а <i>z<sub>2</sub></i> - ведомого, то что
-              обозначает <i>u</i> в данной формуле
-            </p>
-            <input class="form-check-input" type="radio" name="q5_rad" id="opt5_1" data-role="radio" data-style="2"
-              data-caption="Модуль"> <br>
-            <input class="form-check-input" type="radio" name="q5_rad" id="opt5_2" data-role="radio" data-style="2"
-              data-caption="Передаточное отношение"> <br>
-            <input class="form-check-input" type="radio" name="q5_rad" id="opt5_3" data-role="radio" data-style="2"
-              data-caption="Вращающий момент на ведущем валу"> <br>
-            <input class="form-check-input" type="radio" name="q5_rad" id="opt5_4" data-role="radio" data-style="2"
-              data-caption="Мощность на ведущем валу"> <br>
-            <input class="form-check-input" type="radio" name="q5_rad" id="opt5_5" data-role="radio" data-style="2"
-              data-caption="Коэффициент динамической нагрузки">
-          </div>
-          <div class="card-footer">
-            <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(5,2)">Подтвердить</button>
-          </div>
-        </div>
-      </div>
-      <div class="page">
-        <div id="q5" class="card">
-          <p class="card-header"><b>Вопрос №5</b></p>
-          <div class="card-content p-2">
-            <p class="question">В окне вьювера выберите нижнюю часть корпуса</p>
-          </div>
-        </div>
-      </div>
-      <div class="page">
-        <div class="social-box" id="final">
-          <div class="header bg-cyan fg-white">
-            <div class="title" id="testResult"></div>
-          </div>
-          <ul class="skills">
-            <li>
-              <div class="text-bold" id="rightAns"></div>
-              <div>Правильные ответы</div>
-            </li>
-            <li>
-              <button class="btn btn-outline-primary" onclick="restartTest()" id="btnQ1">Пройти тест снова</button>
-            </li>
-            <li>
-              <div class="text-bold" id="wrongAns"></div>
-              <div>Неправильные ответы</div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
+    </div> -->
 
-  <!-- The Viewer will be instantiated here -->
+    <!-- The Viewer will be instantiated here -->
 
-  <script src="http://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-  </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-  </script>
-  <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 
-  <!-- The Viewer JS -->
-  <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/viewer3D.min.js"></script>
-  <!-- <script src="scripts/annotationPanel.js"></script> -->
-  <!-- <script src="scripts/extensions/AnnotationToolbarExt.js"></script> -->
-  <script src="scripts/annotations.js"></script>
-  <script src="scripts/test.js"></script>
-  <script src="scripts/ietm.js"></script>
-  <script src="scripts/treeView.js"></script>
+    <!-- The Viewer JS -->
+    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/viewer3D.min.js"></script>
+    <!-- <script src="scripts/annotationPanel.js"></script> -->
+    <!-- <script src="scripts/extensions/AnnotationToolbarExt.js"></script> -->
+    <script src="scripts/annotations.js"></script>
+    <script src="scripts/test.js"></script>
+    <script src="scripts/ietm.js"></script>
+    <script src="scripts/treeView.js"></script>
 
-  <script src="scripts/main.js"></script>
-  <script>
-    elements = document.querySelectorAll(".node-toggle");
-    elements2 = document.querySelectorAll(".interaction-ul");
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].id = "item" + (i + 1);
-      elements[i].onclick = onNodeClick;
-    }
-
-    // Opening / closing function for ul elements
-    function onNodeClick() {
-      if (elements2[this.id[4] - 1].style.display == "none") {
-        console.log(this.id + " is open");
-      } else {
-        console.log(this.id + " is closed");
+    <script src="scripts/main.js"></script>
+    <script>
+      elements = document.querySelectorAll(".node-toggle");
+      elements2 = document.querySelectorAll(".interaction-ul");
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].id = "item" + (i + 1);
+        elements[i].onclick = onNodeClick;
       }
-    }
 
-    $('.li-hover').hover(
-      function () {
-        console.log(this.id + " is hover!");
-      },
-      function () {
-        console.log(this.id + " was unhovered!");
-      });
-
-    let lastItem;
-    for (const item of document.querySelectorAll(".li-hover")) {
-      item.onclick = onTreeItemCLick;
-    }
-
-    // Item taken notification: selected and unselected items
-    function onTreeItemCLick() {
-      console.log("--------------");
-      console.log(this.childNodes[0].parentElement.id + " is selected");
-      if (lastItem) {
-        lastItem.style.backgroundColor = "white";
-        lastItem.style.color = "black";
-        lastItem.childNodes[0].style.color = 'black';
-        console.log(lastItem.childNodes[0].parentElement.id + " was unselected")
+      // Opening / closing function for ul elements
+      function onNodeClick() {
+        if (elements2[this.id[4] - 1].style.display == "none") {
+          console.log(this.id + " is open");
+        } else {
+          console.log(this.id + " is closed");
+        }
       }
-      this.style.backgroundColor = "#428bca";
-      this.style.color = "white";
-      this.childNodes[0].style.color = 'white';
-      lastItem = this;
-    }
-  </script>
+
+      $('.li-hover').hover(
+        function () {
+          console.log(this.id + " is hover!");
+        },
+        function () {
+          console.log(this.id + " was unhovered!");
+        });
+
+      let lastItem;
+      for (const item of document.querySelectorAll(".li-hover")) {
+        item.onclick = onTreeItemCLick;
+      }
+
+      // Item taken notification: selected and unselected items
+      function onTreeItemCLick() {
+        console.log("--------------");
+        console.log(this.childNodes[0].parentElement.id + " is selected");
+        if (lastItem) {
+          lastItem.style.backgroundColor = "white";
+          lastItem.style.color = "black";
+          lastItem.childNodes[0].style.color = 'black';
+          console.log(lastItem.childNodes[0].parentElement.id + " was unselected")
+        }
+        this.style.backgroundColor = "#428bca";
+        this.style.color = "white";
+        this.childNodes[0].style.color = 'white';
+        lastItem = this;
+      }
+    </script>
 </body>
