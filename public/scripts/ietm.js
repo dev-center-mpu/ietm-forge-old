@@ -202,8 +202,8 @@ var ietm = {
                         {
                             for: 'camera',
                             params: {
-                                target: new THREE.Vector3(0, 0, 0),
-                                position: new THREE.Vector3(566, 966, 666),
+                                target: new THREE.Vector3(-30, 60, -30),
+                                position: new THREE.Vector3(666 * 0.95, 666 * 0.95, 666 *  0.95),
                                 up: new THREE.Vector3(-0.365, -0.415, 0.833)
                             }
                         },

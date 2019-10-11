@@ -241,16 +241,11 @@ function onLoadModelSuccess(model) {
 
         player.addEventListener('frame', function (e) {
             let currentTime = e.detail.currentTime;
-            let prevFrame = activeClip.frames[0];
-            let nextFrame = activeClip.frames[activeClip.frames.length - 1];
-
             let lerpKeys = [];
 
-            for (let i = 0; i < clipProps.length; i++) {
-                lerpKeys.push(getLerpKey(i, currentTime));
-            }
+            for (let i = 0; i < clipProps.length; i++) lerpKeys.push(getLerpKey(i, currentTime));
 
-            console.log(lerpKeys)
+            console.log(currentTime, lerpKeys)
 
             for (let key of lerpKeys) {
                 switch (key.for) {
@@ -269,179 +264,7 @@ function onLoadModelSuccess(model) {
                         break;
                 }
             }
-
-            /*
-                        for (let i = 0; i < activeClip.frames.length; i++) {
-                            let frameTime = activeClip.frames[i].at;
-                            if (frameTime <= currentTime && frameTime > prevFrame.at) prevFrame = activeClip.frames[i];
-                            if (frameTime > currentTime && frameTime < nextFrame.at) nextFrame = activeClip.frames[i];
-                        }
-            
-                        let dynamicProperites = prevFrame.properties.map(prevProp => {
-                            for (let nextProp of nextFrame.properties) {
-                                console.log(nextProp)
-                                switch (prevProp.for) {
-                                    case 'node':
-                                        if (nextProp.for === 'node' && prevProp.nodeId && nextProp.nodeId) {
-                                            if (prevProp.nodeId === nextProp.nodeId) return { for: prevProp.for, nodeId: prevProp.nodeId, from: prevProp.params, to: nextProp.params }
-                                        }
-                                        break;
-                                    case 'annotation':
-                                        if (nextProp.for === 'annotation' && prevProp.annotationId && nextProp.annotationId) {
-                                            if (prevProp.annotationId === nextProp.annotationId) return { for: prevProp.for, annotationId: prevProp.annotationId, from: prevProp.params, to: nextProp.params }
-                                        }
-                                        break;
-                                    case 'camera':
-                                        if (nextProp.for === 'camera') {
-                                            return { for: prevProp.for, from: prevProp.params, to: nextProp.params }
-                                        }
-                                        break;
-                                    default:
-                                        console.error(`Unknown property: ${prevProp.for}`)
-                                        break;
-                                }
-                            }
-                        })
-            
-                        dynamicProperites = dynamicProperites.filter(prop => {
-                            return prop != null || prop != undefined;
-                        })
-            
-                        let staticProperties = prevFrame.properties.map(prevProp => {
-                            let isStatic = true;
-                            for (let dynamicProp of dynamicProperites) {
-                                switch (prevProp.for) {
-                                    case 'node':
-                                        if (dynamicProp.for === 'node' && prevProp.nodeId && dynamicProp.nodeId) {
-                                            if (prevProp.nodeId === dynamicProp.nodeId) isStatic = false;
-                                        }
-                                        break;
-                                    case 'annotation':
-                                        if (dynamicProp.for === 'annotation' && prevProp.annotationId && dynamicProp.annotationId) {
-                                            if (prevProp.annotationId === dynamicProp.annotationId) isStatic = false;
-                                        }
-                                        break;
-                                    case 'camera':
-                                        if (dynamicProp.for === 'camera') {
-                                            isStatic = false;
-                                        }
-                                        break;
-                                    default:
-                                        console.error(`Unknown property: ${prevProp.for}`)
-                                        break;
-                                }
-                            }
-                            if (isStatic) {
-                                switch (prevProp.for) {
-                                    case 'node':
-                                        if (prevProp.nodeId) {
-                                            return { for: prevProp.for, nodeId: prevProp.nodeId, params: prevProp.params }
-                                        }
-                                        break;
-                                    case 'annotation':
-                                        if (prevProp.annotationId) {
-                                            return { for: prevProp.for, annotationId: prevProp.annotationId, params: prevProp.params }
-                                        }
-                                        break;
-                                    case 'camera':
-                                        return { for: prevProp.for, annotationId: prevProp.annotationId, params: prevProp.params }
-                                    default:
-                                        console.error(`Unknown property: ${prevProp.for}`)
-                                        break;
-                                }
-                            }
-                        })
-            
-                        staticProperties = staticProperties.filter(prop => {
-                            return prop != null || prop != undefined;
-                        })
-            
-                        console.log(currentTime, staticProperties, dynamicProperites)
-                        
-                                    let intersection = prevFrame.data.map(d => {
-                                        for (let i = 0; i < nextFrame.data.length; i++) {
-                                            if (Array.isArray(d.nodeId) && Array.isArray(nextFrame.data[i].nodeId)) {
-                                                if (arraysEqual(d.nodeId, nextFrame.data[i].nodeId)) {
-                                                    return {
-                                                        nodeId: d.nodeId,
-                                                        from: d.transform,
-                                                        to: nextFrame.data[i].transform
-                                                    }
-                                                }
-                                            }
-                                            else if (d.nodeId === nextFrame.data[i].nodeId) return {
-                                                nodeId: d.nodeId,
-                                                from: d.transform,
-                                                to: nextFrame.data[i].transform
-                                            }
-                                        }
-                                    })
-                        
-                                    if (intersection[0]) {
-                                        for (let i = 0; i < intersection.length; i++) {
-                                            if (intersection[i].nodeId === 'camera') {
-                                                if (intersection[i].from.up && intersection[i].to.up) {
-                                                    let upVec = new THREE.Vector3();
-                                                    upVec.set(
-                                                        lerp(intersection[i].from.up.x, intersection[i].to.up.x, e.detail.value),
-                                                        lerp(intersection[i].from.up.y, intersection[i].to.up.y, e.detail.value),
-                                                        lerp(intersection[i].from.up.z, intersection[i].to.up.z, e.detail.value),
-                                                    );
-                                                    var navTool = new Autodesk.Viewing.Navigation(viewer.getCamera());
-                                                    navTool.setCameraUpVector(upVec);
-                                                }
-                                                if (intersection[i].from.position && intersection[i].to.position) {
-                                                    let posVec = new THREE.Vector3();
-                                                    posVec.set(
-                                                        lerp(intersection[i].from.position.x, intersection[i].to.position.x, e.detail.value),
-                                                        lerp(intersection[i].from.position.y, intersection[i].to.position.y, e.detail.value),
-                                                        lerp(intersection[i].from.position.z, intersection[i].to.position.z, e.detail.value),
-                                                    );
-                                                    var navTool = new Autodesk.Viewing.Navigation(viewer.getCamera());
-                                                    navTool.setPosition(posVec);
-                                                }
-                                                if (intersection[i].from.position && intersection[i].to.position) {
-                                                    let tarVec = new THREE.Vector3();
-                                                    tarVec.set(
-                                                        lerp(intersection[i].from.target.x, intersection[i].to.target.x, e.detail.value),
-                                                        lerp(intersection[i].from.target.y, intersection[i].to.target.y, e.detail.value),
-                                                        lerp(intersection[i].from.target.z, intersection[i].to.target.z, e.detail.value),
-                                                    );
-                                                    var navTool = new Autodesk.Viewing.Navigation(viewer.getCamera());
-                                                    navTool.setTarget(tarVec);
-                                                }
-                                            } else {
-                                                if (intersection[i].from.rotation && intersection[i].to.rotation) {
-                                                    let euler = new THREE.Euler();
-                                                    euler.set(
-                                                        lerp(intersection[i].from.rotation.x, intersection[i].to.rotation.x, e.detail.value),
-                                                        lerp(intersection[i].from.rotation.y, intersection[i].to.rotation.y, e.detail.value),
-                                                        lerp(intersection[i].from.rotation.z, intersection[i].to.rotation.z, e.detail.value),
-                                                    );
-                                                    setRotation(euler, intersection[i].nodeId);
-                                                } else if (intersection[i].from.position && intersection[i].to.position) {
-                                                    let vector = new THREE.Vector3();
-                                                    vector.set(
-                                                        lerp(intersection[i].from.position.x, intersection[i].to.position.x, e.detail.value),
-                                                        lerp(intersection[i].from.position.y, intersection[i].to.position.y, e.detail.value),
-                                                        lerp(intersection[i].from.position.z, intersection[i].to.position.z, e.detail.value)
-                                                    );
-                        
-                                                    if (Array.isArray(intersection[i].nodeId)) {
-                                                        for (let j = 0; j < intersection[i].nodeId.length; j++) {
-                                                            setPosition(vector, intersection[i].nodeId[j]);
-                                                        }
-                                                    } else {
-                                                        setPosition(vector, intersection[i].nodeId);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                        
-                                    */
         })
-
     })
 }
 
@@ -571,12 +394,7 @@ function setPosition(positionVector, nodeId) {
 /////////   PLAYER
 ///////////////////////////////////////////////////////
 
-var activeClip = { // Initial clip
-    loop: false,
-    autoPlay: false,
-    duration: 0,
-    frames: []
-};
+var activeClip = undefined;
 
 var player = document.getElementById('player');
 var playButton = document.getElementById('playBtn');
@@ -644,8 +462,6 @@ pauseButton.onclick = function () {
     pauseButton.style.display = 'none';
 }
 
-loadAnimation(activeClip);
-
 var clipProps = [];
 
 function getPropIndex(prop) {
@@ -696,6 +512,7 @@ function getLerpKey(propIndex, time) {
     // TODO: Разрешить баги:
     // Нельзя совершать вращение и перемещение одновременно
     // Нельзя в разное время менять либо вращене либо позиционирование одного нода
+    // Инициализация значений
 
     switch (prop.for) {
         case 'node':
@@ -704,7 +521,7 @@ function getLerpKey(propIndex, time) {
             if (prevKey.params.rotation !== undefined) {
                 if (relation === Infinity) {
                     lerpKey.params.rotation = prevKey.params.rotation;
-                } else if (relation === -Infinity) {
+                } else if (relation === -Infinity || isNaN(relation)) {
                     lerpKey.params.rotation = nextKey.params.rotation;
                 } else {
                     let euler = new THREE.Euler();
@@ -718,7 +535,7 @@ function getLerpKey(propIndex, time) {
             } else if (prevKey.params.position !== undefined) {
                 if (relation === Infinity) {
                     lerpKey.params.position = prevKey.params.position;
-                } else if (relation === -Infinity) {
+                } else if (relation === -Infinity || isNaN(relation)) {
                     lerpKey.params.position = nextKey.params.position;
                 } else {
                     let vector = new THREE.Vector3();
@@ -737,7 +554,7 @@ function getLerpKey(propIndex, time) {
             if (prevKey.params.opacity !== undefined) {
                 if (relation === Infinity) {
                     lerpKey.params.opacity = prevKey.params.opacity
-                } else if (relation === -Infinity) {
+                } else if (relation === -Infinity || isNaN(relation)) {
                     lerpKey.params.opacity = nextKey.params.opacity
                 } else {
                     lerpKey.params.opacity = lerp(prevKey.params.opacity, nextKey.params.opacity, relation);
@@ -747,7 +564,7 @@ function getLerpKey(propIndex, time) {
         case 'camera':
             if (relation === Infinity) {
                 lerpKey.params = prevKey.params;
-            } else if (relation === -Infinity) {
+            } else if (relation === -Infinity || isNaN(relation)) {
                 lerpKey.params = nextKey.params;
             } else {
                 let upVec = new THREE.Vector3();
@@ -778,16 +595,23 @@ function getLerpKey(propIndex, time) {
     return lerpKey;
 }
 
-function loadAnimation(clip) {
+function unloadAnimation() {
     clearInterval(interval);
     timeline.value = 0;
-    activeClip.isPlaying = false;
-    activeClip.currentTime = 0;
-    delete activeClip.isPlaying;
-    delete activeClip.currentTime;
-
+    if (activeClip) {
+        activeClip.isPlaying = false;
+        activeClip.currentTime = 0;
+        delete activeClip.isPlaying;
+        delete activeClip.currentTime;
+    }
     //revertChangesAfterAnimaton();
+    activeClip = undefined;
+    player.style.display = 'none';
     clipProps = [];
+}
+
+function loadAnimation(clip) {
+    unloadAnimation();
     activeClip = clip;
 
     timeline.value = 0;
@@ -802,8 +626,7 @@ function loadAnimation(clip) {
         }
     }
 
-    console.log(clipProps);
-
+    player.style.display = 'block';
     time.innerHTML = `${fancyTimeFormat(activeClip.currentTime)} / ${fancyTimeFormat(activeClip.duration)}`;
 }
 
