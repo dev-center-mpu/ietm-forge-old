@@ -1,15 +1,14 @@
 var viewer;
-var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE5LTEwLTAxLTE0LTU2LTE5LWQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlL3JlZHVjZXIxMi5zdGVw';
+var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE5LTEwLTA3LTA3LTU3LTIyLWQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlL3JlZHVjZXI1LmYzZA'
 var isStarted = false;
 var annotationMode = false;
 var annotation;
+var annotations = {};
 var options = {
     env: 'AutodeskProduction',
     accessToken: '',
     api: 'derivativeV2', // for models uploaded to EMEA change this option to 'derivativeV2_EU'
 }
-
-var annotations = [];
 
 $.get('/auth', (data) => {
     options.accessToken = JSON.parse(data).access_token;
@@ -43,9 +42,11 @@ function onDocumentLoadSuccess(doc) {
         sharedPropertyDbPath: doc.getPropertyDbPath()
     };
     viewer.start(svfUrl, modelOptions, onLoadModelSuccess, onLoadModelError);
+
     isStarted = true;
 
     annotationsInit();
+
 }
 
 /**
@@ -65,188 +66,6 @@ function onLoadModelSuccess(model) {
     console.log('Validate model loaded: ' + (viewer.model === model));
     console.log(model);
 }
-
-//Annotations
-
-document.querySelector("#viewer").addEventListener('click', onMouseClick, false);
-
-function onMouseClick(e) {
-    var x = e.clientX,
-        y = e.clientY;
-    console.log(x)
-    var res = viewer.impl.castRay(x - document.querySelector("#left").clientWidth, y, true);
-
-    if (res) {
-        if (annotationMode) {
-            pos = viewer.impl.clientToWorld(e.clientX - document.querySelector("#left").clientWidth, e.clientY);
-            console.log(pos.point)
-            onItemClick(pos.point);
-        }
-    }
-}
-
-document.addEventListener('mousemove', onMouseUpdate, false);
-
-function onMouseUpdate(e) {
-    if (isStarted) {
-        update();
-    }
-}
-
-function update() {
-    for (let i = 0; i < this.annotations.length; i++) {
-        let p2 = new THREE.Vector3(this.annotations[i].x, this.annotations[i].y, this.annotations[i].z);
-        if (!viewer.impl.camera.position.equals(p2)) {
-            // p2.project(viewer.impl.camera);
-            clientPos = viewer.impl.worldToClient(p2, viewer.impl.camera);
-            p2.x = clientPos.x;
-
-            p2.y = clientPos.y;
-            document.querySelector('#annotation-' + i).style.left = p2.x + "px";
-            document.querySelector('#annotation-' + i).style.top = p2.y + "px";
-            document.querySelector('#annotation-index-' + i).style.left = p2.x - 15 + "px";
-            document.querySelector('#annotation-index-' + i).style.top = p2.y - 15 + "px";
-        }
-    }
-    if (this.annotations.length > 0)
-        this.changeVisibilityOfAnnotations();
-
-}
-
-function onItemClick(item) {
-
-    let annotationNameEl = document.querySelector("#annotation-name-editText");
-    let annotationTextEl = document.querySelector("#annotation-text-editText");
-    let annotationName = "name";
-    let annotationText = "text";
-
-    console.log(annotationNameEl)
-    console.log(annotationNameEl.value)
-
-    if (annotationNameEl) {
-        annotationName = annotationNameEl.value ? annotationNameEl.value : "name";
-    }
-    if (annotationTextEl) {
-        annotationText = annotationTextEl.value ? annotationTextEl.value : "text";
-    }
-
-    this.annotations.push(
-        {
-            x: item.x,
-            y: item.y,
-            z: item.z,
-            name: annotationName,
-            text: annotationText
-        }
-    )
-    displayAnnotation(this.annotations.length - 1);
-    let i = this.annotations.length - 1;
-    let p2 = new THREE.Vector3(this.annotations[i].x, this.annotations[i].y, this.annotations[i].z);
-    if (!viewer.impl.camera.position.equals(p2)) {
-        p2.project(viewer.impl.camera);
-        clientPos = viewer.impl.worldToClient(item, viewer.impl.camera);
-        p2.x = clientPos.x;
-        console.log(p2.x)
-        p2.y = clientPos.y;
-        document.querySelector('#annotation-' + i).style.left = p2.x + "px";
-        document.querySelector('#annotation-' + i).style.top = p2.y + "px";
-        document.querySelector('#annotation-index-' + i).style.left = p2.x - 15 + "px";
-        document.querySelector('#annotation-index-' + i).style.top = p2.y - 15 + "px";
-    }
-}
-
-
-function addAnnotation(x, y, z) {
-
-    let annotationName = "name";
-    let annotationText = "text";
-
-    this.annotations.push(
-        {
-            x: x,
-            y: y,
-            z: z,
-            name: annotationName,
-            text: annotationText
-        }
-    )
-    id = this.annotations.length - 1;
-    displayAnnotation(id);
-
-    let annotationNumber = document.querySelector("#annotation-index-" + id);
-    annotationNumber.dispatchEvent(new Event("click"));
-
-    return id;
-}
-
-function annotationOpacity(id) {
-    let style = document.querySelector('#annotation-' + id).style;
-    style.opacity = style.opacity == "1" ? "0.5" : "1";
-}
-
-function annotationsInit() {
-    for (const i = 0; i < this.annotations.length; i++) {
-        this.displayAnnotation(i);
-    }
-
-}
-
-function displayAnnotation(index) {
-    const annotation = document.createElement('div');
-    annotation.id = 'annotation-' + index;
-    annotation.classList.add('annotation', 'hidden');
-    document.querySelector('#viewer').appendChild(annotation);
-    const annotationName = document.createElement('h4');
-    annotationName.innerText = this.annotations[index].name;
-    annotationName.id = 'annotation-name-' + index;
-    annotation.appendChild(annotationName);
-    const annotationText = document.createElement('p');
-    annotationText.id = 'annotation-text-' + index;
-    annotationText.innerText = this.annotations[index].text;
-    annotation.appendChild(annotationText);
-    const annotationNumber = document.createElement('div');
-    annotationNumber.id = 'annotation-index-' + index;
-    annotationNumber.innerText = + index + 1;
-    annotationNumber.classList.add('annotation-number');
-    annotationNumber.addEventListener('click', () => this.hideAnnotation(index));
-    document.querySelector('#viewer').appendChild(annotationNumber);
-}
-
-function hideAnnotation(index) {
-    const annotation = document.querySelector('#annotation-' + index);
-    const hidden = annotation.classList.contains('hidden');
-    document.querySelector('#annotation-name-' + index).innerHTML = hidden ? this.annotations[index].name : '';
-    document.querySelector('#annotation-text-' + index).innerHTML = hidden ? this.annotations[index].text : '';
-    if (hidden) {
-        annotation.classList.remove('hidden');
-    } else
-        annotation.classList.add('hidden');
-}
-
-function getClosestAnnotation() {
-    let indexOfClosest;
-    let distToClosest = Math.pow(2, 32);
-    for (const i in this.annotations) {
-        const camPos = this.viewer.impl.camera.position;
-        const pPos = this.annotations[i];
-        const dist = Math.sqrt(Math.pow((camPos.x - pPos.x), 2) + Math.pow((camPos.y - pPos.y), 2) + Math.pow((camPos.z - pPos.z), 2));
-        if (distToClosest > dist) {
-            distToClosest = dist;
-            indexOfClosest = +i;
-        }
-    }
-    return indexOfClosest;
-}
-
-function changeVisibilityOfAnnotations() {
-    for (let i = 0; i < this.annotations.length; i++) {
-        document.querySelector('#annotation-' + i).style.zIndex = this.getClosestAnnotation() == i ? 2 : 1;
-        document.querySelector('#annotation-index-' + i).style.zIndex = this.getClosestAnnotation() == i ? 2 : 1;
-    }
-}
-
-//////////////
-
 /**
  * viewer.loadModel() failure callback.
  * Invoked when there's an error fetching the SVF file.
@@ -271,6 +90,145 @@ function arraysEqual(a, b) {
     return true;
 }
 
+
+//Annotations
+document.querySelector("#viewer").addEventListener("click", onMouseClick);
+
+function onMouseClick(e) {
+    var x = e.clientX,
+        y = e.clientY;
+    var res = viewer.impl.castRay(x - document.querySelector("#left").clientWidth, y, true);
+
+    if (res) {
+        pos = viewer.impl.clientToWorld(e.clientX - document.querySelector("#left").clientWidth, e.clientY);
+        console.log(pos.point)
+        onItemClick(pos.point);
+    }
+}
+
+function update() {
+    for (const id in this.annotations) {
+        let p2 = new THREE.Vector3(this.annotations[id].x, this.annotations[id].y, this.annotations[id].z);
+        if (!viewer.impl.camera.position.equals(p2)) {
+            // p2.project(viewer.impl.camera);
+            clientPos = viewer.impl.worldToClient(p2, viewer.impl.camera);
+            p2.x = clientPos.x;
+
+            p2.y = clientPos.y;
+            document.querySelector('#annotation-' + id).style.left = p2.x + "px";
+            document.querySelector('#annotation-' + id).style.top = p2.y + "px";
+            document.querySelector('#annotation-index-' + id).style.left = p2.x - 15 + "px";
+            document.querySelector('#annotation-index-' + id).style.top = p2.y - 15 + "px";
+        }
+    }
+    if (this.annotations.length > 0)
+        this.changeVisibilityOfAnnotations();
+
+}
+
+function onItemClick(item) {
+
+}
+
+function setAnotationPosition(id) {
+    let p2 = new THREE.Vector3(this.annotations[id].x, this.annotations[id].y, this.annotations[id].z);
+    if (!viewer.impl.camera.position.equals(p2)) {
+        // p2.project(viewer.impl.camera);
+        clientPos = viewer.impl.worldToClient(p2, viewer.impl.camera);
+        p2.x = clientPos.x;
+
+        p2.y = clientPos.y;
+        document.querySelector('#annotation-' + id).style.left = p2.x + "px";
+        document.querySelector('#annotation-' + id).style.top = p2.y + "px";
+        document.querySelector('#annotation-index-' + id).style.left = p2.x - 15 + "px";
+        document.querySelector('#annotation-index-' + id).style.top = p2.y - 15 + "px";
+    }
+}
+
+function addAnnotation(x, y, z, annotationText, id, flag) {
+
+    this.annotations[id] = {
+        x: x,
+        y: y,
+        z: z,
+        text: annotationText
+    }
+
+    displayAnnotation(id);
+    setAnotationPosition(id);
+
+    let annotationNumber = document.querySelector("#annotation-index-" + id);
+    annotationNumber.dispatchEvent(new Event("click"));
+    if (!flag)
+        setAnnotationOpacity(index, 0);
+    return id;
+}
+
+function setAnnotationOpacity(id, opacity) {
+    let idStyle = document.querySelector("#annotation-index-" + id).style;
+    let anStyle = document.querySelector('#annotation-' + id).style;
+    idStyle.opacity = opacity;
+    anStyle.opacity = opacity;
+}
+
+function annotationsInit() {
+    for (const id in this.annotations) {
+        this.displayAnnotation(id);
+    }
+
+}
+
+function displayAnnotation(id) {
+    const annotation = document.createElement('div');
+    annotation.id = 'annotation-' + id;
+    annotation.classList.add('annotation', 'hidden');
+    document.querySelector('#viewer').appendChild(annotation);
+    const annotationText = document.createElement('p');
+    annotationText.id = 'annotation-text-' + id;
+    annotationText.innerText = this.annotations[id].text;
+    annotationText.style.fontSize = "15px";
+    annotation.appendChild(annotationText);
+    const annotationNumber = document.createElement('div');
+    annotationNumber.id = 'annotation-index-' + id;
+    annotationNumber.innerText = + id;
+    annotationNumber.classList.add('annotation-number');
+    annotationNumber.addEventListener('click', () => this.hideAnnotation(id));
+    document.querySelector('#viewer').appendChild(annotationNumber);
+}
+
+function hideAnnotation(id) {
+    const annotation = document.querySelector('#annotation-' + id);
+    const hidden = annotation.classList.contains('hidden');
+    document.querySelector('#annotation-text-' + id).innerHTML = hidden ? this.annotations[id].text : '';
+    if (hidden) {
+        annotation.classList.remove('hidden');
+    } else
+        annotation.classList.add('hidden');
+}
+
+function getClosestAnnotation() {
+    let indexOfClosest;
+    let distToClosest = Math.pow(2, 32);
+    for (const id in this.annotations) {
+        const camPos = this.viewer.impl.camera.position;
+        const pPos = this.annotations[id];
+        const dist = Math.sqrt(Math.pow((camPos.x - pPos.x), 2) + Math.pow((camPos.y - pPos.y), 2) + Math.pow((camPos.z - pPos.z), 2));
+        if (distToClosest > dist) {
+            distToClosest = dist;
+            indexOfClosest = +id;
+        }
+    }
+    return indexOfClosest;
+}
+
+function changeVisibilityOfAnnotations() {
+    for (const id in this.annotations) {
+        document.querySelector('#annotation-' + id).style.zIndex = this.getClosestAnnotation() == id ? 2 : 1;
+        document.querySelector('#annotation-index-' + id).style.zIndex = this.getClosestAnnotation() == id ? 2 : 1;
+    }
+}
+/////////////////////////
+
 function onLoadModelSuccess(model) {
     console.log('onLoadModelSuccess()!');
     console.log('Validate model loaded: ' + (viewer.model === model));
@@ -284,100 +242,30 @@ function onLoadModelSuccess(model) {
 
         player.addEventListener('frame', function (e) {
             let currentTime = e.detail.currentTime;
-            let prevFrame = activeClip.frames[0];
-            let nextFrame = activeClip.frames[activeClip.frames.length - 1];
+            let lerpKeys = [];
 
-            for (let i = 0; i < activeClip.frames.length; i++) {
-                let frameTime = activeClip.frames[i].at;
-                if (frameTime <= currentTime && frameTime > prevFrame.at) prevFrame = activeClip.frames[i];
-                if (frameTime > currentTime && frameTime < nextFrame.at) nextFrame = activeClip.frames[i];
-            }
+            for (let i = 0; i < clipProps.length; i++) lerpKeys.push(getLerpKey(i, currentTime));
 
-            let intersection = prevFrame.data.map(d => {
-                for (let i = 0; i < nextFrame.data.length; i++) {
-                    if (Array.isArray(d.nodeId) && Array.isArray(nextFrame.data[i].nodeId)) {
-                        if (arraysEqual(d.nodeId, nextFrame.data[i].nodeId)) {
-                            return {
-                                nodeId: d.nodeId,
-                                from: d.transform,
-                                to: nextFrame.data[i].transform
-                            }
-                        }
-                    }
-                    else if (d.nodeId === nextFrame.data[i].nodeId) return {
-                        nodeId: d.nodeId,
-                        from: d.transform,
-                        to: nextFrame.data[i].transform
-                    }
-                }
-            })
+            console.log(currentTime, lerpKeys)
 
-            if (intersection[0]) {
-                for (let i = 0; i < intersection.length; i++) {
-                    if (intersection[i].nodeId === 'camera') {
-                        if (intersection[i].from.up && intersection[i].to.up) {
-                            let upVec = new THREE.Vector3();
-                            upVec.set(
-                                lerp(intersection[i].from.up.x, intersection[i].to.up.x, e.detail.value),
-                                lerp(intersection[i].from.up.y, intersection[i].to.up.y, e.detail.value),
-                                lerp(intersection[i].from.up.z, intersection[i].to.up.z, e.detail.value),
-                            );
-                            var navTool = new Autodesk.Viewing.Navigation(viewer.getCamera());
-                            navTool.setCameraUpVector(upVec);
-                        }
-                        if (intersection[i].from.position && intersection[i].to.position) {
-                            let posVec = new THREE.Vector3();
-                            posVec.set(
-                                lerp(intersection[i].from.position.x, intersection[i].to.position.x, e.detail.value),
-                                lerp(intersection[i].from.position.y, intersection[i].to.position.y, e.detail.value),
-                                lerp(intersection[i].from.position.z, intersection[i].to.position.z, e.detail.value),
-                            );
-                            var navTool = new Autodesk.Viewing.Navigation(viewer.getCamera());
-                            navTool.setPosition(posVec);
-                        }
-                        if (intersection[i].from.position && intersection[i].to.position) {
-                            let tarVec = new THREE.Vector3();
-                            tarVec.set(
-                                lerp(intersection[i].from.target.x, intersection[i].to.target.x, e.detail.value),
-                                lerp(intersection[i].from.target.y, intersection[i].to.target.y, e.detail.value),
-                                lerp(intersection[i].from.target.z, intersection[i].to.target.z, e.detail.value),
-                            );
-                            var navTool = new Autodesk.Viewing.Navigation(viewer.getCamera());
-                            navTool.setTarget(tarVec);
-                        }
-                    } else {
-                        if (intersection[i].from.rotation && intersection[i].to.rotation) {
-                            let euler = new THREE.Euler();
-                            euler.set(
-                                lerp(intersection[i].from.rotation.x, intersection[i].to.rotation.x, e.detail.value),
-                                lerp(intersection[i].from.rotation.y, intersection[i].to.rotation.y, e.detail.value),
-                                lerp(intersection[i].from.rotation.z, intersection[i].to.rotation.z, e.detail.value),
-                            );
-                            setRotation(euler, intersection[i].nodeId);
-                        } else if (intersection[i].from.position && intersection[i].to.position) {
-                            let vector = new THREE.Vector3();
-                            vector.set(
-                                lerp(intersection[i].from.position.x, intersection[i].to.position.x, e.detail.value),
-                                lerp(intersection[i].from.position.y, intersection[i].to.position.y, e.detail.value),
-                                lerp(intersection[i].from.position.z, intersection[i].to.position.z, e.detail.value)
-                            );
-
-                            if (Array.isArray(intersection[i].nodeId)) {
-                                console.log(intersection[i].nodeId, intersection[i].nodeId.length)
-                                for (let j = 0; j < intersection[i].nodeId.length; j++) {
-                                    setPosition(vector, intersection[i].nodeId[j]);
-                                }
-                            } else {
-                                setPosition(vector, intersection[i].nodeId);
-                            }
-                        }
-                    }
+            for (let key of lerpKeys) {
+                switch (key.for) {
+                    case 'node':
+                        if (key.params.position) for (let node of key.nodeId) setPosition(key.params.position, node);
+                        if (key.params.rotation) for (let node of key.nodeId) setRotation(key.params.rotation, node);
+                        break;
+                    case 'annotation':
+                        if (key.params.opacity !== undefined) setAnnotationOpacity(key.annotationId, key.params.opacity);
+                        break;
+                    case 'camera':
+                        let navTool = new Autodesk.Viewing.Navigation(viewer.getCamera());
+                        navTool.setCameraUpVector(key.params.up);
+                        navTool.setPosition(key.params.position);
+                        navTool.setTarget(key.params.target);
+                        break;
                 }
             }
-
-
         })
-
     })
 }
 
@@ -507,12 +395,7 @@ function setPosition(positionVector, nodeId) {
 /////////   PLAYER
 ///////////////////////////////////////////////////////
 
-var activeClip = { // Initial clip
-    loop: false,
-    autoPlay: false,
-    duration: 0,
-    frames: []
-};
+var activeClip = undefined;
 
 var player = document.getElementById('player');
 var playButton = document.getElementById('playBtn');
@@ -580,29 +463,178 @@ pauseButton.onclick = function () {
     pauseButton.style.display = 'none';
 }
 
-loadAnimation(activeClip);
+var clipProps = [];
 
-function loadAnimation(clip) {
+function getPropIndex(prop) {
+    for (let i = 0; i < clipProps.length; i++) {
+        if (clipProps[i].for === prop.for) {
+            switch (prop.for) {
+                case 'node':
+                    if (arraysEqual(clipProps[i].nodeId, prop.nodeId)) return i;
+                    break;
+                case 'annotation':
+                    if (clipProps[i].annotationId === prop.annotationId) return i;
+                    break;
+                case 'camera':
+                    return i;
+            }
+        }
+    }
+
+    return -1;
+}
+
+function pushProp(prop) {
+    switch (prop.for) {
+        case 'node': return clipProps.push({ for: prop.for, nodeId: prop.nodeId, keys: [] }) - 1;
+        case 'annotation': return clipProps.push({ for: prop.for, annotationId: prop.annotationId, keys: [] }) - 1;
+        case 'camera': return clipProps.push({ for: prop.for, keys: [] }) - 1;
+    }
+}
+
+function pushKey(propIndex, at, params) {
+    clipProps[propIndex].keys.push({ at, params });
+}
+
+function getLerpKey(propIndex, time) {
+    let prop = clipProps[propIndex];
+    let prevKey = prop.keys[0];
+    let nextKey = prop.keys[prop.keys.length - 1];
+
+    for (let key of prop.keys) {
+        if (key.at <= time && key.at > prevKey.at) prevKey = key;
+        if (key.at > time && key.at < nextKey.at) nextKey = key;
+    }
+
+    let relation = (time - prevKey.at) / (nextKey.at - prevKey.at);
+
+    let lerpKey = { for: prop.for, params: {} };
+
+    // TODO: Разрешить баги:
+    // Нельзя совершать вращение и перемещение одновременно
+    // Нельзя в разное время менять либо вращене либо позиционирование одного нода
+    // Инициализация значений
+
+    switch (prop.for) {
+        case 'node':
+            lerpKey.nodeId = prop.nodeId;
+
+            if (prevKey.params.rotation !== undefined) {
+                if (relation === Infinity) {
+                    lerpKey.params.rotation = prevKey.params.rotation;
+                } else if (relation === -Infinity || isNaN(relation)) {
+                    lerpKey.params.rotation = nextKey.params.rotation;
+                } else {
+                    let euler = new THREE.Euler();
+                    euler.set(
+                        lerp(prevKey.params.rotation.x, nextKey.params.rotation.x, relation),
+                        lerp(prevKey.params.rotation.y, nextKey.params.rotation.y, relation),
+                        lerp(prevKey.params.rotation.z, nextKey.params.rotation.z, relation),
+                    );
+                    lerpKey.params.rotation = euler;
+                }
+            } else if (prevKey.params.position !== undefined) {
+                if (relation === Infinity) {
+                    lerpKey.params.position = prevKey.params.position;
+                } else if (relation === -Infinity || isNaN(relation)) {
+                    lerpKey.params.position = nextKey.params.position;
+                } else {
+                    let vector = new THREE.Vector3();
+                    vector.set(
+                        lerp(prevKey.params.position.x, nextKey.params.position.x, relation),
+                        lerp(prevKey.params.position.y, nextKey.params.position.y, relation),
+                        lerp(prevKey.params.position.z, nextKey.params.position.z, relation)
+                    );
+                    lerpKey.params.position = vector;
+                }
+            }
+            break;
+        case 'annotation':
+            lerpKey.annotationId = prop.annotationId;
+
+            if (prevKey.params.opacity !== undefined) {
+                if (relation === Infinity) {
+                    lerpKey.params.opacity = prevKey.params.opacity
+                } else if (relation === -Infinity || isNaN(relation)) {
+                    lerpKey.params.opacity = nextKey.params.opacity
+                } else {
+                    lerpKey.params.opacity = lerp(prevKey.params.opacity, nextKey.params.opacity, relation);
+                }
+            }
+            break;
+        case 'camera':
+            if (relation === Infinity) {
+                lerpKey.params = prevKey.params;
+            } else if (relation === -Infinity || isNaN(relation)) {
+                lerpKey.params = nextKey.params;
+            } else {
+                let upVec = new THREE.Vector3();
+                upVec.set(
+                    lerp(prevKey.params.up.x, nextKey.params.up.x, relation),
+                    lerp(prevKey.params.up.y, nextKey.params.up.y, relation),
+                    lerp(prevKey.params.up.z, nextKey.params.up.z, relation),
+                );
+                let posVec = new THREE.Vector3();
+                posVec.set(
+                    lerp(prevKey.params.position.x, nextKey.params.position.x, relation),
+                    lerp(prevKey.params.position.y, nextKey.params.position.y, relation),
+                    lerp(prevKey.params.position.z, nextKey.params.position.z, relation),
+                );
+                let tarVec = new THREE.Vector3();
+                tarVec.set(
+                    lerp(prevKey.params.target.x, nextKey.params.target.x, relation),
+                    lerp(prevKey.params.target.y, nextKey.params.target.y, relation),
+                    lerp(prevKey.params.target.z, nextKey.params.target.z, relation),
+                );
+                lerpKey.params.up = upVec;
+                lerpKey.params.position = posVec;
+                lerpKey.params.target = tarVec;
+            }
+            break;
+    }
+
+    return lerpKey;
+}
+
+function unloadAnimation() {
     clearInterval(interval);
     timeline.value = 0;
-    activeClip.isPlaying = false;
-    activeClip.currentTime = 0;
-    delete activeClip.isPlaying;
-    delete activeClip.currentTime;
-
+    if (activeClip) {
+        activeClip.isPlaying = false;
+        activeClip.currentTime = 0;
+        delete activeClip.isPlaying;
+        delete activeClip.currentTime;
+    }
     //revertChangesAfterAnimaton();
+    activeClip = undefined;
+    player.style.display = 'none';
+    clipProps = [];
+}
+
+function loadAnimation(clip) {
+    unloadAnimation();
     activeClip = clip;
 
     timeline.value = 0;
     activeClip.isPlaying = false;
     activeClip.currentTime = 0;
 
+    for (let frame of activeClip.frames) {
+        for (let prop of frame.properties) {
+            let index = getPropIndex(prop);
+            if (index === -1) index = pushProp(prop);
+            pushKey(index, frame.at, prop.params);
+        }
+    }
+
+    player.style.display = 'block';
     time.innerHTML = `${fancyTimeFormat(activeClip.currentTime)} / ${fancyTimeFormat(activeClip.duration)}`;
 }
 
 function revertChangesAfterAnimaton() {
     var navTool = new Autodesk.Viewing.Navigation(viewer.getCamera());
     navTool.setCameraUpVector(new THREE.Vector3(0, 1, 0));
+    new Autodesk.Viewing.Navigation(viewer.getCamera());
 
     let nodeIds = viewer.model.getData().fragments.fragId2dbId;
 
@@ -621,3 +653,46 @@ function revertChangesAfterAnimaton() {
 function lerp(start, end, amt) {
     return (1 - amt) * start + amt * end
 }
+
+
+//QUIZ////////////////////////////////
+var master = $('#quiz').data('master');
+var info = document.querySelector("#questionInfo");
+var winId = -1;
+function checkQuestionRadio(questionId, winId) {
+    let info = document.querySelector("#questionInfo");
+    if (document.querySelector("#opt" + questionId + "_" + winId).checked) {
+        info.style.display = "none";
+        if (questionId == 2) {
+            checkQuestionViewer(4);
+        }
+        master.next();
+    } else {
+        info.style.display = "block";
+        info.style.color = "red";
+        info.innerText = "Ответ неверный";
+    }
+}
+
+function checkQuestionViewer(id) {
+    winId = id;
+    document.querySelector("#viewer").addEventListener("click", questionViewerClick);
+}
+
+
+function questionViewerClick() {
+    console.log(winId + "  " + viewer.getSelection());
+    if (winId == viewer.getSelection()) {
+        winId = -1;
+        info.style.display = "block";
+        info.style.color = "green";
+        info.innerText = "Поздравляем, вы успешно прошли тест!!!!";
+        document.querySelector("#viewer").removeEventListener("click", questionViewerClick);
+    } else {
+        info.style.display = "block";
+        info.style.color = "red";
+        info.innerText = "Вы выбрали не ту деталь";
+
+    }
+}
+/////////////////////////////////////

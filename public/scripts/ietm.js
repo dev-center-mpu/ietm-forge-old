@@ -25,170 +25,170 @@ var ietm = {
             frames: [
                 {
                     at: 0,
-                    data: [
+                    properties: [
                         {
-                            nodeId: 'camera',
-                            transform: {
+                            for: 'camera',
+                            params: {
                                 target: new THREE.Vector3(0, 0, 0),
                                 position: new THREE.Vector3(333, 333, 333),
                                 up: new THREE.Vector3(0, 1.0, 0)
                             }
                         },
                         {
-                            nodeId: 66,
-                            transform: {
+                            for: 'node', nodeId: [66],
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 68,
-                            transform: {
+                            for: 'node', nodeId: [68],
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 72,
-                            transform: {
+                            for: 'node', nodeId: [72],
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 6,
-                            transform: {
+                            nodeId: [6],
+                            for: 'node', params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 4,
-                            transform: {
+                            nodeId: [4],
+                            for: 'node', params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64], // подшипник верхний
-                            transform: {
+                            for: 'node', nodeId: [40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64], // подшипник верхний
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33], // подшипник нижний
-                            transform: {
+                            for: 'node', nodeId: [9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33], // подшипник нижний
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [160, 162, 164, 166], // болты двигателя
-                            transform: {
+                            for: 'node', nodeId: [160, 162, 164, 166], // болты двигателя
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [152, 154, 156, 158], // шайбы болтов двигателя
-                            transform: {
+                            for: 'node', nodeId: [152, 154, 156, 158], // шайбы болтов двигателя
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [94, 98, 102, 106, 110, 114, 118], // болты нижней крышки
-                            transform: {
+                            for: 'node', nodeId: [94, 98, 102, 106, 110, 114, 118], // болты нижней крышки
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [92, 96, 100, 104, 108, 112, 116], // шайбы болтов нижней крышки
-                            transform: {
+                            for: 'node', nodeId: [92, 96, 100, 104, 108, 112, 116], // шайбы болтов нижней крышки
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 74,
-                            transform: {
+                            for: 'node', nodeId: [74],
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 78, // верхняя прокладка шестерни
-                            transform: {
+                            for: 'node', nodeId: [78], // верхняя прокладка шестерни
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [122, 124, 128, 132, 136, 140, 144, 148], // болты верхней крышки вала
-                            transform: {
+                            for: 'node', nodeId: [122, 124, 128, 132, 136, 140, 144, 148], // болты верхней крышки вала
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [120, 126, 130, 134, 138, 142, 146, 150], // шайбы болтов верхней крышки вала
-                            transform: {
+                            for: 'node', nodeId: [120, 126, 130, 134, 138, 142, 146, 150], // шайбы болтов верхней крышки вала
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 70, // верхняя прокладка
-                            transform: {
+                            for: 'node', nodeId: [70], // верхняя прокладка
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 86, // нижняя прокладка
-                            transform: {
+                            for: 'node', nodeId: [86], // нижняя прокладка
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 37, // толстая прокладка
-                            transform: {
+                            for: 'node', nodeId: [37], // толстая прокладка
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 80, // крепеж
-                            transform: {
+                            for: 'node', nodeId: [80], // крепеж
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 168, // болт крепежа
-                            transform: {
+                            for: 'node', nodeId: [168], // болт крепежа
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 0, 0),
                                 scale: undefined
@@ -198,170 +198,170 @@ var ietm = {
                 },
                 {
                     at: 1000 * 1,
-                    data: [
+                    properties: [
                         {
-                            nodeId: 'camera',
-                            transform: {
-                                target: new THREE.Vector3(0, 0, 0),
-                                position: new THREE.Vector3(566, 966, 666),
+                            for: 'camera',
+                            params: {
+                                target: new THREE.Vector3(-30, 60, -30),
+                                position: new THREE.Vector3(666 * 0.95, 666 * 0.95, 666 *  0.95),
                                 up: new THREE.Vector3(-0.365, -0.415, 0.833)
                             }
                         },
                         {
-                            nodeId: 66, // вал
-                            transform: {
+                            for: 'node', nodeId: [66], // вал
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 430, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [122, 124, 128, 132, 136, 140, 144, 148], // болты верхней крышки вала
-                            transform: {
+                            for: 'node', nodeId: [122, 124, 128, 132, 136, 140, 144, 148], // болты верхней крышки вала
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 420, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [120, 126, 130, 134, 138, 142, 146, 150], // шайбы болтов верхней крышки вала
-                            transform: {
+                            for: 'node',nodeId: [120, 126, 130, 134, 138, 142, 146, 150], // шайбы болтов верхней крышки вала
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 390, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 68, // крышка вала
-                            transform: {
+                            for: 'node', nodeId: [68], // крышка вала
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 380, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 70, // верхняя прокладка
-                            transform: {
+                            for: 'node', nodeId: [70], // верхняя прокладка
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 310, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64], // подшипник верхний
-                            transform: {
+                            for: 'node', nodeId: [40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64], // подшипник верхний
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 270, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 4, // верхняя крышка
-                            transform: {
+                            for: 'node', nodeId: [4], // верхняя крышка
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 200, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 168, // болт крепежа
-                            transform: {
+                            for: 'node', nodeId: [168], // болт крепежа
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 70, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 37, // толстая прокладка
-                            transform: {
+                            for: 'node', nodeId: [37], // толстая прокладка
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 50, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 80, // крепени 
-                            transform: {
+                            for: 'node', nodeId: [80], // крепени 
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 40, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 78, // верхняя прокладка шестерни
-                            transform: {
+                            for: 'node', nodeId: [78], // верхняя прокладка шестерни
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, 20, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 74, // нижняя прокладка шестерни
-                            transform: {
+                            for: 'node', nodeId: [74], // нижняя прокладка шестерни
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, -20, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33], // подшипник нижний
-                            transform: {
+                            for: 'node', nodeId: [9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33], // подшипник нижний
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, -100, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 86, // нижняя прокладка
-                            transform: {
+                            for: 'node', nodeId: [86], // нижняя прокладка
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, -110, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 6, // нижняя крышка
-                            transform: {
+                            for: 'node', nodeId: [6], // нижняя крышка
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, -150, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [92, 96, 100, 104, 108, 112, 116], // шайбы болтов нижней крышки
-                            transform: {
+                            for: 'node', nodeId: [92, 96, 100, 104, 108, 112, 116], // шайбы болтов нижней крышки
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, -158, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [94, 98, 102, 106, 110, 114, 118], // болты нижней крышки
-                            transform: {
+                            for: 'node', nodeId: [94, 98, 102, 106, 110, 114, 118], // болты нижней крышки
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, -200, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: 72, // двигатель
-                            transform: {
+                            for: 'node', nodeId: [72], // двигатель
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, -260, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [152, 154, 156, 158], // шайбы болтов двигателя
-                            transform: {
+                            for: 'node', nodeId: [152, 154, 156, 158], // шайбы болтов двигателя
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, -330, 0),
                                 scale: undefined
                             }
                         },
                         {
-                            nodeId: [160, 162, 164, 166], // болты двигателя
-                            transform: {
+                            for: 'node', nodeId: [160, 162, 164, 166], // болты двигателя
+                            params: {
                                 rotation: undefined,
                                 position: new THREE.Vector3(0, -400, 0),
                                 scale: undefined
@@ -443,6 +443,10 @@ var ietm = {
             NOP_VIEWER.hide(4);
             NOP_VIEWER.fitToView(0);
         },
+        annotations: [
+            { id: 1, point: new THREE.Vector3(100, 0, 0), text: 'Text1', hide: true },
+            { id: 2, point: new THREE.Vector3(-100, 0, 100), text: 'Text2', hide: false },
+        ],
         animation: {
             loop: true,
             autoPlay: true,
@@ -450,74 +454,125 @@ var ietm = {
             frames: [
                 {
                     at: 0,
-                    data: [
+                    properties: [
                         {
-                            nodeId: 35,
-                            transform: {
+                            for: 'node', nodeId: [35],
+                            params: {
                                 rotation: new THREE.Euler(0, THREE.Math.degToRad(360 * 0), THREE.Math.degToRad(0)),
-                                position: undefined,
-                                scale: undefined
                             }
                         },
                         {
-                            nodeId: 76,
-                            transform: {
+                            for: 'node', nodeId: [76],
+                            params: {
                                 rotation: new THREE.Euler(0, THREE.Math.degToRad(0), 0),
-                                position: undefined,
-                                scale: undefined
                             }
                         },
                         {
-                            nodeId: 66,
-                            transform: {
+                            for: 'node', nodeId: [66],
+                            params: {
                                 rotation: new THREE.Euler(0, THREE.Math.degToRad(0), 0),
-                                position: undefined,
-                                scale: undefined
                             }
                         },
                         {
-                            nodeId: 164,
-                            transform: {
-                                rotation: undefined,
+                            for: 'node', nodeId: [164],
+                            params: {
                                 position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
+                            }
+                        },
+                        {
+                            for: 'annotation', annotationId: 1,
+                            params: {
+                                opacity: 1
+                            }
+                        },
+                        {
+                            for: 'annotation', annotationId: 2,
+                            params: {
+                                opacity: 0
+                            }
+                        },
+                    ]
+                },
+                {
+                    at: 1000 * 2,
+                    properties: [
+                        {
+                            for: 'annotation', annotationId: 1,
+                            params: {
+                                opacity: 0
+                            }
+                        }
+                    ]
+                },
+                {
+                    at: 9990,
+                    properties: [
+                        {
+                            for: 'annotation', annotationId: 2,
+                            params: {
+                                opacity: 0
+                            }
+                        }
+                    ]
+                },
+                {
+                    at: 1000 * 10,
+                    properties: [
+                        {
+                            for: 'annotation', annotationId: 2,
+                            params: {
+                                opacity: 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    at: 1000 * 18,
+                    properties: [
+                        {
+                            for: 'annotation', annotationId: 2,
+                            params: {
+                                opacity: 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    at: 1000 * 20,
+                    properties: [
+                        {
+                            for: 'annotation', annotationId: 2,
+                            params: {
+                                opacity: 0
                             }
                         }
                     ]
                 },
                 {
                     at: 1000 * 60,
-                    data: [
+                    properties: [
                         {
-                            nodeId: 35,
-                            transform: {
+                            for: 'node', nodeId: [35],
+                            params: {
                                 rotation: new THREE.Euler(0, THREE.Math.degToRad(360 * 5), THREE.Math.degToRad(0)),
-                                position: undefined,
-                                scale: undefined
                             }
                         },
                         {
-                            nodeId: 76,
-                            transform: {
+                            for: 'node', nodeId: [76],
+                            params: {
                                 rotation: new THREE.Euler(0, THREE.Math.degToRad(-360 * 20), THREE.Math.degToRad(0)),
-                                position: undefined,
-                                scale: undefined
                             }
                         },
                         {
-                            nodeId: 66,
-                            transform: {
+                            for: 'node', nodeId: [66],
+                            params: {
                                 rotation: new THREE.Euler(0, THREE.Math.degToRad(360 * 5), 0),
-                                position: undefined,
-                                scale: undefined
                             }
                         },
                         {
-                            nodeId: 164,
-                            transform: {
-                                rotation: undefined,
+                            for: 'node', nodeId: [164],
+                            params: {
                                 position: new THREE.Vector3(0, -100, 0),
-                                scale: undefined
                             }
                         }
                     ]
