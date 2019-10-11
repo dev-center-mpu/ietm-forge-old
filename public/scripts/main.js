@@ -282,433 +282,15 @@ function onLoadModelSuccess(model) {
         viewer.setGroundShadow(0);
         //viewer.hide(4)
 
-        let animation = {
-            loop: true,
-            duration: 1000 * 0.2,
-            frames: [
-                {
-                    at: 0,
-                    data: [
-                        {
-                            nodeId: 'camera',
-                            transform: {
-                                target: new THREE.Vector3(0, 0, 0),
-                                position: new THREE.Vector3(333, 333, 333),
-                                up: new THREE.Vector3(0, 1.0, 0)
-                            }
-                        },
-                        {
-                            nodeId: 66,
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 68,
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 72,
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 6,
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 4,
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64], // подшипник верхний
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33], // подшипник нижний
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [160, 162, 164, 166], // болты двигателя
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [152, 154, 156, 158], // шайбы болтов двигателя
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [94, 98, 102, 106, 110, 114, 118], // болты нижней крышки
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [92, 96, 100, 104, 108, 112, 116], // шайбы болтов нижней крышки
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 74,
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 78, // верхняя прокладка шестерни
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [122, 124, 128, 132, 136, 140, 144, 148], // болты верхней крышки вала
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [120, 126, 130, 134, 138, 142, 146, 150], // шайбы болтов верхней крышки вала
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 70, // верхняя прокладка
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 86, // нижняя прокладка
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 37, // толстая прокладка
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 80, // крепеж
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 168, // болт крепежа
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        },
-                    ]
-                },
-                {
-                    at: 1000 * 1,
-                    data: [
-                        {
-                            nodeId: 'camera',
-                            transform: {
-                                target: new THREE.Vector3(0, 0, 0),
-                                position: new THREE.Vector3(566, 966, 666),
-                                up: new THREE.Vector3(-0.365, -0.415, 0.833)
-                            }
-                        },
-                        {
-                            nodeId: 66, // вал
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 430, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [122, 124, 128, 132, 136, 140, 144, 148], // болты верхней крышки вала
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 420, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [120, 126, 130, 134, 138, 142, 146, 150], // шайбы болтов верхней крышки вала
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 390, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 68, // крышка вала
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 380, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 70, // верхняя прокладка
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 310, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64], // подшипник верхний
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 270, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 4, // верхняя крышка
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 200, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 168, // болт крепежа
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 70, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 37, // толстая прокладка
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 50, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 80, // крепени 
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 40, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 78, // верхняя прокладка шестерни
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 20, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 74, // нижняя прокладка шестерни
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, -20, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33], // подшипник нижний
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, -100, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 86, // нижняя прокладка
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, -110, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 6, // нижняя крышка
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, -150, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [92, 96, 100, 104, 108, 112, 116], // шайбы болтов нижней крышки
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, -158, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [94, 98, 102, 106, 110, 114, 118], // болты нижней крышки
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, -200, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 72, // двигатель
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, -260, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [152, 154, 156, 158], // шайбы болтов двигателя
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, -330, 0),
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: [160, 162, 164, 166], // болты двигателя
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, -400, 0),
-                                scale: undefined
-                            }
-                        },
-                    ]
-                }
-            ]
-        }
-
-        let animation2 = {
-            loop: true,
-            duration: 1000 * 60,
-            frames: [
-                {
-                    at: 0,
-                    data: [
-                        {
-                            nodeId: 35,
-                            transform: {
-                                rotation: new THREE.Euler(0, THREE.Math.degToRad(360 * 0), THREE.Math.degToRad(0)),
-                                position: undefined,
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 76,
-                            transform: {
-                                rotation: new THREE.Euler(0, THREE.Math.degToRad(0), 0),
-                                position: undefined,
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 164,
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, 0, 0),
-                                scale: undefined
-                            }
-                        }
-                    ]
-                },
-                {
-                    at: 1000 * 60,
-                    data: [
-                        {
-                            nodeId: 35,
-                            transform: {
-                                rotation: new THREE.Euler(0, THREE.Math.degToRad(360 * 10), THREE.Math.degToRad(0)),
-                                position: undefined,
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 76,
-                            transform: {
-                                rotation: new THREE.Euler(0, THREE.Math.degToRad(-360 * 20), THREE.Math.degToRad(0)),
-                                position: undefined,
-                                scale: undefined
-                            }
-                        },
-                        {
-                            nodeId: 164,
-                            transform: {
-                                rotation: undefined,
-                                position: new THREE.Vector3(0, -100, 0),
-                                scale: undefined
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-
         player.addEventListener('frame', function (e) {
             let currentTime = e.detail.currentTime;
-            let prevFrame = animation.frames[0];
-            let nextFrame = animation.frames[animation.frames.length - 1];
+            let prevFrame = activeClip.frames[0];
+            let nextFrame = activeClip.frames[activeClip.frames.length - 1];
 
-            for (let i = 0; i < animation.frames.length; i++) {
-                let frameTime = animation.frames[i].at;
-                if (frameTime <= currentTime && frameTime > prevFrame.at) prevFrame = animation.frames[i];
-                if (frameTime > currentTime && frameTime < nextFrame.at) nextFrame = animation.frames[i];
+            for (let i = 0; i < activeClip.frames.length; i++) {
+                let frameTime = activeClip.frames[i].at;
+                if (frameTime <= currentTime && frameTime > prevFrame.at) prevFrame = activeClip.frames[i];
+                if (frameTime > currentTime && frameTime < nextFrame.at) nextFrame = activeClip.frames[i];
             }
 
             let intersection = prevFrame.data.map(d => {
@@ -807,6 +389,51 @@ function onLoadModelError(viewerErrorCode) {
 ////////////// TRANSFORM FUNCTIONS
 ////////////////////////////////////////////////////////////////
 
+function setRotationAroundBody(eulerAngle, rotatedNodeId, aroundNodeId) {
+    if (!viewer) {
+        console.error(`Viewer is not initialized`);
+        return;
+    }
+
+    let rotatedBody = { nodeId: rotatedNodeId };
+
+    rotatedBody.fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(rotatedNodeId);
+    if (rotatedBody.fragId == -1) {
+        console.error(`nodeId ${rotatedBody.nodeId} not found`);
+        return;
+    }
+
+    rotatedBody.fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, rotatedBody.fragId);
+    rotatedBody.fragProxy.getAnimTransform();
+
+    rotatedBody.worldMatrix = new THREE.Matrix4();
+    rotatedBody.fragProxy.getWorldMatrix(rotatedBody.worldMatrix);
+
+    rotatedBody.position = new THREE.Vector3();
+    rotatedBody.position.copy(rotatedBody.worldMatrix.getPosition().clone());
+
+    let axisBody = { nodeId: aroundNodeId };
+
+    axisBody.fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(aroundNodeId);
+    if (axisBody.fragId == -1) {
+        console.error(`nodeId ${axisBody.nodeId} not found`);
+        return;
+    }
+
+    axisBody.fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, axisBody.fragId);
+    axisBody.fragProxy.getAnimTransform();
+
+    axisBody.worldMatrix = new THREE.Matrix4();
+    axisBody.fragProxy.getWorldMatrix(axisBody.worldMatrix);
+
+
+
+    let distance = new THREE.Vector3();
+    distance.set(
+
+    );
+}
+
 function setRotation(eulerAngle, nodeId) {
     if (!viewer) {
         console.error(`Viewer is not initialized`);
@@ -880,18 +507,18 @@ function setPosition(positionVector, nodeId) {
 /////////   PLAYER
 ///////////////////////////////////////////////////////
 
-var isPlaying = false;
+var activeClip = { // Initial clip
+    loop: false,
+    autoPlay: false,
+    duration: 0,
+    frames: []
+};
 
 var player = document.getElementById('player');
 var playButton = document.getElementById('playBtn');
 var pauseButton = document.getElementById('pauseBtn');
 var timeline = document.getElementById('customRange1');
 var time = document.getElementById('time');
-
-let loop = false;
-var currentTime = 0;
-var totalDuration = 1000 * 1; // 1 minute
-time.innerHTML = `${fancyTimeFormat(currentTime)} / ${fancyTimeFormat(totalDuration)}`;
 
 function fancyTimeFormat(ms) {
     var mins = ~~(((ms / 1000) % 3600) / 60);
@@ -901,50 +528,94 @@ function fancyTimeFormat(ms) {
 
 timeline.oninput = function (e) {
     let precent = e.target.value / 100.0;
-    currentTime = totalDuration * precent;
-    time.innerHTML = `${fancyTimeFormat(currentTime)} / ${fancyTimeFormat(totalDuration)}`;
+    activeClip.currentTime = activeClip.duration * precent;
+    time.innerHTML = `${fancyTimeFormat(activeClip.currentTime)} / ${fancyTimeFormat(activeClip.duration)}`;
     player.dispatchEvent(new CustomEvent('frame', {
-        detail: { value: currentTime / totalDuration, currentTime }
+        detail: { value: activeClip.currentTime / activeClip.duration, currentTime: activeClip.currentTime }
     }));
 }
 
 var interval = {};
 
 playButton.onclick = function () {
+    clearInterval(interval);
+
     let start = Date.now();
     let oldTime = Date.now();
+
+    if (activeClip.currentTime >= activeClip.duration) {
+        activeClip.currentTime = 0;
+    }
 
     interval = setInterval(function () {
         oldTime = start;
         start = Date.now();
         let dt = start - oldTime;
-        if (isPlaying) {
-            currentTime += dt;
+        if (activeClip.isPlaying) {
+            activeClip.currentTime += dt;
             player.dispatchEvent(new CustomEvent('frame', {
-                detail: { value: currentTime / totalDuration, currentTime, dt }
+                detail: { value: activeClip.currentTime / activeClip.duration, currentTime: activeClip.currentTime, dt }
             }));
-            if (currentTime >= totalDuration) {
-                if (loop) {
-                    currentTime = 0;
+            if (activeClip.currentTime >= activeClip.duration) {
+                if (activeClip.loop) {
+                    activeClip.currentTime = 0;
                 } else {
                     pauseButton.onclick();
-                    clearInterval(interval)
+                    clearInterval(interval);
                 }
             }
-            timeline.value = (currentTime / totalDuration) * 100.0;
-            time.innerHTML = `${fancyTimeFormat(currentTime)} / ${fancyTimeFormat(totalDuration)}`;
+            timeline.value = (activeClip.currentTime / activeClip.duration) * 100.0;
+            time.innerHTML = `${fancyTimeFormat(activeClip.currentTime)} / ${fancyTimeFormat(activeClip.duration)}`;
         }
     }, 4)
 
-    isPlaying = true;
+    activeClip.isPlaying = true;
     playButton.style.display = 'none';
     pauseButton.style.display = 'block';
 }
 
 pauseButton.onclick = function () {
-    isPlaying = false;
+    activeClip.isPlaying = false;
     playButton.style.display = 'block';
     pauseButton.style.display = 'none';
+}
+
+loadAnimation(activeClip);
+
+function loadAnimation(clip) {
+    clearInterval(interval);
+    timeline.value = 0;
+    activeClip.isPlaying = false;
+    activeClip.currentTime = 0;
+    delete activeClip.isPlaying;
+    delete activeClip.currentTime;
+
+    //revertChangesAfterAnimaton();
+    activeClip = clip;
+
+    timeline.value = 0;
+    activeClip.isPlaying = false;
+    activeClip.currentTime = 0;
+
+    time.innerHTML = `${fancyTimeFormat(activeClip.currentTime)} / ${fancyTimeFormat(activeClip.duration)}`;
+}
+
+function revertChangesAfterAnimaton() {
+    var navTool = new Autodesk.Viewing.Navigation(viewer.getCamera());
+    navTool.setCameraUpVector(new THREE.Vector3(0, 1, 0));
+
+    let nodeIds = viewer.model.getData().fragments.fragId2dbId;
+
+    for (let i = 0; i < nodeIds.length; i++) {
+        let fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, i);
+
+        fragProxy.getAnimTransform();
+        fragProxy.position.set(0, 0, 0);
+        fragProxy.quaternion.set(0, 0, 0, 1);
+        fragProxy.updateAnimTransform();
+    }
+
+    viewer.impl.sceneUpdated(true);
 }
 
 function lerp(start, end, amt) {
