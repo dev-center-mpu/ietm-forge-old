@@ -72,6 +72,37 @@ var defaultData = [
 
 function onItemSelected(id) {
   console.log(id + " is selected");
+  
+    if (ietm[id]) {
+        let page = ietm[id];
+        if (id.match(/item2_?/) === null) {
+            revertChangesAfterAnimaton();
+        }
+        page.init();
+        if (page.content) {
+            document.querySelector('#right').innerHTML = page.content;
+        }
+        document.querySelectorAll('.highlightLink').forEach(elem => {
+            let nodeId = elem.getAttribute('nodeId');
+            elem.onmouseenter = function() {
+                NOP_VIEWER.select(parseInt(nodeId));
+            }
+            elem.onmouseleave = function() {
+                NOP_VIEWER.select(0);
+            }
+        })
+        unloadAnimation();
+        if (page.animation) {
+            loadAnimation(page.animation);
+            if (page.animation.autoPlay) playButton.onclick()
+        }
+        if (page.annotations) {
+            for (let a of page.annotations) {
+                addAnnotation(a.point.x, a.point.y, a.point.z, a.text, a.id, a.hide);
+            }
+        }
+   
+}
 }
 
 function onItemUnselected(id) {
@@ -135,11 +166,17 @@ treeFormer();
 
 function treeFormer() {
   for (let i = 0; i < defaultData.length; i++) {
+    let icon;
+    if (defaultData[i].nodes != undefined) {
+      icon = "https://image.flaticon.com/icons/svg/2181/2181596.svg";
+    } else {
+      icon = "https://image.flaticon.com/icons/svg/1063/1063388.svg";
+    }
     let el = $("#treeId")
       .data("treeview")
       .addTo(null, {
         caption: defaultData[i].text,
-        icon: "https://image.flaticon.com/icons/svg/2181/2181596.svg"
+        icon: icon
       });
     el[0].id = defaultData[i].id;
     el[0].childNodes[1].classList.add("ul-hover");
