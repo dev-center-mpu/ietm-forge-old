@@ -655,7 +655,7 @@ var ietm = {
           <div id="q3" class="card">
             <p class="card-header"><b>Вопрос №3</b></p>
             <div class="card-content p-2">
-              <p class="question">В окне вьювера выберите верхнюю часть корпуса</p>
+              <p class="question">В окне вьювера выберите ведомое зубчатое колесо</p>
             </div>
           </div>
         </div>
@@ -709,7 +709,7 @@ var ietm = {
           <div id="q5" class="card">
             <p class="card-header"><b>Вопрос №5</b></p>
             <div class="card-content p-2">
-              <p class="question">В окне вьювера выберите нижнюю часть корпуса</p>
+              <p class="question">В окне вьювера выберите электродвигатель</p>
             </div>
           </div>
         </div>
@@ -724,7 +724,7 @@ var ietm = {
                 <div>Правильные ответы</div>
               </li>
               <li>
-                <button class="btn btn-outline-primary" onclick="restartTest()" id="btnQ1">Пройти тест снова</button>
+                <button class="btn btn-outline-primary" onclick="restartTest()" id="btnQ1">Перепройти</button>
               </li>
               <li>
                 <div class="text-bold" id="wrongAns"></div>

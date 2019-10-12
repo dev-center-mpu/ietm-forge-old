@@ -1,5 +1,4 @@
 var master;
-var info = document.querySelector("#questionInfo");
 var winId = -1;
 var right;
 var wrong;
@@ -10,9 +9,7 @@ function checkQuestionRadio(questionId, winId) {
         wrong = 0;
     }
     master = $('#test').data('master');
-    let info = document.querySelector("#questionInfo");
     if (document.querySelector("#opt" + questionId + "_" + winId).checked) {
-        info.style.display = "none";
         right++;
         console.log(true)
     } else {
@@ -20,10 +17,12 @@ function checkQuestionRadio(questionId, winId) {
         console.log(false)
     }
     if (questionId == 2) {
-        checkQuestionViewer(4);
+        checkQuestionViewer(35);
+        viewer.hide([4]);
     }
     if (questionId == 5) {
-        checkQuestionViewer(6);
+        viewer.hide([4]);
+        checkQuestionViewer(72);
     }
 
     master.next();
@@ -41,12 +40,11 @@ function questionViewerClick() {
         if (winId == viewer.getSelection()) {
             right++;
             winId = -1;
-            console.log(true)
         } else {
             wrong++;
-            console.log(false)
         }
         document.querySelector("#viewer").removeEventListener("click", questionViewerClick);
+        viewer.show([4]);
         master.next();
         document.querySelector("#rightAns").innerText = right;
         document.querySelector("#wrongAns").innerText = wrong;
