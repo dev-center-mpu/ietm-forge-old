@@ -14,7 +14,7 @@ var defaultData = [
             },
             {
                 text: "Колесо",
-                id: "item2_2"
+                id: "item2_2" 
             },
             {
                 text: "Шестерня",
@@ -198,7 +198,7 @@ treeFormer();
 
 function treeFormer() {
     for (let i = 0; i < defaultData.length; i++) {
-        let icon;
+        let icon;  
         if (defaultData[i].nodes != undefined) {
             icon = "https://image.flaticon.com/icons/svg/2181/2181596.svg";
         } else {
@@ -210,9 +210,14 @@ function treeFormer() {
                 caption: defaultData[i].text,
                 icon: icon
             });
+        if (defaultData[i].nodes != undefined) {
+            el[0].childNodes[1].classList.add("ul-hover");
+            el[0].childNodes[1].onclick = nodeClick;
+        }
+        else{
+            el[0].childNodes[1].classList.add("li-hover");
+        }
         el[0].id = defaultData[i].id;
-        el[0].childNodes[1].classList.add("ul-hover");
-        el[0].childNodes[1].onclick = nodeClick;
         el[0].childNodes[1].id = defaultData[i].id;
         branchFormer(defaultData[i], el);
     }
@@ -249,8 +254,14 @@ function branchFormer(obj, parent) {
                     icon: icon
                 });
 
+            if (obj.nodes[i].nodes != undefined) {
+                child[0].lastChild.classList.add("ul-hover");
+                child[0].childNodes[1].onclick = nodeClick;
+            }
+            else{
+                child[0].lastChild.classList.add("li-hover"); 
+            }
             child[0].id = obj.nodes[i].id;
-            child[0].lastChild.classList.add("li-hover");
             child[0].lastChild.id = obj.nodes[i].id;
             branchFormer(obj.nodes[i], child);
         }
