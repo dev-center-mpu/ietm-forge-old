@@ -63,6 +63,10 @@ var defaultData = [
         id: "item5_1"
       }
     ]
+  },
+  {
+    text: "Тест",
+    id: "item6",
   }
 ];
 
