@@ -18,7 +18,6 @@ $.get('/auth', (data) => {
 })
 
 function onDocumentLoadSuccess(doc) {
-
     // A document contains references to 3D and 2D geometries.
     var geometries = doc.getRoot().search({ 'type': 'geometry' });
     if (geometries.length === 0) {

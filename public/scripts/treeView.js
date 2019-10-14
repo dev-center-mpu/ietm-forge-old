@@ -1,73 +1,69 @@
 var defaultData = [
-    {
-        text: "Техническое описание",
-        id: "item1"
-    },
-    {
-        text: "Каталог деталей",
-        id: "item2",
+  {
+    text: "Техническое описание",
+    id: "item1"
+  },
+  {
+    text: "Каталог деталей",
+    id: "item2",
 
-        nodes: [
-            {
-                text: "Корпус",
-                id: "item2_1"
-            },
-            {
-                text: "Колесо",
-                id: "item2_2" 
-            },
-            {
-                text: "Шестерня",
-                id: "item2_3"
-            },
-            {
-                text: "Двигатель",
-                id: "item2_4"
-            },
-            {
-                text: "Выходной вал",
-                id: "item2_5"
-            },
-            {
-                text: "Подшипник",
-                id: "item2_6"
-            }
-        ]
-    },
-    {
-        text: "Принцип работы",
-        id: "item3",
-        nodes: [
-            {
-                text: "Корпус",
-                id: "item3_1"
-            }
-        ]
-    },
-    {
-        text: "Руководство по разработке",
-        id: "item4",
-        nodes: [
-            {
-                text: "Разборка корпуса",
-                id: "item4_1"
-            },
-            {
-                text: "Замена шестерней",
-                id: "item4_2"
-            }
-        ]
-    },
-    {
-        text: "Руководство по эксплуатации",
-        id: "item5",
-        nodes: [
-            {
-                text: "Смазывание компонентов",
-                id: "item5_1"
-            }
-        ]
-    }
+    nodes: [
+      {
+        text: "Корпус",
+        id: "item2_1"
+      },
+      {
+        text: "Зубчатая передача",
+        id: "item2_2"
+      },
+      {
+        text: "Двигатель",
+        id: "item2_3"
+      },
+      {
+        text: "Тихоходный вал",
+        id: "item2_4"
+      },
+      {
+        text: "Подшипники",
+        id: "item2_5"
+      }
+    ]
+  },
+  {
+    text: "Принцип работы",
+    id: "item3",
+    nodes: [
+      {
+        text: "Работа редуктора",
+        id: "item3_1"
+      }
+    ]
+  },
+  {
+    text: "Руководство по разработке",
+    id: "item4",
+    nodes: [
+      {
+        text: "Разборка корпуса",
+        id: "item4_1"
+      },
+      {
+        text: "Замена шестерней",
+        id: "item4_2"
+      }
+    ]
+  },
+  {
+    text: "Руководство по эксплуатации",
+    id: "item5",
+    nodes: [
+      {
+        text: "Смазывание компонентов",
+        id: "item5_1"
+      }
+    ]
+  }
 ];
 
 function onItemSelected(item) {
@@ -149,20 +145,32 @@ function onItemMouseLeave(id) {
     console.log(id + " MouseLeft");
 }
 function onListShow(id) {
-    console.log(id + " Show");
+  //allNodesClose();
+  let shownListPage = ietm[id];
+  console.log(shownListPage)
+  if (shownListPage.animation) {
+    revertChangesAfterAnimaton();
+    loadAnimation(shownListPage.animation)
+    if (shownListPage.animation.autoPlay) playButton.onclick()
+  }
+
 }
 
 function onListHide(id) {
-    console.log(id + " Hide");
+  if (id === 'item2') {
+    revertChangesAfterAnimaton();
+    loadAnimation(ietm['item2_0'].animation);
+    playButton.onclick();
+  }
 }
+
 //Для закрытия всех веток
-function allNodesClose() {
+function allNodesClose(exceptionId) {
     let arr = document.querySelectorAll("li");
 
     for (let j = 0; j < arr.length; j++) {
-        $("#treeId")
-            .data("treeview")
-            .toggleNode(arr[j]);
+        console.log($("#treeId").data("treeview"))
+        $("#treeId").data("treeview").toggleNode(arr[j]);
     }
 }
 
