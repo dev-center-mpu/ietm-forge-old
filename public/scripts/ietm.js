@@ -973,9 +973,6 @@ var ietm = {
         content: `
         <h2>Тест</h2>
       <div data-role="master" data-effect="slide" id="test">
-        <i>
-          <p id="questionInfo" style="display:none">Ответ верный</p>
-        </i>
         <div class="page">
           <div id="q1" class="card">
             <p class="card-header questionNum"><b>Вопрос №1</b></p>
@@ -1010,6 +1007,7 @@ var ietm = {
                 data-caption="Скольжения"><br>
             </div>
             <div class="card-footer" style="clear:both">
+              <button class="btn btn-danger btn-sm" onclick="back(1)">Назад</button>  
               <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(2,1)">Подтвердить</button>
             </div>
           </div>
@@ -1020,13 +1018,16 @@ var ietm = {
             <div class="card-content p-2">
               <p class="question">В окне вьювера выберите ведомое зубчатое колесо</p>
             </div>
+            <div class="card-footer">
+              <button class="btn btn-danger btn-sm" onclick="back(2)">Назад</button>  
+            </div>
           </div>
         </div>
         <div class="page">
           <div id="q4" class="card">
             <p class="card-header questionNum"><b>Вопрос №4</b></p>
             <div class="card-content p-2">
-              <p class="question">Какой из перечисленных элементов не входит в конструкцию редуктора, представленного в
+              <p class="question">Какой из перечисленных элементов <b>не</b> входит в конструкцию редуктора, представленного в
                 окне вьювера</p>
               <input class="form-check-input" type="radio" name="q4_rad" id="opt4_1" data-role="radio" data-style="2"
                 data-caption="Электродвигатель"> <br>
@@ -1038,6 +1039,7 @@ var ietm = {
                 data-caption="Промежуточный вал"> <br>
             </div>
             <div class="card-footer">
+              <button class="btn btn-danger btn-sm" onclick="back(3)">Назад</button>  
               <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(4,4)">Подтвердить</button>
             </div>
           </div>
@@ -1064,15 +1066,19 @@ var ietm = {
                 data-caption="Коэффициент динамической нагрузки">
             </div>
             <div class="card-footer">
+              <button class="btn btn-danger btn-sm" onclick="back(4)">Назад</button>  
               <button class="btn btn-primary btn-sm" onclick="checkQuestionRadio(5,2)">Подтвердить</button>
             </div>
           </div>
         </div>
         <div class="page">
           <div id="q5" class="card">
-            <p class="card-header"><b>Вопрос №5</b></p>
+            <p class="card-header"><b>Вопрос №6</b></p>
             <div class="card-content p-2">
               <p class="question">В окне вьювера выберите электродвигатель</p>
+              <div class="card-footer">
+                <button class="btn btn-danger btn-sm" onclick="back(5)">Назад</button>  
+              </div>
             </div>
           </div>
         </div>

@@ -84,6 +84,15 @@ function annotationsInit() {
 
 }
 
+function onMouseMove() {
+    console.log(isStarted)
+    if (isStarted) {
+        update();
+    }
+}
+
+document.querySelector("#viewer").addEventListener('mousemove', onMouseMove, false);
+
 function displayAnnotation(id) {
     const annotation = document.createElement('div');
     annotation.id = 'annotation-' + id;
