@@ -1,72 +1,86 @@
 var defaultData = [
   {
     text: "Техническое описание",
-    id: "item1"
+    id: "item1",
+    icon: "https://image.flaticon.com/icons/svg/1500/1500427.svg"
   },
   {
     text: "Каталог деталей",
     id: "item2",
-
+    icon: "https://image.flaticon.com/icons/svg/2181/2181596.svg",
     nodes: [
       {
         text: "Корпус",
-        id: "item2_1"
+        id: "item2_1",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
       },
       {
         text: "Зубчатая передача",
-        id: "item2_2"
+        id: "item2_2",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
       },
       {
         text: "Двигатель",
-        id: "item2_3"
+        id: "item2_3",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
       },
       {
         text: "Тихоходный вал",
-        id: "item2_4"
+        id: "item2_4",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
       },
       {
         text: "Подшипники",
-        id: "item2_5"
+        id: "item2_5",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
       }
     ]
   },
   {
     text: "Принцип работы",
     id: "item3",
+    icon: "https://image.flaticon.com/icons/svg/2181/2181596.svg",
     nodes: [
       {
         text: "Работа редуктора",
-        id: "item3_1"
+        id: "item3_1",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
       }
     ]
   },
   {
     text: "Руководство по разработке",
     id: "item4",
+    icon: "https://image.flaticon.com/icons/svg/2181/2181596.svg",
     nodes: [
       {
         text: "Разборка корпуса",
-        id: "item4_1"
+        id: "item4_1",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
       },
       {
         text: "Замена шестерней",
-        id: "item4_2"
+        id: "item4_2",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
       }
     ]
   },
   {
     text: "Руководство по эксплуатации",
     id: "item5",
+    icon: "https://image.flaticon.com/icons/svg/2181/2181596.svg",
     nodes: [
       {
         text: "Смазывание компонентов",
-        id: "item5_1"
+        id: "item5_1",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
       }
     ]
   },
   {
     text: "Тест",
     id: "item6",
+    icon: "https://image.flaticon.com/icons/svg/1010/1010759.svg"
   }
 ];
 
@@ -210,17 +224,11 @@ treeFormer();
 
 function treeFormer() {
     for (let i = 0; i < defaultData.length; i++) {
-        let icon;  
-        if (defaultData[i].nodes != undefined) {
-            icon = "https://image.flaticon.com/icons/svg/2181/2181596.svg";
-        } else {
-            icon = "https://image.flaticon.com/icons/svg/1063/1063388.svg";
-        }
         let el = $("#treeId")
             .data("treeview")
             .addTo(null, {
                 caption: defaultData[i].text,
-                icon: icon
+                icon: defaultData[i].icon
             });
         if (defaultData[i].nodes != undefined) {
             el[0].childNodes[1].classList.add("ul-hover");
@@ -252,18 +260,11 @@ function treeFormer() {
 function branchFormer(obj, parent) {
     if (obj.nodes != undefined) {
         for (let i = 0; i < obj.nodes.length; i++) {
-            let icon;
-            if (obj.nodes[i].nodes != undefined) {
-                icon = "https://image.flaticon.com/icons/svg/2181/2181596.svg";
-            } else {
-                icon = "https://image.flaticon.com/icons/svg/1063/1063388.svg";
-            }
-
             let child = $("#treeId")
                 .data("treeview")
                 .addTo(parent, {
                     caption: obj.nodes[i].text,
-                    icon: icon
+                    icon: obj.nodes[i].icon
                 });
 
             if (obj.nodes[i].nodes != undefined) {
