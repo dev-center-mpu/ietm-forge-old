@@ -117,39 +117,6 @@ function onItemSelected(item) {
     } else console.error('Paragraph not found. Check ietm.js')
 }
 
-// console.log(id + " is selected");
-
-// if (ietm[id]) {
-//     let page = ietm[id];
-//     if (id.match(/item2_?/) === null) {
-//         revertChangesAfterAnimaton();
-//     }
-//     page.init();
-//     if (page.content) {
-//         document.querySelector('#right').innerHTML = page.content;
-//     }
-//     document.querySelectorAll('.highlightLink').forEach(elem => {
-//         let nodeId = elem.getAttribute('nodeId');
-//         elem.onmouseenter = function () {
-//             NOP_VIEWER.select(parseInt(nodeId));
-//         }
-//         elem.onmouseleave = function () {
-//             NOP_VIEWER.select(0);
-//         }
-//     })
-//     unloadAnimation();
-//     if (page.animation) {
-//         loadAnimation(page.animation);
-//         if (page.animation.autoPlay) playButton.onclick()
-//     }
-//     if (page.annotations) {
-//         for (let a of page.annotations) {
-//             addAnnotation(a.point.x, a.point.y, a.point.z, a.text, a.id, a.hide);
-//         }
-//     }
-
-// }
-
 
 function onItemUnselected(id) {
     console.log(id + " was unselected");
@@ -185,10 +152,12 @@ function onListHide(id) {
 //Для закрытия всех веток
 function allNodesClose(exceptionId) {
     let arr = document.querySelectorAll("li");
-
+    
     for (let j = 0; j < arr.length; j++) {
-        console.log($("#treeId").data("treeview"))
-        $("#treeId").data("treeview").toggleNode(arr[j]);
+        if (arr[j].classList.value == "expanded") {
+          $("#treeId").data("treeview").toggleNode(arr[j]);
+        }
+        
     }
 }
 
@@ -240,6 +209,7 @@ function treeFormer() {
         el[0].id = defaultData[i].id;
         el[0].childNodes[1].id = defaultData[i].id;
         branchFormer(defaultData[i], el);
+        allNodesClose();
     }
 
     // Ховеры на элементы вкладок

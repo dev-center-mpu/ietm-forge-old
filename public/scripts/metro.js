@@ -23796,7 +23796,7 @@
   (C.touch = on), C.plugin("touch", rn);
   var ln = {
     showChildCount: !1,
-    duration: 100,
+    duration: 80,
     onNodeClick: C.noop,
     onNodeDblClick: C.noop,
     onNodeDelete: C.noop,
