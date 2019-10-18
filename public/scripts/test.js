@@ -2,24 +2,24 @@ var master;
 var winId = -1;
 var right;
 var wrong;
-var lastRight;
-var lastWrong;
+var questionsInfo = [];
 
 
 function checkQuestionRadio(questionId, winId) {
     if (questionId == 1) {
         right = 0;
         wrong = 0;
+        questionsInfo = [];
     }
-    lastRight = right;
-    lastWrong = wrong;
     master = $('#test').data('master');
     if (document.querySelector("#opt" + questionId + "_" + winId).checked) {
         right++;
-        console.log(true)
+        questionsInfo.push(true);
+        console.log("right: " + right + " wrong: " + wrong);
     } else {
         wrong++;
-        console.log(false)
+        questionsInfo.push(false);
+        console.log("right: " + right + " wrong: " + wrong);
     }
     if (questionId == 2) {
         checkQuestionViewer(35);
@@ -44,9 +44,13 @@ function questionViewerClick() {
     if (viewer.getSelection().length > 0) {
         if (winId == viewer.getSelection()) {
             right++;
+            questionsInfo.push(true);
             winId = -1;
+            console.log("right: " + right + " wrong: " + wrong);
         } else {
+            questionsInfo.push(false);
             wrong++;
+            console.log("right: " + right + " wrong: " + wrong);
         }
         document.querySelector("#viewer").removeEventListener("click", questionViewerClick);
         viewer.show([4]);
@@ -71,12 +75,16 @@ function back(id) {
     }
     if (id == 2 || id == 5) {
         viewer.show([4]);
+        checkQuestionViewer(72);
         document.querySelector("#viewer").removeEventListener("click", questionViewerClick);
     }
-    right = lastRight;
-    wrong = lastWrong;
+    if (questionsInfo.pop()) {
+        right--;
+    } else {
+        wrong--;
+    }
     master.prev();
-    console.log(right + " " + wrong);
+    console.log("right: " + right + " wrong: " + wrong);
 }
 
 function restartTest() {

@@ -1,7 +1,5 @@
 var viewer;
 var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6bW9kZWwyMDE5LTEwLTA3LTA3LTU3LTIyLWQ0MWQ4Y2Q5OGYwMGIyMDRlOTgwMDk5OGVjZjg0MjdlL3JlZHVjZXI1LmYzZA'
-var isStarted = false;
-var annotations = {};
 var options = {
     env: 'AutodeskProduction',
     accessToken: '',
