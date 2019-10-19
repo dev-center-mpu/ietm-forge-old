@@ -85,7 +85,6 @@ var defaultData = [
 ];
 
 function onItemSelected(item) {
-
     if (ietm[item.id]) {
         let page = ietm[item.id];
         if (item.id.match(/item2_?/) === null) {
@@ -172,10 +171,10 @@ function onTreeItemCLick() {
         lastItem.style.fontWeight = "normal";
         onItemUnselected(lastItem.id);
     }
-    onItemSelected(this);
     this.style.color = "blue";
     this.style.fontWeight = "bold";
     lastItem = this;
+    onItemSelected(this);
 }
 // Уведомление при открытии/закрытии основной владки
 function nodeClick() {
