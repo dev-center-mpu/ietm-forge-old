@@ -29,6 +29,15 @@ let options = {
 
 app.use(express.static('public'));
 
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html');
+})
+
+app.get('/course', (req, res) => {
+    res.sendFile(__dirname + '/public/ietm.html');
+})
+
+
 app.get('/auth', (req, res) => {
     if (!token || Date.now() > expireTime) {
         request(options, (e, r, body) => {

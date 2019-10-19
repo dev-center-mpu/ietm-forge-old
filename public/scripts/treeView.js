@@ -85,49 +85,64 @@ var defaultData = [
 ];
 
 function onItemSelected(item) {
+  if (ietm[item.id]) {
+    let page = ietm[item.id];
 
-    if (ietm[item.id]) {
-        let page = ietm[item.id];
-        if (item.id.match(/item2_?/) === null) {
-            revertChangesAfterAnimaton();
-        }
-        page.init();
-        if (page.content) {
-            document.querySelector('#right').innerHTML = page.content;
-        }
-        document.querySelectorAll('.highlightLink').forEach(elem => {
-            let nodeId = elem.getAttribute('nodeId');
-            elem.onmouseenter = function () {
-                NOP_VIEWER.select(parseInt(nodeId));
-            }
-            elem.onmouseleave = function () {
-                NOP_VIEWER.select(0);
-            }
-        })
-        unloadAnimation();
-        if (page.animation) {
-            loadAnimation(page.animation);
-            if (page.animation.autoPlay) playButton.onclick()
-        }
-        if (page.annotations) {
-            for (let a of page.annotations) {
-                addAnnotation(a.point.x, a.point.y, a.point.z, a.text, a.id, a.hide);
-            }
-        }
-    } else console.error('Paragraph not found. Check ietm.js')
+    if (item.id.match(/item2_?/) === null) revertChangesAfterAnimaton();
+    
+    page.init();
+
+    if (page.content) {
+      document.querySelector('#right').innerHTML = page.content;
+    }
+    document.querySelectorAll('.highlightLink').forEach(elem => {
+      let nodeId = elem.getAttribute('nodeId');
+      elem.onmouseenter = function () {
+        NOP_VIEWER.select(parseInt(nodeId));
+      }
+      elem.onmouseleave = function () {
+        NOP_VIEWER.select(0);
+      }
+    })
+    unloadAnimation();
+    if (page.animation) {
+      loadAnimation(page.animation);
+      if (page.animation.autoPlay) playButton.onclick()
+    }
+    if (page.annotations) {
+      for (let a of page.annotations) {
+        addAnnotation(a.point.x, a.point.y, a.point.z, a.text, a.id, a.hide);
+      }
+    }
+  } else console.error('Paragraph not found. Check ietm.js')
 }
 
-
 function onItemUnselected(id) {
-    console.log(id + " was unselected");
+  console.log(id + " was unselected");
 }
 
 function onItemMouseEnter(id) {
-    console.log(id + " MouseEnter");
+  switch (id) {
+    case 'item2_1':
+      NOP_VIEWER.isolate([4, 6]);
+      break;
+    case 'item2_2':
+      NOP_VIEWER.isolate([35, 76]);
+      break;
+    case 'item2_3':
+      NOP_VIEWER.isolate([72, 76]);
+      break;
+    case 'item2_4':
+      NOP_VIEWER.isolate([66]);
+      break;
+    case 'item2_5':
+      NOP_VIEWER.isolate([9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64]);
+      break;
+  }
 }
 
 function onItemMouseLeave(id) {
-    console.log(id + " MouseLeft");
+  console.log(id + " MouseLeft");
 }
 function onListShow(id) {
   //allNodesClose();
@@ -138,7 +153,6 @@ function onListShow(id) {
     loadAnimation(shownListPage.animation)
     if (shownListPage.animation.autoPlay) playButton.onclick()
   }
-
 }
 
 function onListHide(id) {
@@ -167,26 +181,26 @@ elements3 = document.querySelectorAll(".tree-node");
 let lastItem;
 // Запомнинание и оповещение о выделенном элементе и прошлом
 function onTreeItemCLick() {
-    if (lastItem) {
-        lastItem.style.color = "black";
-        lastItem.style.fontWeight = "normal";
-        onItemUnselected(lastItem.id);
-    }
-    onItemSelected(this);
-    this.style.color = "blue";
-    this.style.fontWeight = "bold";
-    lastItem = this;
+  if (lastItem) {
+    lastItem.style.color = "black";
+    lastItem.style.fontWeight = "normal";
+    onItemUnselected(lastItem.id);
+  }
+  onItemSelected(this);
+  this.style.color = "blue";
+  this.style.fontWeight = "bold";
+  lastItem = this;
 }
 // Уведомление при открытии/закрытии основной владки
 function nodeClick() {
-    if (
-        this.offsetParent.classList[0] == "expanded" ||
-        this.offsetParent.classList[1] == "expanded"
-    ) {
-        onListHide(this.offsetParent.id);
-    } else {
-        onListShow(this.offsetParent.id);
-    }
+  if (
+    this.offsetParent.classList[0] == "expanded" ||
+    this.offsetParent.classList[1] == "expanded"
+  ) {
+    onListHide(this.offsetParent.id);
+  } else {
+    onListShow(this.offsetParent.id);
+  }
 }
 
 treeFormer();
@@ -211,20 +225,37 @@ function treeFormer() {
         branchFormer(defaultData[i], el);
         allNodesClose();
     }
-
-    // Ховеры на элементы вкладок
-    $(".li-hover").hover(
-        function () {
-            onItemMouseEnter(this.id);
-        },
-        function () {
-            onItemMouseLeave(this.id);
-        }
-    );
-    let elements = document.querySelectorAll(".node-toggle");
-    for (let i = 0; i < elements.length; i++) {
-        elements[i].onclick = nodeClick;
+    let el = $("#treeId")
+      .data("treeview")
+      .addTo(null, {
+        caption: defaultData[i].text,
+        icon: icon
+      });
+    if (defaultData[i].nodes != undefined) {
+      el[0].childNodes[1].classList.add("ul-hover");
+      el[0].childNodes[1].onclick = nodeClick;
     }
+    else {
+      el[0].childNodes[1].classList.add("li-hover");
+    }
+    el[0].id = defaultData[i].id;
+    el[0].childNodes[1].id = defaultData[i].id;
+    branchFormer(defaultData[i], el);
+  }
+
+  // Ховеры на элементы вкладок
+  $(".li-hover").hover(
+    function () {
+      onItemMouseEnter(this.id);
+    },
+    function () {
+      onItemMouseLeave(this.id);
+    }
+  );
+  let elements = document.querySelectorAll(".node-toggle");
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].onclick = nodeClick;
+  }
 }
 
 function branchFormer(obj, parent) {
@@ -237,25 +268,25 @@ function branchFormer(obj, parent) {
                     icon: obj.nodes[i].icon
                 });
 
-            if (obj.nodes[i].nodes != undefined) {
-                child[0].lastChild.classList.add("ul-hover");
-                child[0].childNodes[1].onclick = nodeClick;
-            }
-            else{
-                child[0].lastChild.classList.add("li-hover"); 
-            }
-            child[0].id = obj.nodes[i].id;
-            child[0].lastChild.id = obj.nodes[i].id;
-            branchFormer(obj.nodes[i], child);
-        }
+      if (obj.nodes[i].nodes != undefined) {
+        child[0].lastChild.classList.add("ul-hover");
+        child[0].childNodes[1].onclick = nodeClick;
+      }
+      else {
+        child[0].lastChild.classList.add("li-hover");
+      }
+      child[0].id = obj.nodes[i].id;
+      child[0].lastChild.id = obj.nodes[i].id;
+      branchFormer(obj.nodes[i], child);
     }
-    return;
+  }
+  return;
 }
 
 function NodeToggle(name, bool) {
-    nodeNotification(name, elements2[name[4] - 2].style.display);
+  nodeNotification(name, elements2[name[4] - 2].style.display);
 }
 
 for (const item of document.querySelectorAll(".li-hover")) {
-    item.onclick = onTreeItemCLick;
+  item.onclick = onTreeItemCLick;
 }

@@ -44,27 +44,16 @@ function onDocumentLoadSuccess(doc) {
 
 }
 
-/**
- * Autodesk.Viewing.Document.load() failure callback.
- */
 function onDocumentLoadFailure(viewerErrorCode) {
     console.error('onDocumentLoadFailure() - errorCode:' + viewerErrorCode);
 }
 
-/**
- * viewer.loadModel() success callback.
- * Invoked after the model's SVF has been initially loaded.
- * It may trigger before any geometry has been downloaded and displayed on-screen.
- */
 function onLoadModelSuccess(model) {
     console.log('onLoadModelSuccess()!');
     console.log('Validate model loaded: ' + (viewer.model === model));
     console.log(model);
 }
-/**
- * viewer.loadModel() failure callback.
- * Invoked when there's an error fetching the SVF file.
- */
+
 function onLoadModelError(viewerErrorCode) {
     console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
 }
@@ -73,11 +62,6 @@ function arraysEqual(a, b) {
     if (a === b) return true;
     if (a == null || b == null) return false;
     if (a.length != b.length) return false;
-
-    // If you don't care about the order of the elements inside
-    // the array, you should sort both arrays here.
-    // Please note that calling sort on an array will modify that array.
-    // you might want to clone your array first.
 
     for (var i = 0; i < a.length; ++i) {
         if (a[i] !== b[i]) return false;
@@ -94,15 +78,12 @@ function onLoadModelSuccess(model) {
         viewer.setLightPreset(10); // Сделать фон серым
         viewer.setBackgroundColor(255, 255, 255, 255, 255, 255);
         viewer.setGroundShadow(0);
-        //viewer.hide(4)
 
         player.addEventListener('frame', function (e) {
             let currentTime = e.detail.currentTime;
             let lerpKeys = [];
 
             for (let i = 0; i < clipProps.length; i++) lerpKeys.push(getLerpKey(i, currentTime));
-
-            console.log(currentTime, lerpKeys)
 
             for (let key of lerpKeys) {
                 switch (key.for) {
@@ -169,8 +150,6 @@ function setRotationAroundBody(eulerAngle, rotatedNodeId, aroundNodeId) {
 
     axisBody.worldMatrix = new THREE.Matrix4();
     axisBody.fragProxy.getWorldMatrix(axisBody.worldMatrix);
-
-
 
     let distance = new THREE.Vector3();
     distance.set(
@@ -487,6 +466,13 @@ function loadAnimation(clip) {
     time.innerHTML = `${fancyTimeFormat(activeClip.currentTime)} / ${fancyTimeFormat(activeClip.duration)}`;
 }
 
+function resetScene() {
+    viewer.isolate(0);
+    viewer.select(0);
+    viewer.fitToView(0);
+    revertChangesAfterAnimaton();
+}
+
 function revertChangesAfterAnimaton() {
     var navTool = new Autodesk.Viewing.Navigation(viewer.getCamera());
     navTool.setCameraUpVector(new THREE.Vector3(0, 1, 0));
@@ -509,3 +495,4 @@ function revertChangesAfterAnimaton() {
 function lerp(start, end, amt) {
     return (1 - amt) * start + amt * end
 }
+
