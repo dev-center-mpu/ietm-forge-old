@@ -85,36 +85,35 @@ var defaultData = [
 ];
 
 function onItemSelected(item) {
-  if (ietm[item.id]) {
-    let page = ietm[item.id];
-
-    if (item.id.match(/item2_?/) === null) revertChangesAfterAnimaton();
-    
-    page.init();
-
-    if (page.content) {
-      document.querySelector('#right').innerHTML = page.content;
-    }
-    document.querySelectorAll('.highlightLink').forEach(elem => {
-      let nodeId = elem.getAttribute('nodeId');
-      elem.onmouseenter = function () {
-        NOP_VIEWER.select(parseInt(nodeId));
-      }
-      elem.onmouseleave = function () {
-        NOP_VIEWER.select(0);
-      }
-    })
-    unloadAnimation();
-    if (page.animation) {
-      loadAnimation(page.animation);
-      if (page.animation.autoPlay) playButton.onclick()
-    }
-    if (page.annotations) {
-      for (let a of page.annotations) {
-        addAnnotation(a.point.x, a.point.y, a.point.z, a.text, a.id, a.hide);
-      }
-    }
-  } else console.error('Paragraph not found. Check ietm.js')
+    if (ietm[item.id]) {
+        let page = ietm[item.id];
+        if (item.id.match(/item2_?/) === null) {
+            revertChangesAfterAnimaton();
+        }
+        page.init();
+        if (page.content) {
+            document.querySelector('#right').innerHTML = page.content;
+        }
+        document.querySelectorAll('.highlightLink').forEach(elem => {
+            let nodeId = elem.getAttribute('nodeId');
+            elem.onmouseenter = function () {
+                NOP_VIEWER.select(parseInt(nodeId));
+            }
+            elem.onmouseleave = function () {
+                NOP_VIEWER.select(0);
+            }
+        })
+        unloadAnimation();
+        if (page.animation) {
+            loadAnimation(page.animation);
+            if (page.animation.autoPlay) playButton.onclick()
+        }
+        if (page.annotations) {
+            for (let a of page.annotations) {
+                addAnnotation(a.point.x, a.point.y, a.point.z, a.text, a.id, a.hide);
+            }
+        }
+    } else console.error('Paragraph not found. Check ietm.js')
 }
 
 function onItemUnselected(id) {
@@ -181,15 +180,15 @@ elements3 = document.querySelectorAll(".tree-node");
 let lastItem;
 // Запомнинание и оповещение о выделенном элементе и прошлом
 function onTreeItemCLick() {
-  if (lastItem) {
-    lastItem.style.color = "black";
-    lastItem.style.fontWeight = "normal";
-    onItemUnselected(lastItem.id);
-  }
-  onItemSelected(this);
-  this.style.color = "blue";
-  this.style.fontWeight = "bold";
-  lastItem = this;
+    if (lastItem) {
+        lastItem.style.color = "black";
+        lastItem.style.fontWeight = "normal";
+        onItemUnselected(lastItem.id);
+    }
+    this.style.color = "blue";
+    this.style.fontWeight = "bold";
+    lastItem = this;
+    onItemSelected(this);
 }
 // Уведомление при открытии/закрытии основной владки
 function nodeClick() {

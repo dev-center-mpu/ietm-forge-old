@@ -91,7 +91,7 @@ function onMouseMove() {
     }
 }
 
-document.querySelector("#viewer").addEventListener('mousemove', onMouseMove, false);
+document.addEventListener('mousemove', onMouseMove, false);
 
 function displayAnnotation(id) {
     const annotation = document.createElement('div');
