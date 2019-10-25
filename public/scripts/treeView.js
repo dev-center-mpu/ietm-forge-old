@@ -85,35 +85,35 @@ var defaultData = [
 ];
 
 function onItemSelected(item) {
-    if (ietm[item.id]) {
-        let page = ietm[item.id];
-        if (item.id.match(/item2_?/) === null) {
-            revertChangesAfterAnimaton();
-        }
-        page.init();
-        if (page.content) {
-            document.querySelector('#right').innerHTML = page.content;
-        }
-        document.querySelectorAll('.highlightLink').forEach(elem => {
-            let nodeId = elem.getAttribute('nodeId');
-            elem.onmouseenter = function () {
-                NOP_VIEWER.select(parseInt(nodeId));
-            }
-            elem.onmouseleave = function () {
-                NOP_VIEWER.select(0);
-            }
-        })
-        unloadAnimation();
-        if (page.animation) {
-            loadAnimation(page.animation);
-            if (page.animation.autoPlay) playButton.onclick()
-        }
-        if (page.annotations) {
-            for (let a of page.annotations) {
-                addAnnotation(a.point.x, a.point.y, a.point.z, a.text, a.id, a.hide);
-            }
-        }
-    } else console.error('Paragraph not found. Check ietm.js')
+  if (ietm[item.id]) {
+    let page = ietm[item.id];
+    if (item.id.match(/item2_?/) === null) {
+      revertChangesAfterAnimaton();
+    }
+    page.init();
+    if (page.content) {
+      document.querySelector('#right').innerHTML = page.content;
+    }
+    document.querySelectorAll('.highlightLink').forEach(elem => {
+      let nodeId = elem.getAttribute('nodeId');
+      elem.onmouseenter = function () {
+        NOP_VIEWER.select(parseInt(nodeId));
+      }
+      elem.onmouseleave = function () {
+        NOP_VIEWER.select(0);
+      }
+    })
+    unloadAnimation();
+    if (page.animation) {
+      loadAnimation(page.animation);
+      if (page.animation.autoPlay) playButton.onclick()
+    }
+    if (page.annotations) {
+      for (let a of page.annotations) {
+        addAnnotation(a.point.x, a.point.y, a.point.z, a.text, a.id, a.hide);
+      }
+    }
+  } else console.error('Paragraph not found. Check ietm.js')
 }
 
 function onItemUnselected(id) {
@@ -164,14 +164,14 @@ function onListHide(id) {
 
 //Для закрытия всех веток
 function allNodesClose(exceptionId) {
-    let arr = document.querySelectorAll("li");
-    
-    for (let j = 0; j < arr.length; j++) {
-        if (arr[j].classList.value == "expanded") {
-          $("#treeId").data("treeview").toggleNode(arr[j]);
-        }
-        
+  let arr = document.querySelectorAll("li");
+
+  for (let j = 0; j < arr.length; j++) {
+    if (arr[j].classList.value == "expanded") {
+      $("#treeId").data("treeview").toggleNode(arr[j]);
     }
+
+  }
 }
 
 elements2 = document.querySelectorAll(".interaction-ul");
@@ -180,15 +180,13 @@ elements3 = document.querySelectorAll(".tree-node");
 let lastItem;
 // Запомнинание и оповещение о выделенном элементе и прошлом
 function onTreeItemCLick() {
-    if (lastItem) {
-        lastItem.style.color = "black";
-        lastItem.style.fontWeight = "normal";
-        onItemUnselected(lastItem.id);
-    }
-    this.style.color = "blue";
-    this.style.fontWeight = "bold";
-    lastItem = this;
-    onItemSelected(this);
+  if (lastItem) {
+    lastItem.style.fontWeight = "normal";
+    onItemUnselected(lastItem.id);
+  }
+  this.style.fontWeight = "bold";
+  lastItem = this;
+  onItemSelected(this);
 }
 // Уведомление при открытии/закрытии основной владки
 function nodeClick() {
@@ -205,30 +203,12 @@ function nodeClick() {
 treeFormer();
 
 function treeFormer() {
-    for (let i = 0; i < defaultData.length; i++) {
-        let el = $("#treeId")
-            .data("treeview")
-            .addTo(null, {
-                caption: defaultData[i].text,
-                icon: defaultData[i].icon
-            });
-        if (defaultData[i].nodes != undefined) {
-            el[0].childNodes[1].classList.add("ul-hover");
-            el[0].childNodes[1].onclick = nodeClick;
-        }
-        else{
-            el[0].childNodes[1].classList.add("li-hover");
-        }
-        el[0].id = defaultData[i].id;
-        el[0].childNodes[1].id = defaultData[i].id;
-        branchFormer(defaultData[i], el);
-        allNodesClose();
-    }
+  for (let i = 0; i < defaultData.length; i++) {
     let el = $("#treeId")
       .data("treeview")
       .addTo(null, {
         caption: defaultData[i].text,
-        icon: icon
+        icon: defaultData[i].icon
       });
     if (defaultData[i].nodes != undefined) {
       el[0].childNodes[1].classList.add("ul-hover");
@@ -240,32 +220,34 @@ function treeFormer() {
     el[0].id = defaultData[i].id;
     el[0].childNodes[1].id = defaultData[i].id;
     branchFormer(defaultData[i], el);
+    allNodesClose();
   }
+}
 
-  // Ховеры на элементы вкладок
-  $(".li-hover").hover(
-    function () {
-      onItemMouseEnter(this.id);
-    },
-    function () {
-      onItemMouseLeave(this.id);
-    }
-  );
-  let elements = document.querySelectorAll(".node-toggle");
-  for (let i = 0; i < elements.length; i++) {
-    elements[i].onclick = nodeClick;
+// Ховеры на элементы вкладок
+$(".li-hover").hover(
+  function () {
+    onItemMouseEnter(this.id);
+  },
+  function () {
+    onItemMouseLeave(this.id);
   }
+);
+let elements = document.querySelectorAll(".node-toggle");
+for (let i = 0; i < elements.length; i++) {
+  elements[i].onclick = nodeClick;
+}
 
 
 function branchFormer(obj, parent) {
-    if (obj.nodes != undefined) {
-        for (let i = 0; i < obj.nodes.length; i++) {
-            let child = $("#treeId")
-                .data("treeview")
-                .addTo(parent, {
-                    caption: obj.nodes[i].text,
-                    icon: obj.nodes[i].icon
-                });
+  if (obj.nodes != undefined) {
+    for (let i = 0; i < obj.nodes.length; i++) {
+      let child = $("#treeId")
+        .data("treeview")
+        .addTo(parent, {
+          caption: obj.nodes[i].text,
+          icon: obj.nodes[i].icon
+        });
 
       if (obj.nodes[i].nodes != undefined) {
         child[0].lastChild.classList.add("ul-hover");
