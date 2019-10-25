@@ -255,7 +255,7 @@ function treeFormer() {
   for (let i = 0; i < elements.length; i++) {
     elements[i].onclick = nodeClick;
   }
-}
+
 
 function branchFormer(obj, parent) {
     if (obj.nodes != undefined) {
