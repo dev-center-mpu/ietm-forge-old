@@ -21,7 +21,6 @@ function update() {
         if (!viewer.impl.camera.position.equals(p2)) {
             clientPos = viewer.impl.worldToClient(p2, viewer.impl.camera);
             p2.x = clientPos.x;
-
             p2.y = clientPos.y;
             document.querySelector('#annotation-' + id).style.left = p2.x + "px";
             document.querySelector('#annotation-' + id).style.top = p2.y + "px";
@@ -29,9 +28,9 @@ function update() {
             document.querySelector('#annotation-index-' + id).style.top = p2.y - 15 + "px";
         }
     }
-    if (annotations.length > 0)
+    if (annotations.length > 0) {
         this.changeVisibilityOfAnnotations();
-
+    }
 }
 
 function onItemClick(item) {
@@ -42,7 +41,6 @@ function setAnotationPosition(id) {
     if (!viewer.impl.camera.position.equals(p2)) {
         clientPos = viewer.impl.worldToClient(p2, viewer.impl.camera);
         p2.x = clientPos.x;
-
         p2.y = clientPos.y;
         document.querySelector('#annotation-' + id).style.left = p2.x + "px";
         document.querySelector('#annotation-' + id).style.top = p2.y + "px";
@@ -52,7 +50,6 @@ function setAnotationPosition(id) {
 }
 
 function addAnnotation(x, y, z, annotationText, id, flag) {
-
     annotations[id] = {
         x: x,
         y: y,
@@ -65,8 +62,9 @@ function addAnnotation(x, y, z, annotationText, id, flag) {
 
     let annotationNumber = document.querySelector("#annotation-index-" + id);
     annotationNumber.dispatchEvent(new Event("click"));
-    if (!flag)
+    if (!flag) {
         setAnnotationOpacity(index, 0);
+    }
     return id;
 }
 
@@ -81,7 +79,6 @@ function annotationsInit() {
     for (const id in annotations) {
         this.displayAnnotation(id);
     }
-
 }
 
 function onMouseMove() {
@@ -117,8 +114,9 @@ function hideAnnotation(id) {
     document.querySelector('#annotation-text-' + id).innerHTML = hidden ? annotations[id].text : '';
     if (hidden) {
         annotation.classList.remove('hidden');
-    } else
+    } else{
         annotation.classList.add('hidden');
+    }
 }
 
 function getClosestAnnotation() {
