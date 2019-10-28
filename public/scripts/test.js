@@ -1,8 +1,8 @@
-var master;
-var winId = -1;
-var right;
-var wrong;
-var questionsInfo = [];
+let master;
+let winId = -1;
+let right;
+let wrong;
+let questionsInfo = [];
 
 
 function checkQuestionRadio(questionId, winId) {

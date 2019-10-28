@@ -38,8 +38,8 @@ function onDocumentLoadSuccess(doc) {
     };
     viewer.start(svfUrl, modelOptions, onLoadModelSuccess, onLoadModelError);
 
-    isStarted = true;
 
+    isStarted = true;
     annotationsInit();
 
 }
