@@ -11,12 +11,12 @@ var defaultData = [
     nodes: [
       {
         text: "Корпус",
-        id: "item2_1",
+        id: "item2_0",
         icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
       },
       {
         text: "Зубчатая передача",
-        id: "item2_2",
+        id: "item2_1",
         icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
       },
       {

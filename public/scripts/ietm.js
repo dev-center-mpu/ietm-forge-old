@@ -377,10 +377,6 @@ var ietm = {
         `
     },
     'item2_0': {
-        init: function () {
-            NOP_VIEWER.setGhosting(true);
-            NOP_VIEWER.isolate(0)
-        },
         animation: {
             loop: false,
             autoPlay: true,
@@ -733,11 +729,7 @@ var ietm = {
                     ]
                 }
             ]
-        },
-        content: `
-        <h2>Корпус</h2>
-        <p>Описание детали</p>
-        `
+        }
     },
     'item2_1': {
         init: function () {
@@ -1027,6 +1019,36 @@ var ietm = {
          Количество ступеней равно количеству зацеплений, имеющих передаточное число больше 1.</p>
          <p>Кроме рабочих шестерен могут использоваться паразитки – шестерни, которые не изменяют крутящий момент,
           только направление вращения колеса и соответственно вала, на котором оно расположено.</p>
+        `
+    },
+    'item4_1': {
+        init: function () {
+            NOP_VIEWER.isolate(0);
+            NOP_VIEWER.fitToView(0);
+        },
+        content: `
+        <h2>Разборка корпуса</h2>
+        <p>Содержимое</p>
+        `
+    },
+    'item4_2': {
+        init: function () {
+            NOP_VIEWER.isolate(0);
+            NOP_VIEWER.fitToView(0);
+        },
+        content: `
+        <h2>Замена шестерней</h2>
+        <p>Содержимое</p>
+        `
+    },
+    'item5_1': {
+        init: function () {
+            NOP_VIEWER.isolate(0);
+            NOP_VIEWER.fitToView(0);
+        },
+        content: `
+        <h2>Смазывание компонентов</h2>
+        <p>Содержимое</p>
         `
     },
     'item6': {
