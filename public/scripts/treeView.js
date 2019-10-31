@@ -2,127 +2,127 @@ var defaultData = [
   {
     text: "Техническое описание",
     id: "item1",
-    icon: "https://image.flaticon.com/icons/svg/1500/1500427.svg"
+    icon: "/./img/icons/tech.svg"
   },
   {
     text: "Каталог деталей",
     id: "item2",
-    icon: "https://image.flaticon.com/icons/svg/2181/2181596.svg",
+    icon: "/./img/icons/folder.svg",
     nodes: [
       {
         text: "Корпус",
         id: "item2_1",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/model.svg"
       },
       {
         text: "Зубчатая передача",
         id: "item2_2",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/model.svg"
       },
       {
         text: "Двигатель",
         id: "item2_3",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/model.svg"
       },
       {
         text: "Тихоходный вал",
         id: "item2_4",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/model.svg"
       },
       {
         text: "Подшипники",
         id: "item2_5",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/model.svg"
       }
     ]
   },
   {
     text: "Принцип работы",
     id: "item3",
-    icon: "https://image.flaticon.com/icons/svg/2181/2181596.svg",
+    icon: "/./img/icons/folder.svg",
     nodes: [
       {
         text: "Работа редуктора",
         id: "item3_1",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/list.svg"
       }
     ]
   },
   {
     text: "Технические характеристики",
     id: "item7",
-    icon: "https://image.flaticon.com/icons/svg/2181/2181596.svg",
+    icon: "/./img/icons/folder.svg",
     nodes: [
       {
         text: "Передаточное число",
         id: "item7_1",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/list.svg"
       },
       {
         text: "КПД",
         id: "item7_2",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/list.svg"
       },
       {
         text: "Жесткость",
         id: "item7_3",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/list.svg"
       },
       {
         text: "Надежность",
         id: "item7_4",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/list.svg"
       },
       {
         text: "Долговечность",
         id: "item7_5",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/list.svg"
       },
       {
         text: "Прочность",
         id: "item7_6",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/list.svg"
       },
       {
         text: "Входные обороты",
         id: "item7_7",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/list.svg"
       }
     ]
   },
   {
     text: "Руководство по разработке",
     id: "item4",
-    icon: "https://image.flaticon.com/icons/svg/2181/2181596.svg",
+    icon: "/./img/icons/folder.svg",
     nodes: [
       {
         text: "Разборка корпуса",
         id: "item4_1",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/list.svg"
       },
       {
         text: "Замена конструкции",
         id: "item4_2",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/list.svg"
       }
     ]
   },
   {
     text: "Руководство по эксплуатации",
     id: "item5",
-    icon: "https://image.flaticon.com/icons/svg/2181/2181596.svg",
+    icon: "/./img/icons/folder.svg",
     nodes: [
       {
         text: "Смазывание компонентов",
         id: "item5_1",
-        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+        icon: "/./img/icons/list.svg"
       }
     ]
   },
   {
     text: "Тест",
     id: "item6",
-    icon: "https://image.flaticon.com/icons/svg/1010/1010759.svg"
+    icon: "/./img/icons/test.svg"
   }
 ];
 
