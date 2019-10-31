@@ -59,7 +59,7 @@ var defaultData = [
         icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
       },
       {
-        text: "Замена шестерней",
+        text: "Замена конструкции",
         id: "item4_2",
         icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
       }
