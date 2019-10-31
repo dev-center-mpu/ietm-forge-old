@@ -49,6 +49,48 @@ var defaultData = [
     ]
   },
   {
+    text: "Технические характеристики",
+    id: "item7",
+    icon: "https://image.flaticon.com/icons/svg/2181/2181596.svg",
+    nodes: [
+      {
+        text: "Передаточное число",
+        id: "item7_1",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+      },
+      {
+        text: "КПД",
+        id: "item7_2",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+      },
+      {
+        text: "Жесткость",
+        id: "item7_3",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+      },
+      {
+        text: "Надежность",
+        id: "item7_4",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+      },
+      {
+        text: "Долговечность",
+        id: "item7_5",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+      },
+      {
+        text: "Прочность",
+        id: "item7_6",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+      },
+      {
+        text: "Входные обороты",
+        id: "item7_7",
+        icon: "https://image.flaticon.com/icons/svg/1063/1063388.svg"
+      }
+    ]
+  },
+  {
     text: "Руководство по разработке",
     id: "item4",
     icon: "https://image.flaticon.com/icons/svg/2181/2181596.svg",
