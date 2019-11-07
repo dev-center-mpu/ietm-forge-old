@@ -49,6 +49,38 @@ var defaultData = [
     ]
   },
   {
+    text: "Виды редукторов",
+    id: "item8",
+    icon: "/./img/icons/folder.svg",
+    nodes: [
+      {
+        text: "Мотор-редуктор",
+        id: "item8_1",
+        icon: "/./img/icons/list.svg"
+      },
+      {
+        text: "Цилиндрический редуктор",
+        id: "item8_2",
+        icon: "/./img/icons/list.svg"
+      },
+      {
+        text: "Червячный редуктор",
+        id: "item8_3",
+        icon: "/./img/icons/list.svg"
+      },
+      {
+        text: "Комбинированный редуктор",
+        id: "item8_4",
+        icon: "/./img/icons/list.svg"
+      },
+      {
+        text: "Коническо-цилиндрический редуктор",
+        id: "item8_5",
+        icon: "/./img/icons/list.svg"
+      }
+    ]
+  },
+  {
     text: "Технические характеристики",
     id: "item7",
     icon: "/./img/icons/folder.svg",
