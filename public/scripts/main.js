@@ -69,6 +69,25 @@ function arraysEqual(a, b) {
     return true;
 }
 
+function isObject(obj) {
+    var type = typeof obj;
+    return type === 'function' || type === 'object' && !!obj;
+};
+function iterationCopy(src) {
+    let target = {};
+    for (let prop in src) {
+        if (src.hasOwnProperty(prop)) {
+            // if the value is a nested object, recursively copy all it's properties
+            if (isObject(src[prop])) {
+                target[prop] = iterationCopy(src[prop]);
+            } else {
+                target[prop] = src[prop];
+            }
+        }
+    }
+    return target;
+}
+
 function onLoadModelSuccess(model) {
     console.log('onLoadModelSuccess()!');
     console.log('Validate model loaded: ' + (viewer.model === model));
@@ -78,6 +97,15 @@ function onLoadModelSuccess(model) {
         viewer.setLightPreset(10); // Сделать фон серым
         viewer.setBackgroundColor(255, 255, 255, 255, 255, 255);
         viewer.setGroundShadow(0);
+
+        for (let nodeId of viewer.impl.model.getData().fragments.fragId2dbId) {
+            addObject(nodeId)
+        }
+
+        for (let i = 0; i < viewer.impl.model.getFragmentList().materialids.length; i++) {
+            //viewer.impl.model.getFragmentList().materialids[i] = i;
+        }
+
 
         player.addEventListener('frame', function (e) {
             let currentTime = e.detail.currentTime;
@@ -90,6 +118,7 @@ function onLoadModelSuccess(model) {
                     case 'node':
                         if (key.params.position) for (let node of key.nodeId) setPosition(key.params.position, node);
                         if (key.params.rotation) for (let node of key.nodeId) setRotation(key.params.rotation, node);
+                        if (key.params.opacity !== undefined) for (let node of key.nodeId) setOpacity(node, key.params.opacity);
                         break;
                     case 'annotation':
                         if (key.params.opacity !== undefined) setAnnotationOpacity(key.annotationId, key.params.opacity);
@@ -114,71 +143,70 @@ function onLoadModelError(viewerErrorCode) {
 ////////////// TRANSFORM FUNCTIONS
 ////////////////////////////////////////////////////////////////
 
-function setRotationAroundBody(eulerAngle, rotatedNodeId, aroundNodeId) {
-    if (!viewer) {
-        console.error(`Viewer is not initialized`);
-        return;
+var objects = {};
+
+function addObject(nodeId) {
+    objects[nodeId] = {
+        position: getCenterOfNodeId(nodeId),
+        rotation: new THREE.Euler(0, 0, 0),
+        pivot: getCenterOfNodeId(nodeId)
     }
-
-    let rotatedBody = { nodeId: rotatedNodeId };
-
-    rotatedBody.fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(rotatedNodeId);
-    if (rotatedBody.fragId == -1) {
-        console.error(`nodeId ${rotatedBody.nodeId} not found`);
-        return;
-    }
-
-    rotatedBody.fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, rotatedBody.fragId);
-    rotatedBody.fragProxy.getAnimTransform();
-
-    rotatedBody.worldMatrix = new THREE.Matrix4();
-    rotatedBody.fragProxy.getWorldMatrix(rotatedBody.worldMatrix);
-
-    rotatedBody.position = new THREE.Vector3();
-    rotatedBody.position.copy(rotatedBody.worldMatrix.getPosition().clone());
-
-    let axisBody = { nodeId: aroundNodeId };
-
-    axisBody.fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(aroundNodeId);
-    if (axisBody.fragId == -1) {
-        console.error(`nodeId ${axisBody.nodeId} not found`);
-        return;
-    }
-
-    axisBody.fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, axisBody.fragId);
-    axisBody.fragProxy.getAnimTransform();
-
-    axisBody.worldMatrix = new THREE.Matrix4();
-    axisBody.fragProxy.getWorldMatrix(axisBody.worldMatrix);
-
-    let distance = new THREE.Vector3();
-    distance.set(
-
-    );
 }
 
-function setRotation(eulerAngle, nodeId) {
+function getObject(nodeId) {
+    return objects[nodeId];
+}
+
+
+function setRotation(eulerAngle, rotatedNodeId, pivot = getCenterOfNodeId(rotatedNodeId)) {
     if (!viewer) {
         console.error(`Viewer is not initialized`);
         return;
     }
 
-    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
+    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(rotatedNodeId);
+
     if (fragId == -1) {
-        console.error(`nodeId ${nodeId} not found`);
+        console.error(`nodeId ${rotatedNodeId} not found`);
         return;
     }
+
+    // Get Transform
     let fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, fragId);
     fragProxy.getAnimTransform();
 
+    // Reset Transform to default
+    //rotatedBody.fragProxy.quaternion = new THREE.Quaternion(0, 0, 0);
+    //rotatedBody.fragProxy.position = new THREE.Vector3(0, 0, 0);
+    fragProxy.updateAnimTransform();
+    fragProxy.getAnimTransform();
+
+    // Get World matrix
     let worldMatrix = new THREE.Matrix4();
     fragProxy.getWorldMatrix(worldMatrix);
 
-    let oldPosition = new THREE.Vector3();
-    oldPosition.copy(worldMatrix.getPosition().clone());
+    // Get position from world matrix
+    let position = new THREE.Vector3();
+    position.copy(worldMatrix.getPosition().clone());
 
+    // Rotating quartenion
     let quaternion = new THREE.Quaternion();
     quaternion.setFromEuler(eulerAngle.clone());
+
+    // Rotate avatar around pivot
+
+    var mesh = new THREE.Object3D();
+
+    viewer.impl.scene.add(mesh);
+    mesh.parent.localToWorld(mesh.position.clone());
+    mesh.position.copy(position.clone());
+    mesh.position.sub(pivot.clone()); // remove the offset
+    mesh.position.applyEuler(eulerAngle.clone()); // rotate the POSITION
+    mesh.position.add(pivot.clone()); // re-add the offset
+    mesh.parent.worldToLocal(mesh.position.clone());
+    mesh.setRotationFromEuler(eulerAngle);
+    viewer.impl.scene.remove(mesh);
+
     fragProxy.quaternion.copy(quaternion.clone());
 
     fragProxy.updateAnimTransform();
@@ -190,17 +218,42 @@ function setRotation(eulerAngle, nodeId) {
     let newPosition = new THREE.Vector3();
     newPosition.copy(updatedWorldMatrix.getPosition().clone());
 
-    let offset = new THREE.Vector3();
-    offset.x = oldPosition.x - newPosition.x;
-    offset.y = oldPosition.y - newPosition.y;
-    offset.z = oldPosition.z - newPosition.z;
+    let offsetR = new THREE.Vector3();
+    offsetR.set(
+        newPosition.x - position.x,
+        newPosition.y - position.y,
+        newPosition.z - position.z,
+    );
 
-    fragProxy.position.x += offset.x;
-    fragProxy.position.y += offset.y;
-    fragProxy.position.z += offset.z;
+    fragProxy.offsetR = offsetR;
+
+    fragProxy.position.x += (position.x - newPosition.x) + (mesh.position.x - position.x);
+    fragProxy.position.y += (position.y - newPosition.y) + (mesh.position.y - position.y);
+    fragProxy.position.z += (position.z - newPosition.z) + (mesh.position.z - position.z);
 
     fragProxy.updateAnimTransform();
     viewer.impl.sceneUpdated(true);
+}
+
+function getCenterOfNodeId(nodeId) {
+    if (!viewer) {
+        console.error(`Viewer is not initialized`);
+        return;
+    }
+
+    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
+    if (fragId == -1) {
+        console.error(`nodeId ${nodeId} not found`);
+        return;
+    }
+
+    let fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, fragId);
+    fragProxy.getAnimTransform();
+
+    let worldMatrix = new THREE.Matrix4();
+    fragProxy.getWorldMatrix(worldMatrix);
+
+    return worldMatrix.getPosition().clone();
 }
 
 function setPosition(positionVector, nodeId) {
@@ -217,14 +270,66 @@ function setPosition(positionVector, nodeId) {
     let fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, fragId);
     fragProxy.getAnimTransform();
 
-    fragProxy.position.x = positionVector.x;
-    fragProxy.position.y = positionVector.y;
-    fragProxy.position.z = positionVector.z;
+    console.log('до', fragProxy);
+
+    if (!fragProxy.offsetR) fragProxy.offsetR = new THREE.Vector3();
+    fragProxy.position.x = positionVector.x - fragProxy.offsetR.x; 
+    fragProxy.position.y = positionVector.y - fragProxy.offsetR.y;
+    fragProxy.position.z = positionVector.z - fragProxy.offsetR.z;
+
+    console.log('после', fragProxy);
+
 
     fragProxy.updateAnimTransform();
     viewer.impl.sceneUpdated(true);
 }
 
+function setOpacity(nodeId, opacity) {
+    if (!viewer) {
+        console.error(`Viewer is not initialized`);
+        return;
+    }
+
+    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
+    if (fragId == -1) {
+        console.error(`nodeId ${nodeId} not found`);
+        return;
+    }
+
+    let fragList = viewer.impl.model.getFragmentList();
+
+    //console.log(viewer.impl.getFragmentProxy(viewer.impl.model, fragId))
+
+    let m = fragList.getMaterial(fragId);
+    m.transparent = true;
+    m.opacity = opacity;
+
+    fragList.setMaterial(fragId, m);
+    viewer.impl.invalidate(true);
+    viewer.impl.sceneUpdated(true);
+}
+
+function setColor(nodeId, color) {
+    if (!viewer) {
+        console.error(`Viewer is not initialized`);
+        return;
+    }
+
+    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
+    if (fragId == -1) {
+        console.error(`nodeId ${nodeId} not found`);
+        return;
+    }
+
+    let fragList = viewer.impl.model.getFragmentList();
+
+    let m = fragList.getMaterial(fragId);
+    m.opaque_albedo = color;
+
+    fragList.setMaterial(fragId, m);
+    viewer.impl.invalidate(true);
+    viewer.impl.sceneUpdated(true);
+}
 
 ///////////////////////////////////////////////////////
 /////////   PLAYER
@@ -381,6 +486,16 @@ function getLerpKey(propIndex, time) {
                         lerp(prevKey.params.position.z, nextKey.params.position.z, relation)
                     );
                     lerpKey.params.position = vector;
+                }
+            }
+
+            if (prevKey.params.opacity !== undefined) {
+                if (relation === Infinity) {
+                    lerpKey.params.opacity = prevKey.params.opacity;
+                } else if (relation === -Infinity || isNaN(relation)) {
+                    lerpKey.params.opacity = nextKey.params.opacity;
+                } else {
+                    lerpKey.params.opacity = lerp(prevKey.params.opacity, nextKey.params.opacity, relation);
                 }
             }
             break;

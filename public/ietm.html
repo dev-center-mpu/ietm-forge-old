@@ -154,13 +154,15 @@
 
 <body>
   <div id="left">
-    <div data-role="panel" data-title-caption="<h5>Дерево</h5>" data-title-icon="<span class='mif-flow-tree mif-2x'></span>">
+    <div data-role="panel" data-title-caption="<h5>Дерево</h5>"
+      data-title-icon="<span class='mif-flow-tree mif-2x'></span>">
       <ul data-role="treeview" id="treeId"></ul>
     </div>
   </div>
   <div id="viewer">
     <div id="player" style="display: none">
       <div id="playerControls">
+        <span id="recordBtn" class="text-primary" onclick="toggleRecordMode()" style="display: none"></span>
         <span id="playBtn" class="text-primary">▶</span>
         <span id="pauseBtn" class="text-primary" style="display: none">❙❙</span>
         <input type="range" value="0" step="0.01" class="custom-range" id="customRange1" />
@@ -182,28 +184,28 @@
       <img src="img/gearbox.png" width="80%">
 
 
-  <!-- The Viewer will be instantiated here -->
+    <!-- The Viewer will be instantiated here -->
 
-  <!-- Bootstrap -->
+    <!-- Bootstrap -->
 
-  <script src="http://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
-  <script src="scripts/annotations.js"></script>
-  <script src="scripts/test.js"></script>
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+      </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+      </script>
+    <script src="scripts/annotations.js"></script>
+    <script src="scripts/test.js"></script>
 
-  <!-- The Viewer JS -->
-  <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/viewer3D.min.js"></script>
+    <!-- The Viewer JS -->
+    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/6.*/viewer3D.min.js"></script>
 
-  <!-- Custom scripts -->
+    <!-- Custom scripts -->
 
-  <script src="scripts/ietm.js"></script>
-  <script src="scripts/main.js"></script>
-  <script src="scripts/metro.js"></script>
-  <script src="scripts/treeView.js"></script>
+    <script src="scripts/ietm.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/metro.js"></script>
+    <script src="scripts/treeView.js"></script>
 </body>

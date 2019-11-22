@@ -37,6 +37,9 @@ app.get('/course', (req, res) => {
     res.sendFile(__dirname + '/public/ietm.html');
 })
 
+app.get('/constructor', (req, res) => {
+    res.sendFile(__dirname + '/public/constructor.html');
+})
 
 app.get('/auth', (req, res) => {
     if (!token || Date.now() > expireTime) {

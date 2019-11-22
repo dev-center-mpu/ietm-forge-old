@@ -884,7 +884,7 @@ var ietm = {
                         {
                             for: 'node', nodeId: [35],
                             params: {
-                                rotation: new THREE.Euler(0, THREE.Math.degToRad(360 * 0), THREE.Math.degToRad(0)),
+                                rotation: new THREE.Euler(0, THREE.Math.degToRad(360 * 0), 0),
                             }
                         },
                         {
@@ -903,6 +903,7 @@ var ietm = {
                             for: 'node', nodeId: [164],
                             params: {
                                 position: new THREE.Vector3(0, 0, 0),
+                                opacity: 1
                             }
                         },
                         {
@@ -999,6 +1000,7 @@ var ietm = {
                             for: 'node', nodeId: [164],
                             params: {
                                 position: new THREE.Vector3(0, -100, 0),
+                                opacity: 0
                             }
                         }
                     ]
