@@ -21,8 +21,8 @@ function showPartProperies() {
     document.querySelector('input[name="part-pos-z"]').value = data.position.z;
 
     document.querySelector('input[name="part-rotation-x"]').value = THREE.Math.radToDeg(data.rotation.x);
-    document.querySelector('input[name="part-rotation-y"]').value = data.rotation.y;
-    document.querySelector('input[name="part-rotation-z"]').value = data.rotation.z;
+    document.querySelector('input[name="part-rotation-y"]').value = THREE.Math.radToDeg(data.rotation.y);
+    document.querySelector('input[name="part-rotation-z"]').value = THREE.Math.radToDeg(data.rotation.z);
 
     document.querySelector('input[name="part-anchor-x"]').value = 0;
     document.querySelector('input[name="part-anchor-y"]').value = 0;
@@ -34,13 +34,13 @@ function showCameraProperies() {
     document.querySelector('#partSettings').style.display = 'none';
 }
 
-document.querySelector('input[name="part-pos-x"]').oninput = function (e) { let s = viewer.getSelection()[0]; const p = getPartData(s).position; let vec = new THREE.Vector3(); vec.set(parseFloat(e.target.value), p.y, p.z); setPosition(vec, s); }
-document.querySelector('input[name="part-pos-y"]').oninput = function (e) { let s = viewer.getSelection()[0]; const p = getPartData(s).position; let vec = new THREE.Vector3(); vec.set(p.x, parseFloat(e.target.value), p.z); setPosition(vec, s); }
-document.querySelector('input[name="part-pos-z"]').oninput = function (e) { let s = viewer.getSelection()[0]; const p = getPartData(s).position; let vec = new THREE.Vector3(); vec.set(p.x, p.y, parseFloat(e.target.value)); setPosition(vec, s); }
+document.querySelector('input[name="part-pos-x"]').oninput = function (e) { let s = viewer.getSelection()[0]; const p = getPartData(s).position; const r = getPartData(s).rotation; let vec = new THREE.Vector3(); vec.set(parseFloat(e.target.value), p.y, p.z); transformTo(vec, r, s); }
+document.querySelector('input[name="part-pos-y"]').oninput = function (e) { let s = viewer.getSelection()[0]; const p = getPartData(s).position; const r = getPartData(s).rotation; let vec = new THREE.Vector3(); vec.set(p.x, parseFloat(e.target.value), p.z); transformTo(vec, r, s); }
+document.querySelector('input[name="part-pos-z"]').oninput = function (e) { let s = viewer.getSelection()[0]; const p = getPartData(s).position; const r = getPartData(s).rotation; let vec = new THREE.Vector3(); vec.set(p.x, p.y, parseFloat(e.target.value)); transformTo(vec, r, s); }
 
-document.querySelector('input[name="part-rotation-x"]').oninput = function (e) { let s = viewer.getSelection()[0]; const r = getPartData(s).rotation; let eul = new THREE.Euler(); eul.set(THREE.Math.degToRad(parseFloat(e.target.value)), r.y, r.z); setRotation(eul, s); }
-document.querySelector('input[name="part-rotation-y"]').oninput = function (e) { let s = viewer.getSelection()[0]; const r = getPartData(s).rotation; let eul = new THREE.Euler(); eul.set(r.x, THREE.Math.degToRad(parseFloat(e.target.value)), r.z); setRotation(eul, s); }
-document.querySelector('input[name="part-rotation-z"]').oninput = function (e) { let s = viewer.getSelection()[0]; const r = getPartData(s).rotation; let eul = new THREE.Euler(); eul.set(r.x, r.y, THREE.Math.degToRad(parseFloat(e.target.value))); setRotation(eul, s); }
+document.querySelector('input[name="part-rotation-x"]').oninput = function (e) { let s = viewer.getSelection()[0]; const p = getPartData(s).position; const r = getPartData(s).rotation; let eul = new THREE.Euler(); eul.set(THREE.Math.degToRad(parseFloat(e.target.value)), r.y, r.z); transformTo(p, eul, s); }
+document.querySelector('input[name="part-rotation-y"]').oninput = function (e) { let s = viewer.getSelection()[0]; const p = getPartData(s).position; const r = getPartData(s).rotation; let eul = new THREE.Euler(); eul.set(r.x, THREE.Math.degToRad(parseFloat(e.target.value)), r.z); transformTo(p, eul, s); }
+document.querySelector('input[name="part-rotation-z"]').oninput = function (e) { let s = viewer.getSelection()[0]; const p = getPartData(s).position; const r = getPartData(s).rotation; let eul = new THREE.Euler(); eul.set(r.x, r.y, THREE.Math.degToRad(parseFloat(e.target.value))); transformTo(p, eul, s); }
 
 
 function getPartData(nodeId) {
@@ -66,7 +66,7 @@ function getPartData(nodeId) {
     rot.setFromQuaternion(fragProxy.quaternion);
 
     return {
-        position: fragProxy.position,
+        position: worldMatrix.getPosition().clone(),
         rotation: rot
     }
 }
@@ -75,73 +75,66 @@ function getPartData(nodeId) {
 ////////////// TRANSFORM FUNCTIONS
 ////////////////////////////////////////////////////////////////
 
-function setRotation(eulerAngle, rotatedNodeId, pivot = getCenterOfNodeId(rotatedNodeId)) {
+function transformTo(positionVector, eulerAngle, nodeId) {
     if (!viewer) {
         console.error(`Viewer is not initialized`);
         return;
     }
 
-    let rotatedBody = { nodeId: rotatedNodeId };
-
-    rotatedBody.fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(rotatedNodeId);
-
-    if (rotatedBody.fragId == -1) {
-        console.error(`nodeId ${rotatedBody.nodeId} not found`);
+    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
+    if (fragId == -1) {
+        console.error(`nodeId ${nodeId} not found`);
         return;
     }
 
-    // Get Transform
-    rotatedBody.fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, rotatedBody.fragId);
-    rotatedBody.fragProxy.getAnimTransform();
+    let fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, fragId);
+    fragProxy.getAnimTransform();
 
-    // Reset Transform to default
-    //rotatedBody.fragProxy.quaternion = new THREE.Quaternion(0, 0, 0);
-    //rotatedBody.fragProxy.position = new THREE.Vector3(0, 0, 0);
-    rotatedBody.fragProxy.updateAnimTransform();
-    rotatedBody.fragProxy.getAnimTransform();
+    let worldMatrix = new THREE.Matrix4();
+    fragProxy.getWorldMatrix(worldMatrix);
 
-    // Get World matrix
-    rotatedBody.worldMatrix = new THREE.Matrix4();
-    rotatedBody.fragProxy.getWorldMatrix(rotatedBody.worldMatrix);
+    let currentPosition = new THREE.Vector3();
+    currentPosition.copy(worldMatrix.getPosition().clone());
 
-    // Get position from world matrix
-    rotatedBody.position = new THREE.Vector3();
-    rotatedBody.position.copy(rotatedBody.worldMatrix.getPosition().clone());
+    let currentPivot = new THREE.Vector3(); // PIVOT
+    currentPivot.copy(currentPosition.clone())
+    //currentPivot.set(0, 0, 0);
 
-    // Rotating quartenion
-    let quaternion = new THREE.Quaternion();
-    quaternion.setFromEuler(eulerAngle.clone());
+    let currentRotation = new THREE.Quaternion(); // ROTATION
+    currentRotation.copy(fragProxy.quaternion.clone())
 
-    // Rotate avatar around pivot
-
-    var mesh = new THREE.Object3D();
+    var geometry = new THREE.BoxGeometry(10, 10, 10);
+    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    var mesh = new THREE.Mesh(geometry, material);
 
     viewer.impl.scene.add(mesh);
-    mesh.parent.localToWorld(mesh.position.clone());
-    mesh.position.copy(rotatedBody.position.clone());
-    mesh.position.sub(pivot.clone()); // remove the offset
-    mesh.position.applyEuler(eulerAngle.clone()); // rotate the POSITION
-    mesh.position.add(pivot.clone()); // re-add the offset
-    mesh.parent.worldToLocal(mesh.position.clone());
+    mesh.position.copy(positionVector.clone());
+    mesh.position.sub(currentPivot.clone());
     mesh.setRotationFromEuler(eulerAngle);
+    mesh.position.applyEuler(eulerAngle.clone());
+    mesh.position.add(currentPivot.clone());
+
     viewer.impl.scene.remove(mesh);
 
-    rotatedBody.fragProxy.quaternion.copy(quaternion.clone());
+    fragProxy.quaternion.copy(mesh.quaternion.clone());
+    fragProxy.position.x = mesh.position.x;
+    fragProxy.position.y = mesh.position.y;
+    fragProxy.position.z = mesh.position.z;
 
-    rotatedBody.fragProxy.updateAnimTransform();
-    rotatedBody.fragProxy.getAnimTransform();
+    fragProxy.updateAnimTransform();
+    fragProxy.getAnimTransform();
 
     let updatedWorldMatrix = new THREE.Matrix4();
-    rotatedBody.fragProxy.getWorldMatrix(updatedWorldMatrix);
+    fragProxy.getWorldMatrix(updatedWorldMatrix);
 
     let newPosition = new THREE.Vector3();
     newPosition.copy(updatedWorldMatrix.getPosition().clone());
 
-    rotatedBody.fragProxy.position.x += (rotatedBody.position.x - newPosition.x) + (mesh.position.x - rotatedBody.position.x);
-    rotatedBody.fragProxy.position.y += (rotatedBody.position.y - newPosition.y) + (mesh.position.y - rotatedBody.position.y);
-    rotatedBody.fragProxy.position.z += (rotatedBody.position.z - newPosition.z) + (mesh.position.z - rotatedBody.position.z);
+    fragProxy.position.x -= (newPosition.x - positionVector.x);
+    fragProxy.position.y -= (newPosition.y - positionVector.y);
+    fragProxy.position.z -= (newPosition.z - positionVector.z);
 
-    rotatedBody.fragProxy.updateAnimTransform();
+    fragProxy.updateAnimTransform();
     viewer.impl.sceneUpdated(true);
 }
 
@@ -164,76 +157,6 @@ function getCenterOfNodeId(nodeId) {
     fragProxy.getWorldMatrix(worldMatrix);
 
     return worldMatrix.getPosition().clone();
-}
-
-function setPosition(positionVector, nodeId) {
-    if (!viewer) {
-        console.error(`Viewer is not initialized`);
-        return;
-    }
-
-    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
-    if (fragId == -1) {
-        console.error(`nodeId ${nodeId} not found`);
-        return;
-    }
-    let fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, fragId);
-    fragProxy.getAnimTransform();
-
-    fragProxy.position.x = positionVector.x;
-    fragProxy.position.y = positionVector.y;
-    fragProxy.position.z = positionVector.z;
-
-    fragProxy.updateAnimTransform();
-    viewer.impl.sceneUpdated(true);
-}
-
-function setOpacity(nodeId, opacity) {
-    if (!viewer) {
-        console.error(`Viewer is not initialized`);
-        return;
-    }
-
-    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
-    if (fragId == -1) {
-        console.error(`nodeId ${nodeId} not found`);
-        return;
-    }
-
-    let fragList = viewer.impl.model.getFragmentList();
-
-    //console.log(viewer.impl.getFragmentProxy(viewer.impl.model, fragId))
-
-    let m = fragList.getMaterial(fragId);
-    m.transparent = true;
-    m.opacity = opacity;
-
-    fragList.setMaterial(fragId, m);
-    viewer.impl.invalidate(true);
-    viewer.impl.sceneUpdated(true);
-}
-
-function setColor(nodeId, color) {
-    if (!viewer) {
-        console.error(`Viewer is not initialized`);
-        return;
-    }
-
-    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
-    if (fragId == -1) {
-        console.error(`nodeId ${nodeId} not found`);
-        return;
-    }
-
-    let fragList = viewer.impl.model.getFragmentList();
-
-    let m = fragList.getMaterial(fragId);
-    console.log(m);
-    m.opaque_albedo = color;
-
-    fragList.setMaterial(fragId, m);
-    viewer.impl.invalidate(true);
-    viewer.impl.sceneUpdated(true);
 }
 
 var recordButton = document.getElementById('recBtn');
@@ -292,10 +215,17 @@ function onLoadModelError(viewerErrorCode) {
     console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
 }
 
+function load() {
+    viewer.loadExtension("Autodesk.ADN.Viewing.Extension.TransformTool");
+    ext = viewer.getExtension("Autodesk.ADN.Viewing.Extension.TransformTool");
+}
+
 function onLoadModelSuccess(model) {
     console.log('onLoadModelSuccess()!');
     console.log('Validate model loaded: ' + (viewer.model === model));
     console.log(model);
+
+    //load();
 
     viewer.addEventListener(Autodesk.Viewing.GEOMETRY_LOADED_EVENT, (e) => { // Функция, срабатывает после полной загрузки модели
         viewer.setLightPreset(10); // Сделать фон серым
@@ -308,13 +238,23 @@ function onLoadModelSuccess(model) {
             document.querySelector('button[name="remove-camera"]').style.display = 'none';
 
             document.querySelector('button[name="record-camera"]').innerHTML = 'Записать кадр на ' + fancyTimeFormat(e.detail.currentTime);
+            document.querySelector('button[name="record-part"]').innerHTML = 'Записать кадр на ' + fancyTimeFormat(e.detail.currentTime);
+
             let currentTime = e.detail.currentTime;
 
-            let key = getLerpKey(currentTime);
-            console.log(key)
-            navTool.setCameraUpVector(key.props.up);
-            navTool.setPosition(key.props.position);
-            navTool.setTarget(key.props.target);
+            //let key = getLerpKey(currentTime);
+            let lerpFrames = getLerpFrames(currentTime);
+            for (let frame of lerpFrames) {
+                if (frame.for === 'camera') {
+
+                    navTool.setCameraUpVector(frame.key.props.up);
+                    navTool.setPosition(frame.key.props.position);
+                    navTool.setTarget(frame.key.props.target);
+                } else if (frame.for.includes('node')) {
+                    transformTo(frame.key.props.position, frame.key.props.rotation, parseInt(frame.for.slice(4)));
+                }
+            }
+
         })
 
         navTool = new Autodesk.Viewing.Navigation(viewer.getCamera());
@@ -354,9 +294,28 @@ function onLoadModelSuccess(model) {
     })
 }
 
-document.querySelector('button[name="record-camera"]').onclick = function () {
+document.querySelector('button[name="record-camera"]').onclick = function (e) {
+    e.preventDefault();
     recordCamera(activeClip.currentTime);
+}
 
+document.querySelector('button[name="record-part"]').onclick = function (e) {
+    e.preventDefault();
+    let position = new THREE.Vector3();
+    position.set(
+        parseFloat(document.querySelector('input[name="part-pos-x"]').value),
+        parseFloat(document.querySelector('input[name="part-pos-y"]').value),
+        parseFloat(document.querySelector('input[name="part-pos-z"]').value)
+    );
+
+    let rotation = new THREE.Euler();
+    rotation.set(
+        parseFloat(document.querySelector('input[name="part-rotation-x"]').value),
+        parseFloat(document.querySelector('input[name="part-rotation-y"]').value),
+        parseFloat(document.querySelector('input[name="part-rotation-z"]').value)
+    );
+
+    addFrame(activeClip.currentTime, 'node' + viewer.getSelection()[0], { position, rotation });
 }
 
 function addPawn(nodeId, key) {
@@ -387,11 +346,10 @@ function recordCamera(at) { // TODO: check for same 'at'
         parseFloat(document.querySelector('input[name="camera-up-z"]').value)
     );
 
-    addFrame(at, { position, target, up })
+    addFrame(at, 'camera', { position, target, up })
 }
 
 document.querySelector('button[name="save-camera"]').onclick = function () {
-    alert();
     let target = new THREE.Vector3();
     target.set(
         parseFloat(document.querySelector('input[name="camera-target-x"]').value),
@@ -413,7 +371,7 @@ document.querySelector('button[name="save-camera"]').onclick = function () {
         parseFloat(document.querySelector('input[name="camera-up-z"]').value)
     );
 
-    saveFrame(activeClip.currentTime, { position, target, up })
+    saveFrame(activeClip.currentTime, 'camera', { position, target, up })
 }
 
 document.querySelector('button[name="remove-camera"]').onclick = function () {
@@ -444,44 +402,134 @@ function saveFrame(at, props) {
     }
 }
 
-function addFrame(at, props) {
+function addFrame(at, for_what, props) {
+    let frameIndex = -1;
+
     for (let frame of activeClip.frames) {
-        if (frame.for === 'camera') {
-            frame.keys.push({
-                at, props
-            })
+        if (frame.for == for_what) frameIndex = activeClip.frames.indexOf(frame);
+    }
+
+    if (frameIndex === -1) activeClip.frames.push({ for: for_what, keys: [{ at, props }] });
+    else {
+        activeClip.frames[frameIndex].keys.push({ at, props });
+
+        for (let frame of activeClip.frames) {
+            if (frame.for === for_what) {
+                frame.keys.sort((a, b) => {
+                    if (a.at < b.at) return -1;
+                    else if (a.at > b.at) return 1;
+                    else return 0;
+                })
+            }
         }
     }
 
-    for (let frame of activeClip.frames) {
-        if (frame.for === 'camera') {
-            frame.keys.sort((a, b) => {
-                if (a.at < b.at) return -1;
-                else if (a.at > b.at) return 1;
-                else return 0;
-            })
+    if (for_what === 'camera') {
+        let frameCircle = document.createElement('div');
+        frameCircle.className = 'frame';
+        frameCircle.style.left = `${((at / activeClip.duration) * 100)}% `;
+        frameCircle.setAttribute('at', at);
+        frameCircle.onclick = function () {
+            document.querySelector('button[name="record-camera"]').style.display = 'none';
+            document.querySelector('button[name="save-camera"]').style.display = 'block';
+            document.querySelector('button[name="remove-camera"]').style.display = 'block';
+            navTool.setCameraUpVector(props.up);
+            navTool.setPosition(props.position);
+            navTool.setTarget(props.target);
+            navTool.toOrthographic();
+            timePicker.value = fancyTimeFormat(at);
+            timeline.value = (at / activeClip.duration) * 100;
+            activeClip.currentTime = at;
+        }
+
+        document.querySelector('#camera-frames').append(frameCircle);
+    } else if (for_what.includes('node')) {
+        let frameCircle = document.createElement('div');
+        frameCircle.className = 'frame';
+        frameCircle.style.left = `${((at / activeClip.duration) * 100)}% `;
+        frameCircle.setAttribute('at', at);
+
+        let framesField = document.querySelector(`div[nodeId="${for_what}"]`)
+        if (framesField != undefined || framesField != null) {
+            framesField.append(frameCircle);
+        }
+        else {
+            let row = document.createElement('tr');
+            row.innerHTML = `<td>Деталь ${for_what}</td><td style="padding: 12px;"><div nodeId="${for_what}" style="position: relative;"></div></td>`;
+            document.querySelector('#content').append(row);
+            framesField = row.querySelector(`div[nodeId="${for_what}"]`);
+            framesField.append(frameCircle);
         }
     }
 
-    let frameCircle = document.createElement('div');
-    frameCircle.className = 'frame';
-    frameCircle.style.left = `${((at / activeClip.duration) * 100)}% `;
-    frameCircle.setAttribute('at', at);
-    frameCircle.onclick = function () {
-        document.querySelector('button[name="record-camera"]').style.display = 'none';
-        document.querySelector('button[name="save-camera"]').style.display = 'block';
-        document.querySelector('button[name="remove-camera"]').style.display = 'block';
-        navTool.setCameraUpVector(props.up);
-        navTool.setPosition(props.position);
-        navTool.setTarget(props.target);
-        navTool.toOrthographic();
-        timePicker.value = fancyTimeFormat(at);
-        timeline.value = (at / activeClip.duration) * 100;
-        activeClip.currentTime = at;
+}
+
+function getLerpFrames(time) {
+    let lerpFrames = [];
+    for (let frame of activeClip.frames) {
+        let keys = frame.keys;
+        let prevKey = keys[0];
+        let nextKey = keys[keys.length - 1];
+
+        for (let key of keys) {
+            if (key.at <= time && key.at > prevKey.at) prevKey = key;
+            if (key.at > time && key.at < nextKey.at) nextKey = key;
+        }
+
+        let relation = (time - prevKey.at) / (nextKey.at - prevKey.at);
+        let lerpKey = { at: time, props: {} };
+
+        if (relation === Infinity) {
+            lerpKey.props = prevKey.props;
+        } else if (relation === -Infinity || isNaN(relation)) {
+            lerpKey.props = nextKey.props;
+        } else {
+            if (frame.for == 'camera') {
+                let up = new THREE.Vector3();
+                up.set(
+                    lerp(prevKey.props.up.x, nextKey.props.up.x, relation),
+                    lerp(prevKey.props.up.y, nextKey.props.up.y, relation),
+                    lerp(prevKey.props.up.z, nextKey.props.up.z, relation),
+                );
+                let position = new THREE.Vector3();
+                position.set(
+                    lerp(prevKey.props.position.x, nextKey.props.position.x, relation),
+                    lerp(prevKey.props.position.y, nextKey.props.position.y, relation),
+                    lerp(prevKey.props.position.z, nextKey.props.position.z, relation),
+                );
+                let target = new THREE.Vector3();
+                target.set(
+                    lerp(prevKey.props.target.x, nextKey.props.target.x, relation),
+                    lerp(prevKey.props.target.y, nextKey.props.target.y, relation),
+                    lerp(prevKey.props.target.z, nextKey.props.target.z, relation),
+                );
+                lerpKey.props.up = up;
+                lerpKey.props.position = position;
+                lerpKey.props.target = target;
+            } else if (frame.for.includes('node')) {
+                let position = new THREE.Vector3();
+                position.set(
+                    lerp(prevKey.props.position.x, nextKey.props.position.x, relation),
+                    lerp(prevKey.props.position.y, nextKey.props.position.y, relation),
+                    lerp(prevKey.props.position.z, nextKey.props.position.z, relation)
+                );
+
+                let rotation = new THREE.Euler();
+                rotation.set(
+                    lerp(THREE.Math.degToRad(prevKey.props.rotation.x), THREE.Math.degToRad(nextKey.props.rotation.x), relation),
+                    lerp(THREE.Math.degToRad(prevKey.props.rotation.y), THREE.Math.degToRad(nextKey.props.rotation.y), relation),
+                    lerp(THREE.Math.degToRad(prevKey.props.rotation.z), THREE.Math.degToRad(nextKey.props.rotation.z), relation),
+                );
+
+                lerpKey.props.position = position;
+                lerpKey.props.rotation = rotation;
+            }
+
+            lerpFrames.push({ for: frame.for, key: lerpKey });
+        }
     }
 
-    console.log(`${(at / activeClip.duration) * 100}%`);
-    document.querySelector('#camera-frames').append(frameCircle);
+    return lerpFrames;
 }
 
 function getLerpKey(time) {
@@ -496,13 +544,14 @@ function getLerpKey(time) {
 
     let relation = (time - prevKey.at) / (nextKey.at - prevKey.at);
 
-    let lerpKey = { at: time, props: {} };
+    let lerpKey = { at: time, for: '', props: {} };
 
     if (relation === Infinity) {
         lerpKey.props = prevKey.props;
     } else if (relation === -Infinity || isNaN(relation)) {
         lerpKey.props = nextKey.props;
     } else {
+
         let up = new THREE.Vector3();
         up.set(
             lerp(prevKey.props.up.x, nextKey.props.up.x, relation),

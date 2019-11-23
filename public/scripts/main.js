@@ -158,26 +158,29 @@ function getObject(nodeId) {
 }
 
 
-function setRotation(eulerAngle, rotatedNodeId, pivot = getCenterOfNodeId(rotatedNodeId)) {
+function getFragProxy(nodeId) {
     if (!viewer) {
         console.error(`Viewer is not initialized`);
         return;
     }
 
-    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(rotatedNodeId);
+    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
 
     if (fragId == -1) {
         console.error(`nodeId ${rotatedNodeId} not found`);
         return;
     }
 
-    // Get Transform
     let fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, fragId);
-    fragProxy.getAnimTransform();
+
+    return fragProxy;
+}
+
+function setRotation(eulerAngle, rotatedNodeId, pivot = getCenterOfNodeId(rotatedNodeId)) {
+    getFragProxy(rotatedNodeId);
 
     // Reset Transform to default
-    //rotatedBody.fragProxy.quaternion = new THREE.Quaternion(0, 0, 0);
-    //rotatedBody.fragProxy.position = new THREE.Vector3(0, 0, 0);
+
     fragProxy.updateAnimTransform();
     fragProxy.getAnimTransform();
 
@@ -207,7 +210,7 @@ function setRotation(eulerAngle, rotatedNodeId, pivot = getCenterOfNodeId(rotate
     mesh.setRotationFromEuler(eulerAngle);
     viewer.impl.scene.remove(mesh);
 
-    fragProxy.quaternion.copy(quaternion.clone());
+    fragProxy.quaternion.copy(mesh.quaternion.clone());
 
     fragProxy.updateAnimTransform();
     fragProxy.getAnimTransform();
@@ -218,14 +221,14 @@ function setRotation(eulerAngle, rotatedNodeId, pivot = getCenterOfNodeId(rotate
     let newPosition = new THREE.Vector3();
     newPosition.copy(updatedWorldMatrix.getPosition().clone());
 
-    let offsetR = new THREE.Vector3();
-    offsetR.set(
-        newPosition.x - position.x,
-        newPosition.y - position.y,
-        newPosition.z - position.z,
-    );
+    // let offsetR = new THREE.Vector3();
+    // offsetR.set(
+    //     newPosition.x - position.x,
+    //     newPosition.y - position.y,
+    //     newPosition.z - position.z,
+    // );
 
-    fragProxy.offsetR = offsetR;
+    // fragProxy.offsetR = offsetR;
 
     fragProxy.position.x += (position.x - newPosition.x) + (mesh.position.x - position.x);
     fragProxy.position.y += (position.y - newPosition.y) + (mesh.position.y - position.y);
@@ -256,7 +259,7 @@ function getCenterOfNodeId(nodeId) {
     return worldMatrix.getPosition().clone();
 }
 
-function setPosition(positionVector, nodeId) {
+function transformTo(positionVector, eulerAngle, nodeId) {
     if (!viewer) {
         console.error(`Viewer is not initialized`);
         return;
@@ -267,21 +270,145 @@ function setPosition(positionVector, nodeId) {
         console.error(`nodeId ${nodeId} not found`);
         return;
     }
+
     let fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, fragId);
     fragProxy.getAnimTransform();
 
-    console.log('до', fragProxy);
+    let worldMatrix = new THREE.Matrix4();
+    fragProxy.getWorldMatrix(worldMatrix);
 
-    if (!fragProxy.offsetR) fragProxy.offsetR = new THREE.Vector3();
-    fragProxy.position.x = positionVector.x - fragProxy.offsetR.x; 
-    fragProxy.position.y = positionVector.y - fragProxy.offsetR.y;
-    fragProxy.position.z = positionVector.z - fragProxy.offsetR.z;
+    let currentPosition = new THREE.Vector3();
+    currentPosition.copy(worldMatrix.getPosition().clone());
 
-    console.log('после', fragProxy);
+    let currentPivot = new THREE.Vector3(); // PIVOT
+    currentPivot.copy(currentPosition.clone())
+    //currentPivot.set(0, 0, 0);
 
+    let currentRotation = new THREE.Quaternion(); // ROTATION
+    currentRotation.copy(fragProxy.quaternion.clone())
+
+    var geometry = new THREE.BoxGeometry(10, 10, 10);
+    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    var mesh = new THREE.Mesh( geometry, material );
+
+    viewer.impl.scene.add(mesh);
+    mesh.position.copy(positionVector.clone());
+    mesh.position.sub(currentPivot.clone()); 
+    mesh.setRotationFromEuler(eulerAngle);
+    mesh.position.applyEuler(eulerAngle.clone()); 
+    mesh.position.add(currentPivot.clone()); 
+
+    viewer.impl.scene.remove(mesh);
+    
+    fragProxy.quaternion.copy(mesh.quaternion.clone());
+    fragProxy.position.x = mesh.position.x;
+    fragProxy.position.y = mesh.position.y;
+    fragProxy.position.z = mesh.position.z;
+
+    fragProxy.updateAnimTransform();
+    fragProxy.getAnimTransform();
+
+    let updatedWorldMatrix = new THREE.Matrix4();
+    fragProxy.getWorldMatrix(updatedWorldMatrix);
+
+    let newPosition = new THREE.Vector3();
+    newPosition.copy(updatedWorldMatrix.getPosition().clone());
+
+    fragProxy.position.x -= (newPosition.x - positionVector.x);
+    fragProxy.position.y -= (newPosition.y - positionVector.y);
+    fragProxy.position.z -= (newPosition.z - positionVector.z);
 
     fragProxy.updateAnimTransform();
     viewer.impl.sceneUpdated(true);
+}
+
+function setPosition(positionVector, eulerAngle, nodeId) {
+    if (!viewer) {
+        console.error(`Viewer is not initialized`);
+        return;
+    }
+
+    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
+    if (fragId == -1) {
+        console.error(`nodeId ${nodeId} not found`);
+        return;
+    }
+
+    let fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, fragId);
+    fragProxy.getAnimTransform();
+
+    let worldMatrix = new THREE.Matrix4();
+    fragProxy.getWorldMatrix(worldMatrix);
+
+    let currentPosition = new THREE.Vector3();
+    currentPosition.copy(worldMatrix.getPosition().clone());
+
+    let currentPivot = new THREE.Vector3(); // PIVOT
+    currentPivot.copy(currentPosition.clone())
+    //currentPivot.set(0, 0, 0);
+
+    let currentRotation = new THREE.Quaternion(); // ROTATION
+    currentRotation.copy(fragProxy.quaternion.clone())
+
+    var geometry = new THREE.BoxGeometry(10, 10, 10);
+    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    var mesh = new THREE.Mesh( geometry, material );
+
+    viewer.impl.scene.add(mesh);
+    mesh.position.copy(positionVector.clone());
+    mesh.position.sub(currentPivot.clone()); 
+    mesh.setRotationFromEuler(eulerAngle);
+    mesh.position.applyEuler(eulerAngle.clone()); 
+    mesh.position.add(currentPivot.clone()); 
+
+    viewer.impl.scene.remove(mesh);
+    
+    fragProxy.quaternion.copy(mesh.quaternion.clone());
+    fragProxy.position.x = mesh.position.x;
+    fragProxy.position.y = mesh.position.y;
+    fragProxy.position.z = mesh.position.z;
+
+    fragProxy.updateAnimTransform();
+    fragProxy.getAnimTransform();
+
+    let updatedWorldMatrix = new THREE.Matrix4();
+    fragProxy.getWorldMatrix(updatedWorldMatrix);
+
+    let newPosition = new THREE.Vector3();
+    newPosition.copy(updatedWorldMatrix.getPosition().clone());
+
+    fragProxy.position.x -= (newPosition.x - positionVector.x);
+    fragProxy.position.y -= (newPosition.y - positionVector.y);
+    fragProxy.position.z -= (newPosition.z - positionVector.z);
+
+    fragProxy.updateAnimTransform();
+    viewer.impl.sceneUpdated(true);
+}
+
+function getPosition(nodeId) {
+    if (!viewer) {
+        console.error(`Viewer is not initialized`);
+        return;
+    }
+
+    let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
+    if (fragId == -1) {
+        console.error(`nodeId ${nodeId} not found`);
+        return;
+    }
+
+    let fragProxy = viewer.impl.getFragmentProxy(viewer.impl.model, fragId);
+    fragProxy.getAnimTransform();
+
+    // Get World matrix
+    let worldMatrix = new THREE.Matrix4();
+    fragProxy.getWorldMatrix(worldMatrix);
+
+    // Get position from world matrix
+    let position = new THREE.Vector3();
+    position.copy(worldMatrix.getPosition().clone());
+
+    return position;
 }
 
 function setOpacity(nodeId, opacity) {
@@ -291,6 +418,7 @@ function setOpacity(nodeId, opacity) {
     }
 
     let fragId = viewer.impl.model.getData().fragments.fragId2dbId.indexOf(nodeId);
+
     if (fragId == -1) {
         console.error(`nodeId ${nodeId} not found`);
         return;
