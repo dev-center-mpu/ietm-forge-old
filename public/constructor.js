@@ -168,7 +168,7 @@ function toggleRecordMode() {
     else recordButton.className = 'text-secondary';
 }
 
-$.get('/auth', (data) => {
+$.get('/ietm-forge-old/auth', (data) => {
     options.accessToken = JSON.parse(data).access_token;
     Autodesk.Viewing.Initializer(options, function onInitialized() {
         Autodesk.Viewing.Document.load(documentId, onDocumentLoadSuccess, onDocumentLoadFailure);

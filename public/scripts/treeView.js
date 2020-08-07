@@ -2,159 +2,159 @@ var defaultData = [
   {
     text: "Техническое описание",
     id: "item1",
-    icon: "/./img/icons/tech.svg"
+    icon: "/./ietm-forge-old/img/icons/tech.svg"
   },
   {
     text: "Каталог деталей",
     id: "item2",
-    icon: "/./img/icons/folder.svg",
+    icon: "/./ietm-forge-old/img/icons/folder.svg",
     nodes: [
       {
         text: "Корпус",
         id: "item2_1",
-        icon: "/./img/icons/model.svg"
+        icon: "/./ietm-forge-old/img/icons/model.svg"
       },
       {
         text: "Зубчатая передача",
         id: "item2_2",
-        icon: "/./img/icons/model.svg"
+        icon: "/./ietm-forge-old/img/icons/model.svg"
       },
       {
         text: "Двигатель",
         id: "item2_3",
-        icon: "/./img/icons/model.svg"
+        icon: "/./ietm-forge-old/img/icons/model.svg"
       },
       {
         text: "Тихоходный вал",
         id: "item2_4",
-        icon: "/./img/icons/model.svg"
+        icon: "/./ietm-forge-old/img/icons/model.svg"
       },
       {
         text: "Подшипники",
         id: "item2_5",
-        icon: "/./img/icons/model.svg"
+        icon: "/./ietm-forge-old/img/icons/model.svg"
       }
     ]
   },
   {
     text: "Принцип работы",
     id: "item3",
-    icon: "/./img/icons/folder.svg",
+    icon: "/./ietm-forge-old/img/icons/folder.svg",
     nodes: [
       {
         text: "Работа редуктора",
         id: "item3_1",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       }
     ]
   },
   {
     text: "Виды редукторов",
     id: "item8",
-    icon: "/./img/icons/folder.svg",
+    icon: "/./ietm-forge-old/img/icons/folder.svg",
     nodes: [
       {
         text: "Мотор-редуктор",
         id: "item8_1",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       },
       {
         text: "Цилиндрический редуктор",
         id: "item8_2",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       },
       {
         text: "Червячный редуктор",
         id: "item8_3",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       },
       {
         text: "Комбинированный редуктор",
         id: "item8_4",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       },
       {
         text: "Коническо-цилиндрический редуктор",
         id: "item8_5",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       }
     ]
   },
   {
     text: "Технические характеристики",
     id: "item7",
-    icon: "/./img/icons/folder.svg",
+    icon: "/./ietm-forge-old/img/icons/folder.svg",
     nodes: [
       {
         text: "Передаточное число",
         id: "item7_1",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       },
       {
         text: "КПД",
         id: "item7_2",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       },
       {
         text: "Жесткость",
         id: "item7_3",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       },
       {
         text: "Надежность",
         id: "item7_4",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       },
       {
         text: "Долговечность",
         id: "item7_5",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       },
       {
         text: "Прочность",
         id: "item7_6",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       },
       {
         text: "Входные обороты",
         id: "item7_7",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       }
     ]
   },
   {
     text: "Руководство по разработке",
     id: "item4",
-    icon: "/./img/icons/folder.svg",
+    icon: "/./ietm-forge-old/img/icons/folder.svg",
     nodes: [
       {
         text: "Разборка корпуса",
         id: "item4_1",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       },
       {
         text: "Замена конструкции",
         id: "item4_2",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       }
     ]
   },
   {
     text: "Руководство по эксплуатации",
     id: "item5",
-    icon: "/./img/icons/folder.svg",
+    icon: "/./ietm-forge-old/img/icons/folder.svg",
     nodes: [
       {
         text: "Смазывание компонентов",
         id: "item5_1",
-        icon: "/./img/icons/list.svg"
+        icon: "/./ietm-forge-old/img/icons/list.svg"
       }
     ]
   },
   {
     text: "Тест",
     id: "item6",
-    icon: "/./img/icons/test.svg"
+    icon: "/./ietm-forge-old/img/icons/test.svg"
   }
 ];
 
